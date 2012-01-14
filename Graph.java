@@ -9,12 +9,12 @@ import java.io.Serializable;
  * @version 1.0
  */
 public class Graph implements Serializable{
-   private ArrayList vNodeList;
-   private ArrayList vEdgeList;
+   private ArrayList<Node> vNodeList;
+   private ArrayList<Edge> vEdgeList;
 
    public Graph(){
-      vNodeList = new ArrayList();
-      vEdgeList = new ArrayList();
+      vNodeList = new ArrayList<Node>();
+      vEdgeList = new ArrayList<Edge>();
    }
    /**
     * AddEdge - adds an edge to the edge list for the graph

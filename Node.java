@@ -36,7 +36,7 @@ public class Node implements Serializable {
    private String  vLabel;
    private NodeShape vShape;
    private NodeStyle vStyle;
-   private ArrayList vEdges;
+   private ArrayList<Edge> vEdges;
 
    /**
     * Node Constructor
@@ -57,7 +57,7 @@ public class Node implements Serializable {
       vStyle = style;
       //For now when we create a node we will not have any edge data. This may
       //change at some point.
-      vEdges = new ArrayList();
+      vEdges = new ArrayList<Edge>();
    }
 
 
@@ -80,7 +80,7 @@ public class Node implements Serializable {
 
 
    /**
-    * GetLabel - gets the labbel of the current node
+    * GetLabel - gets the label of the current node
     * @return vLabel
     */
    public String mGetLabel(){
@@ -90,7 +90,7 @@ public class Node implements Serializable {
 
    /**
     * SetShape - sets the shape of the node
-    * @param shape is an enumaration of the shape of the node
+    * @param shape is an enumeration of the shape of the node
     * @see NodeShape
     */
    public void mSetShape(NodeShape shape){
