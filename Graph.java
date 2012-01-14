@@ -12,6 +12,10 @@ public class Graph implements Serializable{
    private ArrayList vNodeList;
    private ArrayList vEdgeList;
 
+   public Graph(){
+      vNodeList = new ArrayList();
+      vEdgeList = new ArrayList();
+   }
    /**
     * AddEdge - adds an edge to the edge list for the graph
     *
@@ -19,7 +23,7 @@ public class Graph implements Serializable{
     * @return - ErrorHandler.NOERROR if successful, other error code if not successful
     * @see Edge
     */
-   public int AddEdge(Edge edge){
+   public int mAddEdge(Edge edge){
       int retValue = ErrorHandler.CANNOTADDEDGE;
       if(vEdgeList.add(edge)){
          retValue = ErrorHandler.NOERROR;
@@ -34,7 +38,7 @@ public class Graph implements Serializable{
     * @return - ErrorHandler.NOERROR if successful, other error code if not successful
     * @see Edge
     */
-   public int RemoveEdge(Edge edge){
+   public int mRemoveEdge(Edge edge){
       int retValue = ErrorHandler.CANNOTREMOVEEDGE;
       if(vEdgeList.remove(edge)){
          retValue = ErrorHandler.NOERROR;
@@ -49,7 +53,7 @@ public class Graph implements Serializable{
     * @return - ErrorHandler.NOERROR if successful, other error code if not successful
     * @see Node
     */
-   public int AddNode(Node node){
+   public int mAddNode(Node node){
       int retValue = ErrorHandler.CANNOTADDNODE;
       if(vNodeList.add(node)){
          retValue = ErrorHandler.NOERROR;
@@ -64,7 +68,7 @@ public class Graph implements Serializable{
     * @return - ErrorHandler.NOERROR if successful, other error code if not successful
     * @see Node
     */
-   public int RemoveNode(Node node){
+   public int mRemoveNode(Node node){
       int retValue = ErrorHandler.CANNOTREMOVENODE;
       if(vEdgeList.remove(node)){
          retValue = ErrorHandler.NOERROR;

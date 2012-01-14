@@ -66,7 +66,7 @@ public class Node implements Serializable {
     * from other nodes
     * @return the variable name of the node
     */
-   public String GetName(){
+   public String mGetName(){
       return vName;
    }
 
@@ -74,7 +74,7 @@ public class Node implements Serializable {
     * SetLabel - change the label on the node
     * @param label string to change the label to
     */
-   public void SetLabel(String label){
+   public void mSetLabel(String label){
       vLabel = label;
    }
 
@@ -83,7 +83,7 @@ public class Node implements Serializable {
     * GetLabel - gets the labbel of the current node
     * @return vLabel
     */
-   public String GetLabel(){
+   public String mGetLabel(){
       return vLabel;
    }
 
@@ -93,7 +93,7 @@ public class Node implements Serializable {
     * @param shape is an enumaration of the shape of the node
     * @see NodeShape
     */
-   public void SetShape(NodeShape shape){
+   public void mSetShape(NodeShape shape){
       vShape = shape;
    }
 
@@ -103,7 +103,7 @@ public class Node implements Serializable {
     * @return an enumeration of the shape of the node
     * @see NodeShape
     */
-   public NodeShape GetShape(){
+   public NodeShape mGetShape(){
       return vShape;
    }
 
@@ -113,7 +113,7 @@ public class Node implements Serializable {
     * @param style an enumeration of the style of the node
     * @see NodeStyle
     */
-   public void SetStyle(NodeStyle style){
+   public void mSetStyle(NodeStyle style){
       vStyle = style;
    }
 
@@ -123,7 +123,7 @@ public class Node implements Serializable {
     * @return an enumeration of the style of the node
     * @see NodeStyle
     */
-   public NodeStyle GetStyle(){
+   public NodeStyle mGetStyle(){
       return vStyle;
    }
 
@@ -134,7 +134,7 @@ public class Node implements Serializable {
     * @return ErrorHandler.CANNOTADDEDGE if successful, other error code if not successful
     * @see Edge
     */
-   public int AddEdge(Edge edge){
+   public int mAddEdge(Edge edge){
       int retValue = ErrorHandler.CANNOTADDEDGE;
       if(vEdges.add(edge)){
          retValue = ErrorHandler.NOERROR;
@@ -149,7 +149,7 @@ public class Node implements Serializable {
     * @return ErrorHandler.NOERROR if successful, other error code if not successful
     * @see Edge
     */
-   public int RemoveEdge(Edge edge){
+   public int mRemoveEdge(Edge edge){
       int retValue = ErrorHandler.CANNOTREMOVEEDGE;
       if(vEdges.remove(edge)){
          retValue = ErrorHandler.NOERROR;
@@ -162,7 +162,7 @@ public class Node implements Serializable {
     * GetEdgeList - returns a list of edges for the node
     * @return - vEdges
     */
-   public ArrayList GetEdgeList(){
+   public ArrayList mGetEdgeList(){
       return vEdges;
    }
 }

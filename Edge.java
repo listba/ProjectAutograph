@@ -61,7 +61,7 @@ public class Edge implements Serializable {
     * from other edges
     * @return the variable name of the edge
     */
-   public String GetName(){
+   public String mGetName(){
       return vName;
    }
 
@@ -69,7 +69,7 @@ public class Edge implements Serializable {
     * SetLabel - changes the label of the edge
     * @param label - new label for the edge
     */
-   public void SetLabel(String label){
+   public void mSetLabel(String label){
       vLabel = label;
    }
 
@@ -77,7 +77,7 @@ public class Edge implements Serializable {
     * GetLabel - gets the label of the edge
     * @return the label of the edge
     */
-   public String GetLabel(){
+   public String mGetLabel(){
       return vLabel;
    }
 
@@ -86,7 +86,7 @@ public class Edge implements Serializable {
     * @param start - the nodes the start of the edge is connected to
     * @see Node
     */
-   public void SetStartNode(Node start){
+   public void mSetStartNode(Node start){
       vStartNode = start;
    }
 
@@ -95,7 +95,7 @@ public class Edge implements Serializable {
     * @return - the nodes the start of the edge is connected to
     * @see Node
     */
-   public Node GetStartNode(){
+   public Node mGetStartNode(){
       return vStartNode;
    }
 
@@ -104,7 +104,7 @@ public class Edge implements Serializable {
     * @param end - the node the end of the edge is connected to
     * @see Node
     */
-   public void SetEndNode(Node end){
+   public void mSetEndNode(Node end){
       vEndNode = end;
    }
 
@@ -113,7 +113,7 @@ public class Edge implements Serializable {
     * @return the node the end of the edge is connected to
     * @see Node
     */
-   public Node GetEndNode(){
+   public Node mGetEndNode(){
       return vEndNode;
    }
 
@@ -122,7 +122,7 @@ public class Edge implements Serializable {
     * @param dir - an enumeration of the direction of the edge
     * @see Direction
     */
-   public void SetDirection(Direction dir){
+   public void mSetDirection(Direction dir){
       vDirection = dir;
    }
 
@@ -131,7 +131,7 @@ public class Edge implements Serializable {
     * @return - an enumeration of the direction of the edge
     * @see Direction
     */
-   public Direction GetDirection(){
+   public Direction mGetDirection(){
       return vDirection;
    }
 
@@ -140,7 +140,7 @@ public class Edge implements Serializable {
     * @param style - an enumeration of the edge style
     * @see EdgeStyle
     */
-   public void SetEdgeStyle(EdgeStyle style){
+   public void mSetEdgeStyle(EdgeStyle style){
       vEdgeStyle = style;
    }
 
@@ -149,7 +149,7 @@ public class Edge implements Serializable {
     * @return - an enumeration of the edge style
     * @see EdgeStyle
     */
-   public EdgeStyle GetEdgeStyle(){
+   public EdgeStyle mGetEdgeStyle(){
       return vEdgeStyle;
    }
 }
