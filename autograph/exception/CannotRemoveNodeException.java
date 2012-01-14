@@ -1,4 +1,4 @@
-package autograph;
+package autograph.exception;
 
 import java.lang.Exception;
 
