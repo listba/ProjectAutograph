@@ -1,20 +1,22 @@
 package autograph;
 
+import system.io.*;
+
 /**
  * Graph Helper class used to manipulate graph objects
  *
  * @author Ben List
  * @version 1.0
  */
-class static GraphHelper {
+public class GraphHelper {
 
    /**
     * Draws the graph object in the most efficent way possible
     *
-    * Note: Probobly going to have a Java drawing return type, not sure on details of implimentation yet.
+    * Note: Probably going to have a Java drawing return type, not sure on details of implementation yet.
     *
     * @param   graph    The Graph to be drawn
-    * @return           Returns an integer based error code or 0 for sucess 
+    * @return           Returns an integer based error code or 0 for success 
     * @see     Graph
     */
    static int mDrawGraph(Graph graph) {
@@ -28,7 +30,7 @@ class static GraphHelper {
     * @param   graph       The graph to be saved
     * @param   fileName    The file name of the graph to be saved
     * @param   fileLoc     The location to save the graph to
-    * @return              Returns an integer based error code or 0 for sucess 
+    * @return              Returns an integer based error code or 0 for success 
     * @see     Graph
     */
    static int mSaveGraphObject(Graph graph, String fileName, String fileLoc) {
@@ -39,12 +41,12 @@ class static GraphHelper {
             new FileOutputStream(fileLoc + "/" + fileName + ".ser");
          ObjectOutputStream out = new ObjectOutputStream(fileOut);
          // Write graph object to file
-         out.writeObject(e);
+         out.writeObject(graph);
          out.close();
-         fileout.close();
-         } catch (IOException e) { // Saving the file failed
-            returnVal = ErrorHandler.IOEXCEPTION; // IO EXCEPTION TEMP ERROR CODE
-         }
+         fileOut.close();
+      } catch (IOException e) { // Saving the file failed
+         returnVal = ErrorHandler.IOEXCEPTION; // IO EXCEPTION TEMP ERROR CODE
+      }
       return returnVal;
    }
    
@@ -57,19 +59,20 @@ class static GraphHelper {
     * @see     Graph
     */
    static Graph mLoadGraphObject(String fileName, String fileLoc) {
+      Graph graph = new Graph();
       try {
          // Open file to read in graph object
          FileInputStream fileIn = 
             new FileInputStream(fileLoc + "/" + fileName);
          ObjectInputStream in = new ObjectInputStream(fileIn);
          // Read in graph object from file
-         e = (Graph) in.ReadObject();
+         graph = (Graph) in.readObject();
          in.close();
          fileIn.close();
       } catch(IOException e) { // Reading the file failed
          // IO EXCEPTION TEMP ERROR CODE
       }
-      // Loading the graph object was sucessful
+      // Loading the graph object was successful
       return graph;
    }
    
@@ -79,7 +82,7 @@ class static GraphHelper {
     * @param   graph       The graph to be exported
     * @param   fileName    The file name to be saved (with .xml extension)
     * @param   fileLoc     The location to save the xml file to
-    * @return              Returns an integer based error code or 0 for sucess 
+    * @return              Returns an integer based error code or 0 for success 
     * @see     Graph
     */
    static int mExportGraphToXML(Graph graph, String fileName, String fileLoc) {
@@ -106,7 +109,7 @@ class static GraphHelper {
     * @param   graph       The graph to be exported
     * @param   fileName    The file name to be saved (with .agl extension)
     * @param   fileLoc     The location to save the agl file to
-    * @return              Returns an integer based error code or 0 for sucess 
+    * @return              Returns an integer based error code or 0 for success 
     * @see     Graph
     */
    static int mExportGraphToLanguage(Graph graph, String fileName, String fileLoc) {

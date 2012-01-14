@@ -18,6 +18,7 @@ public class ErrorHandler {
    public static final int CANNOTREMOVEEDGE = 2;
    public static final int CANNOTADDNODE = 3;
    public static final int CANNOTREMOVENODE = 4;
+   public static final int IOEXCEPTION = 5;
 
    //TODO: write functions to map error codes to error dialogs
 }
