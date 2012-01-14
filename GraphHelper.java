@@ -71,6 +71,8 @@ public class GraphHelper {
          fileIn.close();
       } catch(IOException e) { // Reading the file failed
          // IO EXCEPTION TEMP ERROR CODE
+      } catch (ClassNotFoundException e) { 
+         // Class Not Found Exception
       }
       // Loading the graph object was successful
       return graph;
