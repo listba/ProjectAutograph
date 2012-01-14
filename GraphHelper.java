@@ -1,6 +1,6 @@
 package autograph;
 
-import system.io.*;
+import java.io.*;
 
 /**
  * Graph Helper class used to manipulate graph objects
