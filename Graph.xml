@@ -6,5 +6,6 @@
    </Nodes>
    <Edges>
       <Edge id="EdgeA" startNode="NodeA" endNode="NodeB" />
+      <Edge id="EdgeD" startNode="NodeA" endNode="NodeB" />
    </Edges>
 </Autograph>
