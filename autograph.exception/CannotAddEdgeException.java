@@ -13,7 +13,7 @@ public class CannotAddEdgeException extends Exception {
 	CannotAddEdgeException() {
 		super();
 	}
-	CannotAddEdgeException(String description) {
+	public CannotAddEdgeException(String description) {
 		super(description);
 	}
 }

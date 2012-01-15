@@ -13,7 +13,7 @@ public class CannotAddNodeException extends Exception {
 	CannotAddNodeException() {
 		super();
 	}
-	CannotAddNodeException(String description) {
+	public CannotAddNodeException(String description) {
 		super(description);
 	}
 }

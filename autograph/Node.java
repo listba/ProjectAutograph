@@ -1,6 +1,7 @@
 package autograph;
 import java.util.ArrayList;
 import java.io.Serializable;
+import autograph.exception.*;
 /**
  * Node contains all data for node objects of a Graph.
  *
@@ -31,12 +32,25 @@ public class Node implements Serializable {
    }
 
    //Member Variables
-   private String vName;
+   private String vId;
    private String  vLabel;
    private NodeShape vShape;
    private NodeStyle vStyle;
    private ArrayList<Edge> vEdges;
 
+   /**
+    * ValidateNode - makes sure the node has valid parameters for construction
+    * @param id - id of the node to validate
+    * @throws CannotAddNodeException
+    */
+   private void mValidateNode(String id) throws CannotAddNodeException{
+      //We may want to add logic for the node id being unique, but I'm not sure
+      //if we would add it here or in the Graph class (probably Graph)
+      if(id == null || id.isEmpty()){
+         throw new CannotAddNodeException("Node must have valid id.");
+      }
+   }
+   
    /**
     * Node Constructor
     *
@@ -49,14 +63,20 @@ public class Node implements Serializable {
     * @see NodeShape
     * @see NodeStyle
     */
-   public Node(String name, String label, NodeShape shape, NodeStyle style){
-      vName = name;
-      vLabel = label;
-      vShape = shape;
-      vStyle = style;
-      //For now when we create a node we will not have any edge data. This may
-      //change at some point.
-      vEdges = new ArrayList<Edge>();
+   public Node(String id, String label, NodeShape shape, NodeStyle style){
+      try{
+         mValidateNode(id);
+         vId = id;
+         vLabel = label;
+         vShape = shape;
+         vStyle = style;
+         //For now when we create a node we will not have any edge data. This may
+         //change at some point.
+         vEdges = new ArrayList<Edge>();
+      }
+      catch(CannotAddNodeException e){
+         //TODO: report failure to user.
+      }
    }
 
 
@@ -65,8 +85,8 @@ public class Node implements Serializable {
     * from other nodes
     * @return the variable name of the node
     */
-   public String mGetName(){
-      return vName;
+   public String mGetId(){
+      return vId;
    }
 
    /**
