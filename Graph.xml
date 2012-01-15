@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Autograph title="Graph1">
+   <Nodes>
+      <Node id="NodeA" />
+      <Node id="NodeB" />
+   </Nodes>
+   <Edges>
+      <Edge id="EdgeA" startNode="NodeA" endNode="NodeB" />
+   </Edges>
+</Autograph>
