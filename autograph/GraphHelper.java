@@ -58,7 +58,7 @@ public class GraphHelper {
     * @see     Graph
     */
    static Graph mLoadGraphObject(String fileName, String fileLoc) {
-      Graph graph = new Graph("");
+      Graph graph = new Graph();
       try {
          // Open file to read in graph object
          FileInputStream fileIn = 
@@ -100,7 +100,7 @@ public class GraphHelper {
     * @see     Graph
     */
    static Graph mImportGraphFromXML(String fileName, String fileLoc) {
-      Graph graph = new Graph("");
+      Graph graph = new Graph();
       return graph;
    }
    
@@ -127,7 +127,7 @@ public class GraphHelper {
     * @see     Graph
     */
    static Graph mImportGraphFromLanguage(String fileName, String fileLoc) {
-      Graph graph = new Graph("");
+      Graph graph = new Graph();
       return graph;
    }
 }
