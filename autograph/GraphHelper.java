@@ -1,5 +1,6 @@
 package autograph;
 import java.io.*;
+import autograph.exception.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -69,7 +70,7 @@ public class GraphHelper {
     * @see     Graph
     */
    public static Graph mLoadGraphObject(String fileName, String fileLoc) {
-      Graph graph = new Graph();
+      Graph graph = new Graph("");
       try {
          // Open file to read in graph object
          FileInputStream fileIn = 
@@ -106,7 +107,8 @@ public class GraphHelper {
     * @see     Graph
     */
    public static Graph mImportGraphFromXML(String filePath) {
-      Graph graph = new Graph();
+      String title = "NewGraph";
+      Graph graph = new Graph(title);
       ArrayList<Node> nodeArrayList;
       nodeArrayList = new ArrayList<Node>();
       ArrayList<Edge> edgeArrayList;
@@ -128,7 +130,7 @@ public class GraphHelper {
             for(int i = 0 ; i < nl.getLength();i++) {
                Element el = (Element)nl.item(i);
                Node node = getNodeElement(el);
-               System.out.println(node.mGetName()+" added");
+               System.out.println(node.mGetId()+" added");
                nodeArrayList.add(node);
 			   }
 		   } else { // No Nodes
@@ -163,7 +165,7 @@ public class GraphHelper {
     * @see     Graph
     */
    public static Graph mImportGraphFromLanguage(String fileName, String fileLoc) {
-      Graph graph = new Graph();
+      Graph graph = new Graph("");
       return graph;
    }
    
@@ -195,12 +197,12 @@ public class GraphHelper {
    private static Edge getEdgeElement(Element el, Graph graph) {
       Edge edge;
       String id = el.getAttribute("id");
-      String targetNode
+      String targetNode;
       if (id != null) {
-         edge = new Edge(id, null, null, null);
+         edge = new Edge(id, null, null, null, null, null);
       }
       else {
-         edge = new Edge(null, null, null, null);
+         edge = new Edge(null, null, null, null, null, null);
       }
       return edge;
    }
