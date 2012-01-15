@@ -1,5 +1,6 @@
 package autograph;
 import java.io.Serializable;
+import autograph.exception.*;
 /**
  * Edge contains all data for edge objects of a Graph.
  *
@@ -27,16 +28,25 @@ public class Edge implements Serializable {
       DASHED
    };
 
-   private String vName;
+   private String vId;
    private String vLabel;
    private Node vStartNode;
    private Node vEndNode;
    private Direction vDirection;
    private EdgeStyle vEdgeStyle;
+   
+   private void mValidateEdge(String id, Node startNode, Node endNode) throws CannotAddEdgeException{
+      if(id == null || id.isEmpty()){
+         throw new CannotAddEdgeException("Edge must contain valid id.");
+      }
+      else if(startNode == null || endNode == null){
+         throw new CannotAddEdgeException("Edge must have start and end node values.");
+      }
+   }
 
    /**
     * Edge Constructor - builds the edge object
-    * @param name - variable name of the edge
+    * @param id - variable name of the edge
     * @param label - label displayed for the edge
     * @param startNode - node at start of the edge
     * @param endNode - node at end of the edge
@@ -45,14 +55,20 @@ public class Edge implements Serializable {
     * @see NodeStyle
     * @see Direction
     */
-   public Edge(String name, String label, Node startNode, Node endNode,
+   public Edge(String id, String label, Node startNode, Node endNode,
            Direction direction, EdgeStyle style){
-      vName = name;
-      vLabel = label;
-      vStartNode = startNode;
-      vEndNode = endNode;
-      vDirection = direction;
-      vEdgeStyle = style;
+      try{
+         mValidateEdge(id, startNode, endNode);
+         vId = id;
+         vLabel = label;
+         vStartNode = startNode;
+         vEndNode = endNode;
+         vDirection = direction;
+         vEdgeStyle = style;
+      }
+      catch (CannotAddEdgeException e){
+         //TODO: notify user of failure
+      }
    }
 
    /**
@@ -60,8 +76,8 @@ public class Edge implements Serializable {
     * from other edges
     * @return the variable name of the edge
     */
-   public String mGetName(){
-      return vName;
+   public String mGetId(){
+      return vId;
    }
 
    /**
