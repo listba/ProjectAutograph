@@ -1,6 +1,20 @@
 package autograph;
 import java.io.*;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
 /**
  * Graph Helper class used to manipulate graph objects
  *
@@ -18,7 +32,7 @@ public class GraphHelper {
     * @return           Returns an integer based error code or 0 for success 
     * @see     Graph
     */
-   static int mDrawGraph(Graph graph) {
+   public static int mDrawGraph(Graph graph) {
       int returnVal = ErrorHandler.NOERROR;
       return returnVal;
    }
@@ -29,11 +43,9 @@ public class GraphHelper {
     * @param   graph       The graph to be saved
     * @param   fileName    The file name of the graph to be saved
     * @param   fileLoc     The location to save the graph to
-    * @return              Returns an integer based error code or 0 for success 
     * @see     Graph
     */
-   static int mSaveGraphObject(Graph graph, String fileName, String fileLoc) {
-      int returnVal = ErrorHandler.NOERROR;
+   public static void mSaveGraphObject(Graph graph, String fileName, String fileLoc) {
       try {
          // Open filestream to write graph object to
          FileOutputStream fileOut = 
@@ -44,9 +56,8 @@ public class GraphHelper {
          out.close();
          fileOut.close();
       } catch (IOException e) { // Saving the file failed
-         returnVal = ErrorHandler.IOEXCEPTION; // IO EXCEPTION TEMP ERROR CODE
+         // IO EXCEPTION TEMP ERROR CODE
       }
-      return returnVal;
    }
    
    /**
@@ -57,7 +68,7 @@ public class GraphHelper {
     * @return              The deserialized graph object
     * @see     Graph
     */
-   static Graph mLoadGraphObject(String fileName, String fileLoc) {
+   public static Graph mLoadGraphObject(String fileName, String fileLoc) {
       Graph graph = new Graph();
       try {
          // Open file to read in graph object
@@ -81,26 +92,54 @@ public class GraphHelper {
     * Exports a graph to an xml file at the given location
     *
     * @param   graph       The graph to be exported
-    * @param   fileName    The file name to be saved (with .xml extension)
-    * @param   fileLoc     The location to save the xml file to
-    * @return              Returns an integer based error code or 0 for success 
+    * @param   filePath    The filepath to be saved (with .xml extension)
     * @see     Graph
     */
-   static int mExportGraphToXML(Graph graph, String fileName, String fileLoc) {
-      int returnVal = ErrorHandler.NOERROR;
-      return returnVal;
+   public static void mExportGraphToXML(Graph graph, String filePath) {
    }
    
    /**
     * Imports a graph from xml file at the given location
     *
-    * @param   fileName    The file name to be loaded (with .xml extension)
-    * @param   fileLoc     The location to load the xml file from
+    * @param   filePath    The filepath to be saved (with .xml extension)
     * @return              The graph loaded from the xml file
     * @see     Graph
     */
-   static Graph mImportGraphFromXML(String fileName, String fileLoc) {
+   public static Graph mImportGraphFromXML(String filePath) {
       Graph graph = new Graph();
+      ArrayList<Node> nodeArrayList;
+      nodeArrayList = new ArrayList<Node>();
+      ArrayList<Edge> edgeArrayList;
+      edgeArrayList = new ArrayList<Edge>();
+      Document dom;
+      DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		try {
+			// Using factory get an instance of document builder
+			DocumentBuilder db = dbf.newDocumentBuilder();
+			// Parse using builder to get DOM representation of the XML file
+			dom = db.parse(filePath);
+			// Get Root Element
+			Element docEle = dom.getDocumentElement();
+         // Get a NodeList of <Node> elements
+         NodeList nl = docEle.getElementsByTagName("Node");
+         // If there are Node elements
+         if(nl != null && nl.getLength() > 0) {
+            // Loop through each Node Element and load into Node object
+            for(int i = 0 ; i < nl.getLength();i++) {
+               Element el = (Element)nl.item(i);
+               Node node = getNodeElement(el);
+               System.out.println(node.mGetName()+" added");
+               nodeArrayList.add(node);
+			   }
+		   } else { // No Nodes
+		   }
+		} catch(ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch(SAXException e) {
+			e.printStackTrace();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
       return graph;
    }
    
@@ -110,12 +149,9 @@ public class GraphHelper {
     * @param   graph       The graph to be exported
     * @param   fileName    The file name to be saved (with .agl extension)
     * @param   fileLoc     The location to save the agl file to
-    * @return              Returns an integer based error code or 0 for success 
     * @see     Graph
     */
-   static int mExportGraphToLanguage(Graph graph, String fileName, String fileLoc) {
-      int returnVal = ErrorHandler.NOERROR;
-      return 0;
+   public static void mExportGraphToLanguage(Graph graph, String fileName, String fileLoc) {
    }
    
    /**
@@ -126,8 +162,46 @@ public class GraphHelper {
     * @return              The graph loaded from the agl file
     * @see     Graph
     */
-   static Graph mImportGraphFromLanguage(String fileName, String fileLoc) {
+   public static Graph mImportGraphFromLanguage(String fileName, String fileLoc) {
       Graph graph = new Graph();
       return graph;
+   }
+   
+   /**
+    * Gets Node object from xml element
+    * 
+    * @param   el          The xml node element
+    * @return              The Node object
+    */
+   private static Node getNodeElement(Element el) {
+      Node node;
+      String id = el.getAttribute("id");
+      if (id != null) {
+         node = new Node(id, null, null, null);
+      }
+      else {
+         node = new Node(null, null, null, null);
+      }
+      return node;
+   }
+
+   /**
+    * Gets Edge object from xml element
+    * 
+    * @param   el          The xml edge element
+    * @param   graph       The current graph with the nodes 
+    * @return              The edge object
+    */
+   private static Edge getEdgeElement(Element el, Graph graph) {
+      Edge edge;
+      String id = el.getAttribute("id");
+      String targetNode
+      if (id != null) {
+         edge = new Edge(id, null, null, null);
+      }
+      else {
+         edge = new Edge(null, null, null, null);
+      }
+      return edge;
    }
 }
