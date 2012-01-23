@@ -1,4 +1,6 @@
 package autograph;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.io.*;
 import autograph.exception.*;
 
@@ -32,7 +34,43 @@ public class GraphHelper {
     * @param   graph    The Graph to be drawn
     * @see     Graph
     */
-   public static void mDrawGraph(Graph graph) {
+	
+	// TODO: To draw in the center you have to pass in the panel or coordinates
+   public static void mDrawGraph(Graph graph, Graphics g) {
+	   g.setColor(Color.WHITE);
+	   
+	   // TODO: This is a lot slower than it needs to be.. You should use a hash map with the node ID
+	   // Draw nodes
+	   ArrayList<Node> nodes = graph.mGetNodeList();
+	   int diameter = 20;
+	   for (int n=0; n<nodes.size(); n++) {
+		   g.fillOval(n*diameter*2, 20, diameter, 20);
+		   /* Not working
+		   switch (nodes.get(n).mGetShape()) {
+			   case CIRCLE:
+				   break;
+		   }
+		   */
+	   }
+	   
+	   g.setColor(Color.RED);
+	   // Draw edges
+	   ArrayList<Edge> edges = graph.mGetEdgeList();
+	   for (Edge edge : edges) {
+		   int startIndex = 0;
+		   int endIndex = 0;
+		   for (int n=0; n<nodes.size(); n++) {
+			   if (nodes.get(n).mGetId().equals(edge.mGetStartNode().mGetId())) {
+				   startIndex = n;
+			   }
+			   if (nodes.get(n).mGetId().equals(edge.mGetEndNode().mGetId())) {
+				   endIndex = n;
+			   }
+		   }
+		   g.drawLine(startIndex*diameter*2 + diameter, 30, endIndex*diameter*2, 30);
+		   // Also doesn't work -.-
+		   //g.drawString(edge.mGetLabel(), startIndex*diameter*2 + diameter, 30);
+	   }
    }
    
    /**
