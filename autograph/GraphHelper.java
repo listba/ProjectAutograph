@@ -1,7 +1,6 @@
 package autograph;
-import java.awt.Color;
-import java.awt.Graphics;
 import java.io.*;
+import autograph.exception.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,59 +30,23 @@ public class GraphHelper {
     * Note: Probably going to have a Java drawing return type, not sure on details of implementation yet.
     *
     * @param   graph    The Graph to be drawn
-    * @return           Returns an integer based error code or 0 for success 
     * @see     Graph
     */
-   public static void mDrawGraph(Graph graph, Graphics g) {
-      g.setColor(Color.WHITE);
-
-      // TODO: This is a lot slower than it needs to be.. You should use a hash map with the node ID
-      // Draw nodes
-      ArrayList<Node> nodes = graph.mGetNodeList();
-      int diameter = 20;
-      for (int n=0; n<nodes.size(); n++) {
-         g.fillOval(n*diameter*2, 20, diameter, 20);
-         /* Not working
-         switch (nodes.get(n).mGetShape()) {
-            case CIRCLE:
-               break;
-         }
-         */
-      }
-
-      g.setColor(Color.RED);
-      // Draw edges
-      ArrayList<Edge> edges = graph.mGetEdgeList();
-      for (Edge edge : edges) {
-         int startIndex = 0;
-         int endIndex = 0;
-         for (int n=0; n<nodes.size(); n++) {
-            if (nodes.get(n).mGetId().equals(edge.mGetStartNode().mGetId())) {
-               startIndex = n;
-            }
-            if (nodes.get(n).mGetId().equals(edge.mGetEndNode().mGetId())) {
-               endIndex = n;
-            }
-         }
-         g.drawLine(startIndex*diameter*2 + diameter, 30, endIndex*diameter*2, 30);
-         // Also doesn't work -.-
-         //g.drawString(edge.mGetLabel(), startIndex*diameter*2 + diameter, 30);
-      }
+   public static void mDrawGraph(Graph graph) {
    }
    
    /**
     * Saves the graph object as a serialized object to the given file location
     *
     * @param   graph       The graph to be saved
-    * @param   fileName    The file name of the graph to be saved
-    * @param   fileLoc     The location to save the graph to
+    * @param   filePath    The filepath to be saved (with .xml extension)
     * @see     Graph
     */
-   public static void mSaveGraphObject(Graph graph, String fileName, String fileLoc) {
+   public static void mSaveGraphObject(Graph graph, String filePath) {
       try {
          // Open filestream to write graph object to
          FileOutputStream fileOut = 
-            new FileOutputStream(fileLoc + "/" + fileName + ".ser");
+            new FileOutputStream(filePath);
          ObjectOutputStream out = new ObjectOutputStream(fileOut);
          // Write graph object to file
          out.writeObject(graph);
@@ -97,17 +60,16 @@ public class GraphHelper {
    /**
     * Loads the serialized graph object from the file location given
     *
-    * @param   fileName    The file name of the graph to be loaded (with .ser extension)
-    * @param   fileLoc     The location to load the graph from
+    * @param   filePath    The filepath to be saved (with .xml extension)
     * @return              The deserialized graph object
     * @see     Graph
     */
-   public static Graph mLoadGraphObject(String fileName, String fileLoc) {
+   public static Graph mLoadGraphObject(String filePath) {
       Graph graph = new Graph("");
       try {
          // Open file to read in graph object
          FileInputStream fileIn = 
-            new FileInputStream(fileLoc + "/" + fileName);
+            new FileInputStream(filePath);
          ObjectInputStream in = new ObjectInputStream(fileIn);
          // Read in graph object from file
          graph = (Graph) in.readObject();
@@ -140,40 +102,57 @@ public class GraphHelper {
     * @see     Graph
     */
    public static Graph mImportGraphFromXML(String filePath) {
-      Graph graph = new Graph("");
-      ArrayList<Node> nodeArrayList;
-      nodeArrayList = new ArrayList<Node>();
-      ArrayList<Edge> edgeArrayList;
-      edgeArrayList = new ArrayList<Edge>();
+      Graph graph = null;
       Document dom;
       DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		try {
-			// Using factory get an instance of document builder
-			DocumentBuilder db = dbf.newDocumentBuilder();
-			// Parse using builder to get DOM representation of the XML file
-			dom = db.parse(filePath);
-			// Get Root Element
-			Element docEle = dom.getDocumentElement();
+      try {
+         // Using factory get an instance of document builder
+         DocumentBuilder db = dbf.newDocumentBuilder();
+         // Parse using builder to get DOM representation of the XML file
+         dom = db.parse(filePath);
+         // Get Root Element
+         Element docEle = dom.getDocumentElement();
+         // Get Graph Title
+         graph = new Graph(docEle.getAttribute("title"));
          // Get a NodeList of <Node> elements
          NodeList nl = docEle.getElementsByTagName("Node");
          // If there are Node elements
          if(nl != null && nl.getLength() > 0) {
             // Loop through each Node Element and load into Node object
-            for(int i = 0 ; i < nl.getLength();i++) {
+            for(int i = 0; i < nl.getLength(); i++) {
                Element el = (Element)nl.item(i);
                Node node = getNodeElement(el);
-               System.out.println(node.mGetId()+" added");
-               nodeArrayList.add(node);
-			   }
-		   } else { // No Nodes
-		   }
-		} catch(ParserConfigurationException e) {
-			e.printStackTrace();
-		} catch(SAXException e) {
-			e.printStackTrace();
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
+               if (node != null) {
+                  System.out.println(node.mGetId() + " added");
+                  graph.mAddNode(node);
+               }
+            }
+         } else {
+            // TODO: THROW INVALID XML EXCEPTION
+         }
+         nl = docEle.getElementsByTagName("Edge");
+         // If there are Edge elements
+         if(nl != null && nl.getLength() > 0) {
+            // Loop through each Node Element and load into Node object
+            for(int i = 0; i < nl.getLength(); i++) {
+               Element el = (Element)nl.item(i);
+               Edge edge = getEdgeElement(el, graph);
+               // If XML was valid and edge was created
+               if (edge != null) {
+                  System.out.println(edge.mGetId() + " added");
+                  graph.mAddEdge(edge);
+               }
+            }
+         } else { 
+            // TODO: THROW INVALID XML EXCEPTION
+         }
+      } catch(ParserConfigurationException e) {
+         e.printStackTrace();
+      } catch(SAXException e) {
+         e.printStackTrace();
+      } catch(IOException e) {
+         e.printStackTrace();
+      }
       return graph;
    }
    
@@ -208,13 +187,14 @@ public class GraphHelper {
     * @return              The Node object
     */
    private static Node getNodeElement(Element el) {
-      Node node;
+      // TODO: Get additional elements from XML
+      Node node = null;
       String id = el.getAttribute("id");
       if (id != null) {
          node = new Node(id, null, null, null);
       }
       else {
-         node = new Node(null, null, null, null);
+         // TODO: ADD INVALID XML EXCEPTION
       }
       return node;
    }
@@ -227,14 +207,16 @@ public class GraphHelper {
     * @return              The edge object
     */
    private static Edge getEdgeElement(Element el, Graph graph) {
-      Edge edge;
+      // TODO: Get additional elements from XML
+      Edge edge = null;
       String id = el.getAttribute("id");
-      String targetNode;
-      if (id != null) {
-         edge = new Edge(id, null, null, null, null, null);
+      Node startNode = graph.mGetNodeById(el.getAttribute("startNode"));
+      Node endNode = graph.mGetNodeById(el.getAttribute("endNode"));
+      if (id != null && startNode != null && endNode != null) {
+         edge = new Edge(id, null, startNode, endNode, null, null);
       }
       else {
-         edge = new Edge(null, null, null, null, null, null);
+         // TODO:THROW INVALID XML EXCEPTION
       }
       return edge;
    }
