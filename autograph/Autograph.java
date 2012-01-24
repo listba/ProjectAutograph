@@ -11,6 +11,7 @@ import javax.swing.SwingUtilities;
 public class Autograph extends JFrame {
 
 	public Autograph(String title) {
+	   //this will all have to change when we link up the UI
 		this.setTitle(title);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		String filePath = "Graph.xml";
