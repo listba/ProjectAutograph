@@ -102,7 +102,7 @@ public class mainWindow extends javax.swing.JFrame {
         jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/autograph/resources/AddNode.png"))); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/AddNode.png"))); // NOI18N
         jButton1.setText("Add Node");
         jButton1.setFocusable(false);
         jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -116,7 +116,7 @@ public class mainWindow extends javax.swing.JFrame {
         jToolBar1.add(jButton1);
         jToolBar1.add(filler3);
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/autograph/resources/AddEdge.png"))); // NOI18N
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/AddEdge.png"))); // NOI18N
         jButton2.setText("Add Edge");
         jButton2.setFocusable(false);
         jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -125,7 +125,7 @@ public class mainWindow extends javax.swing.JFrame {
         jToolBar1.add(jButton2);
         jToolBar1.add(filler2);
 
-        jToggleButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/autograph/resources/ToggleOn.png"))); // NOI18N
+        jToggleButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/ToggleOn.png"))); // NOI18N
         jToggleButton1.setSelected(true);
         jToggleButton1.setText("Auto-Label Nodes");
         jToggleButton1.setFocusable(false);
@@ -137,7 +137,7 @@ public class mainWindow extends javax.swing.JFrame {
         jToolBar1.add(jToggleButton1);
         jToolBar1.add(filler4);
 
-        jToggleButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/autograph/resources/ToggleOff.png"))); // NOI18N
+        jToggleButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/ToggleOff.png"))); // NOI18N
         jToggleButton2.setText("Auto-Label Edges");
         jToggleButton2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jToggleButton2.setFocusable(false);
@@ -150,7 +150,7 @@ public class mainWindow extends javax.swing.JFrame {
         jToolBar1.add(jToggleButton2);
         jToolBar1.add(filler5);
 
-        jToggleButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/autograph/resources/ToggleOff.png"))); // NOI18N
+        jToggleButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/ToggleOff.png"))); // NOI18N
         jToggleButton3.setText("Auto-Connect Nodes");
         jToggleButton3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jToggleButton3.setFocusable(false);
@@ -241,7 +241,7 @@ public class mainWindow extends javax.swing.JFrame {
 
         jLabel5.setText("Label Color");
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/autograph/resources/ColorBlack.png"))); // NOI18N
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/ColorBlack.png"))); // NOI18N
         jButton4.setMargin(new java.awt.Insets(2, 5, 2, 5));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -253,12 +253,12 @@ public class mainWindow extends javax.swing.JFrame {
 
         jLabel8.setText("Border Color");
 
-        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/autograph/resources/ColorBlack.png"))); // NOI18N
+        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/ColorBlack.png"))); // NOI18N
         jButton7.setMargin(new java.awt.Insets(2, 5, 2, 5));
 
         jLabel9.setText("Fill Color");
 
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/autograph/resources/ColorWhite.png"))); // NOI18N
+        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/ColorWhite.png"))); // NOI18N
         jButton6.setMargin(new java.awt.Insets(2, 5, 2, 5));
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -280,7 +280,7 @@ public class mainWindow extends javax.swing.JFrame {
         jLabel13.setText("Edge Color");
         jLabel13.setEnabled(false);
 
-        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/autograph/resources/ColorBlue.png"))); // NOI18N
+        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/ColorBlue.png"))); // NOI18N
         jButton8.setEnabled(false);
         jButton8.setMargin(new java.awt.Insets(2, 5, 2, 5));
 
