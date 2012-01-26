@@ -34,6 +34,10 @@ public class Edge implements Serializable {
    private Node vEndNode;
    private Direction vDirection;
    private EdgeStyle vEdgeStyle;
+   private int vStartX;
+   private int vStartY;
+   private int vEndX;
+   private int vEndY;
    
    private void mValidateEdge(String id, Node startNode, Node endNode) throws CannotAddEdgeException{
       if(id == null || id.isEmpty()){
@@ -166,5 +170,57 @@ public class Edge implements Serializable {
     */
    public EdgeStyle mGetEdgeStyle(){
       return vEdgeStyle;
+   }
+   
+   /**
+    * GetStartX - returns the x coordinate of the start position of the edge
+    * @return vStartX
+    */
+   public int mGetStartX(){
+      return vStartX;
+   }
+   
+   /**
+    * GetStartY - returns the y coordinate of the start position of the edge
+    * @return vStartY
+    */
+   public int mGetStartY(){
+      return vStartY;
+   }
+   
+   /**
+    * GetEndX - returns the x coordinate of the end position of the edge
+    * @return vEndX
+    */
+   public int mGetEndX(){
+      return vEndX;
+   }
+   
+   /**
+    * GetEndY - returns the y coordinate of the end position of the edge
+    * @return - vEndY
+    */
+   public int mGetEndY(){
+      return vEndY;
+   }
+   
+   /**
+    * SetStartCoordinates - sets the new start point of the edge
+    * @param x - the x coordinate (in pixels) of the new start location.
+    * @param y - the y coordinate (in pixels) of the new start location.
+    */
+   public void mSetStartCoordinates(int x, int y){
+      vStartX = x;
+      vStartY = y;
+   }
+   
+   /**
+    * SetEndCoordinates - sets the new end point of the edge
+    * @param x - the x coordinate (in pixels) of the new end location.
+    * @param y - the y coordinate (in pixels) of the new end location.
+    */
+   public void mSetEndCoordinates(int x, int y){
+      vEndX = x;
+      vEndY = y;
    }
 }

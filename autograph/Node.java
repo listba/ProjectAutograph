@@ -37,6 +37,9 @@ public class Node implements Serializable {
    private NodeShape vShape;
    private NodeStyle vStyle;
    private ArrayList<Edge> vEdges;
+   private int vCenterX;
+   private int vCenterY;
+   private int vWidth; //this is the width of the node in pixels (or diameter in case of circle)
 
    /**
     * ValidateNode - makes sure the node has valid parameters for construction
@@ -73,6 +76,12 @@ public class Node implements Serializable {
          //For now when we create a node we will not have any edge data. This may
          //change at some point.
          vEdges = new ArrayList<Edge>();
+         
+         //for now all of the coordinate data will be set to actual values in the drawer using the accessor functions of this class,
+         //but we may want to define it here eventually (especially if the user ever gets control of location or width data).
+         vCenterX = 0;
+         vCenterY = 0;
+         vWidth = 0;
       }
       catch(CannotAddNodeException e){
          //TODO: report failure to user.
@@ -184,4 +193,47 @@ public class Node implements Serializable {
    public ArrayList mGetEdgeList(){
       return vEdges;
    }
+   
+   /**
+    * GetCenterX - returns the x coordinate (in pixels) in the image of the center of the node.
+    * @return - vCenterX
+    */
+   public int mGetCenterX(){
+      return vCenterX;
+   }
+   
+   /**
+    * GetCenterY - returns the y coordinate (in pixels) in the image of the center of the node.
+    * @return - vCenterX
+    */
+   public int mGetCenterY(){
+      return vCenterY;
+   }
+   
+   /**
+    * SetCenterLocation - sets the location of the node in the image
+    * @param x - x coordinate in pixels of the node
+    * @param y - y coordinate in pixels of the node
+    */
+   public void mSetCenterLocation(int x, int y){
+      vCenterX = x;
+      vCenterY = y;
+   }
+   
+   /**
+    * GetWidth - returns the width of the node (or in the case of circles the diameter) in pixels
+    * @return - vWidth 
+    */
+   public int mGetWidth(){
+      return vWidth;
+   }
+   
+   /**
+    * GetWidth - resets the size of the node.
+    * @param width
+    */
+   public void mSetWidth(int width){
+      vWidth = width;
+   }
+   
 }
