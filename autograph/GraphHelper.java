@@ -42,15 +42,17 @@ public class GraphHelper {
 	   // TODO: This is a lot slower than it needs to be.. You should use a hash map with the node ID
 	   // Draw nodes
 	   ArrayList<Node> nodes = graph.mGetNodeList();
-	   int diameter = 20;
+	   
+	   //TODO: have user dynamically set width/height rather than hard coding it here. (Or dynamically calculate height/width based on label size)
+	   int diameter = 50;
+	   
+	   //determine the location of each node in the graph, and draw that node.
 	   for (int n=0; n<nodes.size(); n++) {
-		   g.fillOval(n*diameter*2, 20, diameter, 20);
-		   /* Not working
-		   switch (nodes.get(n).mGetShape()) {
-			   case CIRCLE:
-				   break;
-		   }
-		   */
+	      Node node = nodes.get(n);
+	      node.mSetCenterLocation(n*diameter*2 + diameter/2, 20 + diameter/2);
+	      node.mSetWidth(diameter);
+	      node.mSetHeight(diameter);
+	      node.mDrawNode(g);
 	   }
 	   
 	   g.setColor(Color.RED);
