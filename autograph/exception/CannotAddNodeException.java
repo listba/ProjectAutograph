@@ -16,4 +16,10 @@ public class CannotAddNodeException extends Exception {
 	public CannotAddNodeException(String description) {
 		super(description);
 	}
+	public CannotAddNodeException(Throwable cause) { 
+		super(cause); 
+	} 
+	public CannotAddNodeException(String description, Throwable cause) { 
+		super(description, cause); 
+	}
 }

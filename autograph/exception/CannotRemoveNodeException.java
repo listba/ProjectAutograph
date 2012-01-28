@@ -13,7 +13,13 @@ public class CannotRemoveNodeException extends Exception {
 	CannotRemoveNodeException() {
 		super();
 	}
-	CannotRemoveNodeException(String description) {
+	public CannotRemoveNodeException(String description) {
 		super(description);
+	}
+	public CannotRemoveNodeException(Throwable cause) { 
+		super(cause); 
+	} 
+	public CannotRemoveNodeException(String description, Throwable cause) { 
+		super(description, cause); 
 	}
 }

@@ -16,4 +16,10 @@ public class CannotAddEdgeException extends Exception {
 	public CannotAddEdgeException(String description) {
 		super(description);
 	}
+	public CannotAddEdgeException(Throwable cause) { 
+		super(cause); 
+	} 
+	public CannotAddEdgeException(String description, Throwable cause) { 
+		super(description, cause); 
+	}
 }

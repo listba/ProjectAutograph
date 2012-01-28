@@ -13,7 +13,13 @@ public class CannotRemoveEdgeException extends Exception {
 	CannotRemoveEdgeException() {
 		super();
 	}
-	CannotRemoveEdgeException(String description) {
+	public CannotRemoveEdgeException(String description) {
 		super(description);
+	}
+	public CannotRemoveEdgeException(Throwable cause) { 
+		super(cause); 
+	} 
+	public CannotRemoveEdgeException(String description, Throwable cause) { 
+		super(description, cause); 
 	}
 }
