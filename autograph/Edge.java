@@ -1,4 +1,6 @@
 package autograph;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.io.Serializable;
 import autograph.exception.*;
 /**
@@ -38,6 +40,7 @@ public class Edge implements Serializable {
    private int vStartY;
    private int vEndX;
    private int vEndY;
+   private Color vColor;
    
    private void mValidateEdge(String id, Node startNode, Node endNode) throws CannotAddEdgeException{
       if(id == null || id.isEmpty()){
@@ -69,6 +72,7 @@ public class Edge implements Serializable {
          vEndNode = endNode;
          vDirection = direction;
          vEdgeStyle = style;
+         vColor = Color.black;
       }
       catch (CannotAddEdgeException e){
          //TODO: notify user of failure
@@ -222,5 +226,134 @@ public class Edge implements Serializable {
    public void mSetEndCoordinates(int x, int y){
       vEndX = x;
       vEndY = y;
+   }
+   
+   /**
+    * GetColor - returns the color of the edge
+    * @return - vColor
+    */
+   public Color mGetColor(){
+      return vColor;
+   }
+   
+   /**
+    * SetColor - sets the color of the edge
+    * @param color - the color to set the edge
+    */
+   public void mSetColor(Color color){
+      vColor = color;
+   }
+   
+   /**
+    * DrawEdge - Draws an edge between two nodes. The edge will dynamically choose one of 4 points on each
+    *            node as the start/end point
+    * @param g - The graphics object to draw the edge for.
+    */
+   public void mDrawEdge(Graphics g){
+      //TODO: implement for non-straight edges
+      //TODO: implement for different endge styles/directions.
+      //TODO: implement label placement.
+      //TODO: figure out how we want to handle the case where the edge label is longer than the edge (if we need to recalculate node position etc.)
+      
+      g.setColor(this.mGetColor());
+      
+      int startX;
+      int startY;
+      int endX;
+      int endY;
+      int differenceX;
+      int differenceY;
+      
+      Node startNode = this.mGetStartNode();
+      Node endNode = this.mGetEndNode();
+      
+      int startNodeCenterX = startNode.mGetCenterX();
+      int startNodeCenterY = startNode.mGetCenterY();
+      int endNodeCenterX = endNode.mGetCenterX();
+      int endNodeCenterY = endNode.mGetCenterY();
+      
+      if(startNodeCenterX - endNodeCenterX > 0){
+         //we will either use the left, top, or bottom point
+         differenceX = startNodeCenterX - endNodeCenterX;
+         if(startNodeCenterY - endNodeCenterY > 0){
+            //we will either user the left point or the top point
+            differenceY = startNodeCenterY - endNodeCenterY;
+            if(differenceX > differenceY){ //startNodeX > endNodeX && startNodeY > endNodeY && x difference is bigger.
+               //use the left point on the start node and right point on the end node
+               startX = startNodeCenterX - startNode.mGetWidth()/2;
+               startY = startNodeCenterY;
+               endX = endNodeCenterX + endNode.mGetWidth()/2;
+               endY = endNodeCenterY;
+            }
+            else{ // startNodex > endNodeX && startNodeY > endNodeY && y difference is bigger
+               //use the top point on the start node and bottom point on the end node
+               startX = startNodeCenterX;
+               startY = startNodeCenterY - startNode.mGetHeight()/2;
+               endX = endNodeCenterX;
+               endY = endNodeCenterY + endNode.mGetHeight()/2;
+            }
+         }
+         else{ // startNodeX > endNodeX && endNodeY >= startNodeY
+            //we will either use the left point or the bottom point
+            differenceY = endNodeCenterY - startNodeCenterY;
+            if (differenceX > differenceY){ //startNodeX > endNodeX && endNodeY >= startNodeY && differenceX > differenceY
+               //use the left point on the start node and the right point on the end node
+               startX = startNodeCenterX - startNode.mGetWidth()/2;
+               startY = startNodeCenterY;
+               endX =  endNodeCenterX + endNode.mGetWidth()/2;
+               endY = endNodeCenterY;
+            }
+            else{
+               //use the bottom point on the start node and the top point on the end node
+               startX = startNodeCenterX;
+               startY = startNodeCenterY + startNode.mGetHeight()/2;
+               endX = endNodeCenterX;
+               endY = endNodeCenterY - endNode.mGetHeight()/2;
+            }
+         }
+      }
+      else{
+         //we will either use the right, top, or bottom point on the start node
+         differenceX = endNodeCenterX - startNodeCenterX;
+         if(startNodeCenterY - endNodeCenterY > 0){
+            //use either right point or top point
+            differenceY = startNodeCenterY - endNodeCenterY;
+            if(differenceX > differenceY){
+               //use the right point on the start node and the left point on the end node
+               startX = startNodeCenterX + startNode.mGetWidth()/2;
+               startY = startNodeCenterY;
+               endX = endNodeCenterX - endNode.mGetWidth()/2;
+               endY = endNodeCenterY;
+            }
+            else{
+               //use the top point on the start node and the bottom point on the end node
+               startX = startNodeCenterX;
+               startY = startNodeCenterY - startNode.mGetHeight()/2;
+               endX = endNodeCenterX;
+               endY = endNodeCenterY + endNode.mGetWidth()/2;
+            }
+         }
+         else{
+            //use either right point or bottom point
+            differenceY = endNodeCenterY - startNodeCenterY;
+            if(differenceX > differenceY){
+               //use right point on the start node and the left point on the end node
+               startX = startNodeCenterX + startNode.mGetWidth()/2;
+               startY = startNodeCenterY;
+               endX = endNodeCenterX - endNode.mGetWidth()/2;
+               endY = endNodeCenterY;
+            }
+            else{
+               //use bottom point on the start node and the top point on the end node
+               startX = startNodeCenterX;
+               startY = startNodeCenterY + startNode.mGetHeight()/2;
+               endX = endNodeCenterX;
+               endY = endNodeCenterY - endNode.mGetHeight()/2;
+            }
+         }
+      }
+      
+      
+      g.drawLine(startX, startY, endX, endY);
    }
 }

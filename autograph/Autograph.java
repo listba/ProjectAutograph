@@ -23,7 +23,7 @@ public class Autograph extends JFrame {
 			@Override
 			public void paint(Graphics g) {
 				super.paint(g);
-				 g.setColor(Color.GRAY);
+				 g.setColor(Color.white);
 				g.fillRect(0, 0, getWidth(), getHeight());
 				
 				//I am guessing (without looking at the code) the xml import stuff isn't newing node/edge objects because I am getting null pointer exceptions 

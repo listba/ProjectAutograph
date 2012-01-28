@@ -44,6 +44,7 @@ public class GraphHelper {
 	   ArrayList<Node> nodes = graph.mGetNodeList();
 	   
 	   //TODO: have user dynamically set width/height rather than hard coding it here. (Or dynamically calculate height/width based on label size)
+	   //      currently, the node size will be updated if the label does not fit in the node within the mDrawNode function.
 	   int diameter = 50;
 	   
 	   //determine the location of each node in the graph, and draw that node.
@@ -55,23 +56,13 @@ public class GraphHelper {
 	      node.mDrawNode(g);
 	   }
 	   
-	   g.setColor(Color.RED);
 	   // Draw edges
+	   // KMW NOTE: the current implementation of mDrawEdge will draw a straight line from startNode to endNode.
+	   //           Somewhere (either in the node placement algorithm or in the edge drawing algorithm) we will
+	   //           need to make sure that edges will not cross if we don't want them to.
 	   ArrayList<Edge> edges = graph.mGetEdgeList();
 	   for (Edge edge : edges) {
-		   int startIndex = 0;
-		   int endIndex = 0;
-		   for (int n=0; n<nodes.size(); n++) {
-			   if (nodes.get(n).mGetId().equals(edge.mGetStartNode().mGetId())) {
-				   startIndex = n;
-			   }
-			   if (nodes.get(n).mGetId().equals(edge.mGetEndNode().mGetId())) {
-				   endIndex = n;
-			   }
-		   }
-		   g.drawLine(startIndex*diameter*2 + diameter, 30, endIndex*diameter*2, 30);
-		   // Also doesn't work -.-
-		   //g.drawString(edge.mGetLabel(), startIndex*diameter*2 + diameter, 30);
+		   edge.mDrawEdge(g);
 	   }
    }
    

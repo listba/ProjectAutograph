@@ -367,6 +367,7 @@ public class Node implements Serializable {
       if(this.mGetWidth() != 0){
          switch (this.vShape){
          case CIRCLE:
+         case OVAL:
             int upperLeftX = this.mGetUpperLeftX();
             int upperLeftY = this.mGetUpperLeftY();
             
@@ -412,16 +413,11 @@ public class Node implements Serializable {
             
             break;
          case SQUARE:
-            //TODO: implement drawing for Square nodes
+         case RECTANGLE:
+            //TODO: implement drawing for Square/Rectangle nodes
             break;
          case TRIANGLE:
             //TODO: implement drawing for Triangle nodes
-            break;
-         case OVAL:
-            //TODO: implement drawing for Oval nodes
-            break;
-         case RECTANGLE:
-            //TODO: implement drawing for Rectangle nodes
             break;
          }
       }
