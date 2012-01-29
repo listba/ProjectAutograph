@@ -29,7 +29,7 @@ public class Autograph extends JFrame {
 				//I am guessing (without looking at the code) the xml import stuff isn't newing node/edge objects because I am getting null pointer exceptions 
 		      //if I run the code using the xml import. So I'll just build a graph with the attributes I want to test against.
 		      Graph graph = new Graph("TestGraph");
-		      Node testNode1 = new Node("node1", "Test Label", Node.NodeShape.CIRCLE, Node.NodeStyle.SOLID);
+		      Node testNode1 = new Node("node1", "Test Label", Node.NodeShape.SQUARE, Node.NodeStyle.SOLID);
 		      Node testNode2 = new Node("node2", "Test Label 2", Node.NodeShape.CIRCLE, Node.NodeStyle.SOLID);
 		      Edge edge1 = new Edge("edge1", "Edge Label", testNode1, testNode2, Edge.Direction.NODIRECTION, Edge.EdgeStyle.SOLID);
 		      

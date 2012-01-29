@@ -83,9 +83,21 @@ public class Node implements Serializable {
       try{
          mValidateNode(id);
          vId = id;
-         vLabel = label;
-         vShape = shape;
-         vStyle = style;
+         if(label != null)
+            vLabel = label;
+         else
+            vLabel = "";
+         
+         if(shape != null)
+            vShape = shape;
+         else
+            vShape = NodeShape.CIRCLE;
+         
+         if(style != null)
+            vStyle = style;
+         else
+            vStyle = NodeStyle.SOLID;
+         
          //For now when we create a node we will not have any edge data. This may
          //change at some point.
          vEdges = new ArrayList<Edge>();
@@ -365,42 +377,39 @@ public class Node implements Serializable {
    public void mDrawNode(Graphics g){
       //make the assumption that no object's width should be 0
       if(this.mGetWidth() != 0){
+         int upperLeftX = this.mGetUpperLeftX();
+         int upperLeftY = this.mGetUpperLeftY();
+         
+         //KMW Note: The Graphics2D library draws strings using the lower left part of the string as the beginning coordinates of the graph.
+         //          We now need to calculate the optimal position of the lower left portion of the string so that the string is centered within
+         //          the bounds of the circle.
+         g.setFont(this.mGetFont());
+         FontMetrics fm = g.getFontMetrics();
+         int labelWidth = fm.stringWidth(this.mGetLabel());
+         int labelHeight = fm.getHeight();
+         int widthDifference = this.mGetWidth() - labelWidth;
+         if(widthDifference <= 0){
+            //dynamically resize the node so the label fits. (because it is a circle resize both height and width)
+            this.mSetWidth(labelWidth + 20);
+            this.mSetHeight(labelWidth + 20);
+            
+            widthDifference = this.mGetWidth() - labelWidth;
+         }
+         
+         int heightDifference = this.mGetHeight() - labelHeight;
+         if(heightDifference <= 0){
+            //dynamically resize the node so the label fits. (because it is a circle resize both height and width)
+            this.mSetWidth(labelHeight + 20);
+            this.mSetHeight(labelHeight + 20);
+            widthDifference = this.mGetWidth() - labelWidth;
+         }
+         
+         int labelLeftX = upperLeftX + widthDifference/2; //x coordinate of the lower left position of the string (for centering the string in the node)
+         int labelLeftY = upperLeftY + heightDifference/2 + labelHeight/2; //y coordinate of the lower left position of the string (for centering the string in the node)
+         
          switch (this.vShape){
          case CIRCLE:
          case OVAL:
-            int upperLeftX = this.mGetUpperLeftX();
-            int upperLeftY = this.mGetUpperLeftY();
-            
-            //KMW Note: The Graphics2D library draws strings using the lower left part of the string as the beginning coordinates of the graph.
-            //          We now need to calculate the optimal position of the lower left portion of the string so that the string is centered within
-            //          the bounds of the circle.
-            g.setFont(this.mGetFont());
-            FontMetrics fm = g.getFontMetrics();
-            int labelWidth = fm.stringWidth(this.mGetLabel());
-            int labelHeight = fm.getHeight();
-            
-            int widthDifference = this.mGetWidth() - labelWidth;
-            if(widthDifference <= 0){
-               //dynamically resize the node so the label fits. (because it is a circle resize both height and width)
-               this.mSetWidth(labelWidth + 20);
-               this.mSetHeight(labelWidth + 20);
-               
-               widthDifference = this.mGetWidth() - labelWidth;
-            }
-            
-            
-            
-            int heightDifference = this.mGetHeight() - labelHeight;
-            if(heightDifference <= 0){
-               //dynamically resize the node so the label fits. (because it is a circle resize both height and width)
-               this.mSetWidth(labelHeight + 20);
-               this.mSetHeight(labelHeight + 20);
-               widthDifference = this.mGetWidth() - labelWidth;
-            }
-            
-            int labelLeftX = upperLeftX + widthDifference/2; //x coordinate of the lower left position of the string (for centering the string in the node)
-            int labelLeftY = upperLeftY + heightDifference/2 + labelHeight/2; //y coordinate of the lower left position of the string (for centering the string in the node)
-            
             //draw shape first so label is not overwritten
             g.setColor(this.mGetFillColor());
             g.fillOval(upperLeftX, upperLeftY, this.mGetWidth(), this.mGetHeight());
@@ -414,7 +423,15 @@ public class Node implements Serializable {
             break;
          case SQUARE:
          case RECTANGLE:
-            //TODO: implement drawing for Square/Rectangle nodes
+            //draw shape first so label is not overwritten
+            g.setColor(this.mGetFillColor());
+            g.fillRect(upperLeftX, upperLeftY, this.mGetWidth(), this.mGetHeight());
+            g.setColor(this.mGetBorderColor());
+            g.drawRect(upperLeftX, upperLeftY, this.mGetWidth(), this.mGetHeight());
+           
+            //draw the label
+            g.setColor(this.mGetLabelColor());
+            g.drawString(this.mGetLabel(), labelLeftX, labelLeftY);
             break;
          case TRIANGLE:
             //TODO: implement drawing for Triangle nodes
