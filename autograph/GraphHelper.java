@@ -27,7 +27,7 @@ import org.xml.sax.SAXException;
 public class GraphHelper {
 
    /**
-    * Draws the graph object in the most efficent way possible
+    * Draws the graph object in the most efficient way possible
     *
     * Note: Probably going to have a Java drawing return type, not sure on details of implementation yet.
     *
@@ -132,7 +132,7 @@ public class GraphHelper {
     * @return              The graph loaded from the xml file
     * @see     Graph
     */
-   public static Graph mImportGraphFromXML(String filePath) {
+   public static Graph mImportGraphFromXML(String filePath) throws CannotAddNodeException, CannotAddEdgeException {
       Graph graph = null;
       Document dom;
       DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
