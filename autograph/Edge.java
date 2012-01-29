@@ -75,7 +75,8 @@ public class Edge implements Serializable {
          vColor = Color.black;
       }
       catch (CannotAddEdgeException e){
-         //TODO: notify user of failure
+         //TODO: This may need changed to an error file, etc
+    	  System.out.println("Error while trying to add edge: " + e.getError());
       }
    }
 

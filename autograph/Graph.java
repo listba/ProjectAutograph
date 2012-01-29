@@ -36,8 +36,9 @@ public class Graph implements Serializable {
             vTitle = title;
          }
       }
-      catch(Exception e){
-         //TODO: do something to notify the user of an error
+      catch(CannotCreateGraphException e){
+    	//TODO: This may need changed to an error file, etc
+    	  System.out.println("Error while trying to create graph: " + e.getError());
       }
    }
    
@@ -81,7 +82,8 @@ public class Graph implements Serializable {
       }
       catch(Exception e){
          //This will theoretically only happen if vNodeList.get(i) is null.
-         //TODO: report failure to user.
+    	 //TODO: This may need changed to an error file, etc
+    	  System.out.println("Error while trying to find node: " + e.getMessage());
       }
       return node;
    }
@@ -92,7 +94,7 @@ public class Graph implements Serializable {
     * @param id - id of the Node
     * @see Node
     */
-   public void mDeleteNodeById(String id){
+   public void mDeleteNodeById(String id) throws CannotRemoveNodeException {
       try{
          for(int i = 0; i < vNodeList.size(); i++){
             if(vNodeList.get(i).mGetId().equals(id)){
@@ -104,7 +106,10 @@ public class Graph implements Serializable {
       }
       catch(Exception e){
          //this will theoretically only happen if vNodeList.get(i) is null
-         //TODO: report failure to user
+    	//TODO: This may need changed to an error file, etc
+    	  System.out.println("Error while trying to find node for deletion: " + e.getMessage());
+    	  
+    	  throw new CannotRemoveNodeException("Could not find node for deletion!", e);
       }
    }
    
@@ -126,7 +131,8 @@ public class Graph implements Serializable {
       }
       catch(Exception e){
          //This will theoretically only happen if vNodeList.get(i) is null.
-         //TODO: report failure to user.
+    	//TODO: This may need changed to an error file, etc
+    	  System.out.println("Error while trying to find edge: " + e.getMessage());
       }
       return edge;
    }
@@ -137,7 +143,7 @@ public class Graph implements Serializable {
     * @param id of the edge
     * @see Edge
     */
-   public void mDeleteEdgeById(String id){
+   public void mDeleteEdgeById(String id) throws CannotRemoveEdgeException {
       try{
          for(int i = 0; i < vEdgeList.size(); i++){
             if(vEdgeList.get(i).mGetId().equals(id)){
@@ -149,7 +155,10 @@ public class Graph implements Serializable {
       }
       catch(Exception e){
          //this will theoretically only happen if vNodeList.get(i) is null
-         //TODO: report failure to user
+    	//TODO: This may need changed to an error file, etc
+    	  System.out.println("Error while trying to find edge for deletion: " + e.getMessage());
+    	  
+    	  throw new CannotRemoveEdgeException("Could not find edge for deletion!", e);
       }
    }
    
@@ -157,59 +166,63 @@ public class Graph implements Serializable {
     * AddEdge - adds an edge to the edge list for the graph
     *
     * @param edge - edge to be added to the edge list
-    * @return - ErrorHandler.NOERROR if successful, other error code if not successful
-    * @see Edge
+	* @see Edge
+	* 
     */
-   public int mAddEdge(Edge edge){
-      int retValue = ErrorHandler.CANNOTADDEDGE;
-      if(vEdgeList.add(edge)){
-         retValue = ErrorHandler.NOERROR;
-      }
-      return retValue;
+   public void mAddEdge(Edge edge) throws CannotAddEdgeException {
+	   try {
+		   vEdgeList.add(edge);
+	   }
+	   catch (Exception e) {
+		   throw new CannotAddEdgeException("Error while adding edge!", e);
+	   }
    }
 
    /**
     * RemoveEdge - removes an edge from the edge list for the graph
     *
     * @param edge - edge to be removed from the edge list
-    * @return - ErrorHandler.NOERROR if successful, other error code if not successful
     * @see Edge
+    * 
     */
-   public int mRemoveEdge(Edge edge){
-      int retValue = ErrorHandler.CANNOTREMOVEEDGE;
-      if(vEdgeList.remove(edge)){
-         retValue = ErrorHandler.NOERROR;
-      }
-      return retValue;
+   public void mRemoveEdge(Edge edge) throws CannotRemoveEdgeException {
+	   try {
+		   vEdgeList.remove(edge);
+	   }
+	   catch (Exception e) {
+		   throw new CannotRemoveEdgeException("Error while removing edge!", e);
+	   }
    }
 
    /**
     * AddNode - adds a node to the edge list
     *
     * @param node - node to add to the node list for the graph
-    * @return - ErrorHandler.NOERROR if successful, other error code if not successful
     * @see Node
+    * 
     */
-   public int mAddNode(Node node){
-      int retValue = ErrorHandler.CANNOTADDNODE;
-      if(vNodeList.add(node)){
-         retValue = ErrorHandler.NOERROR;
-      }
-      return retValue;
+   public void mAddNode(Node node) throws CannotAddNodeException {
+	   try {
+		   vNodeList.add(node);
+	   }
+	   catch (Exception e) {
+		   throw new CannotAddNodeException("Error while adding node!", e);
+	   }
    }
 
    /**
     * RemoveNode - removes a node from the node list
     *
     * @param node - node to remove from the node list for the graph
-    * @return - ErrorHandler.NOERROR if successful, other error code if not successful
     * @see Node
+    * 
     */
-   public int mRemoveNode(Node node){
-      int retValue = ErrorHandler.CANNOTREMOVENODE;
-      if(vEdgeList.remove(node)){
-         retValue = ErrorHandler.NOERROR;
-      }
-      return retValue;
+   public void mRemoveNode(Node node) throws CannotRemoveNodeException {
+	   try {
+		   vEdgeList.remove(node);
+	   }
+	   catch (Exception e) {
+		   throw new CannotRemoveNodeException("Error while removing node!", e);
+	   }
    }
 }

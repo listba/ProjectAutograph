@@ -117,7 +117,8 @@ public class Node implements Serializable {
          vFont = new Font("Arial", 0, 8);
       }
       catch(CannotAddNodeException e){
-         //TODO: report failure to user.
+    	//TODO: This may need changed to an error file, etc
+    	  System.out.println("Error while trying to add node: " + e.getError());
       }
    }
 
