@@ -1,6 +1,8 @@
 package autograph;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.io.*;
 import autograph.exception.*;
 
@@ -53,7 +55,7 @@ public class GraphHelper {
 	      node.mSetCenterLocation(n*diameter*2 + diameter/2, 20 + diameter/2);
 	      node.mSetWidth(diameter);
 	      node.mSetHeight(diameter);
-	      node.mDrawNode(g);
+	      mDrawNode(g, node);
 	   }
 	   
 	   // Draw edges
@@ -62,7 +64,7 @@ public class GraphHelper {
 	   //           need to make sure that edges will not cross if we don't want them to.
 	   ArrayList<Edge> edges = graph.mGetEdgeList();
 	   for (Edge edge : edges) {
-		   edge.mDrawEdge(g);
+		   mDrawEdge(g, edge);
 	   }
    }
    
@@ -132,7 +134,7 @@ public class GraphHelper {
     * @return              The graph loaded from the xml file
     * @see     Graph
     */
-   public static Graph mImportGraphFromXML(String filePath) throws CannotAddNodeException, CannotAddEdgeException {
+   public static Graph mImportGraphFromXML(String filePath) {
       Graph graph = null;
       Document dom;
       DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -152,10 +154,16 @@ public class GraphHelper {
             // Loop through each Node Element and load into Node object
             for(int i = 0; i < nl.getLength(); i++) {
                Element el = (Element)nl.item(i);
-               Node node = getNodeElement(el);
-               if (node != null) {
-                  System.out.println(node.mGetId() + " added");
+               try {
+                  Node node = getNodeElement(el);
+                  System.out.println(node.mGetId() + " added ("+ i +")");
                   graph.mAddNode(node);
+               } catch (InvalidXMLException e) {
+                  e.getMessage();
+				      e.getCause();
+               } catch (CannotAddNodeException e) {
+                  e.getMessage();
+				      e.getCause();
                }
             }
          } else {
@@ -164,14 +172,19 @@ public class GraphHelper {
          nl = docEle.getElementsByTagName("Edge");
          // If there are Edge elements
          if(nl != null && nl.getLength() > 0) {
-            // Loop through each Node Element and load into Node object
+            // Loop through each Edge Element and load into Edge object
             for(int i = 0; i < nl.getLength(); i++) {
                Element el = (Element)nl.item(i);
-               Edge edge = getEdgeElement(el, graph);
-               // If XML was valid and edge was created
-               if (edge != null) {
-                  System.out.println(edge.mGetId() + " added");
+               try {
+                  Edge edge = getEdgeElement(el, graph);
+                  System.out.println(edge.mGetId() + " added ("+ i +")");
                   graph.mAddEdge(edge);
+               } catch (InvalidXMLException e) {
+                  e.getMessage();
+				      e.getCause();
+               } catch (CannotAddEdgeException e) {
+                  e.getMessage();
+				      e.getCause();
                }
             }
          } else { 
@@ -186,7 +199,6 @@ public class GraphHelper {
       }
       return graph;
    }
-   
    /**
     * Exports a graph to a plaintext document in our Graphing Language
     *
@@ -217,7 +229,7 @@ public class GraphHelper {
     * @param   el          The xml node element
     * @return              The Node object
     */
-   private static Node getNodeElement(Element el) {
+   private static Node getNodeElement(Element el) throws InvalidXMLException{
       // TODO: Get additional elements from XML
       Node node = null;
       String id = el.getAttribute("id");
@@ -225,7 +237,8 @@ public class GraphHelper {
          node = new Node(id, null, null, null);
       }
       else {
-         // TODO: ADD INVALID XML EXCEPTION
+         // Invalid XML for a node
+         throw new InvalidXMLException("Node Element is missing the required ID attribute");
       }
       return node;
    }
@@ -237,7 +250,7 @@ public class GraphHelper {
     * @param   graph       The current graph with the nodes 
     * @return              The edge object
     */
-   private static Edge getEdgeElement(Element el, Graph graph) {
+   private static Edge getEdgeElement(Element el, Graph graph) throws InvalidXMLException {
       // TODO: Get additional elements from XML
       Edge edge = null;
       String id = el.getAttribute("id");
@@ -247,8 +260,192 @@ public class GraphHelper {
          edge = new Edge(id, null, startNode, endNode, null, null);
       }
       else {
-         // TODO:THROW INVALID XML EXCEPTION
+         // Invalid XML for an edge
+         throw new InvalidXMLException("Edge Element is missing one or more of the following required attributes: " +
+         "ID, startNode, endNode");
       }
       return edge;
+   }
+   
+      /**
+    * DrawNode - renders the node given the node's position and the graphics object g.
+    * @param g - the graphics object in which to render the image.
+    */
+   private static void mDrawNode(Graphics g, Node n){
+      //make the assumption that no object's width should be 0
+      if(n.mGetWidth() != 0){
+         int upperLeftX = n.mGetUpperLeftX();
+         int upperLeftY = n.mGetUpperLeftY();
+         
+         //KMW Note: The Graphics2D library draws strings using the lower left part of the string as the beginning coordinates of the graph.
+         //          We now need to calculate the optimal position of the lower left portion of the string so that the string is centered within
+         //          the bounds of the circle.
+         g.setFont(n.mGetFont());
+         FontMetrics fm = g.getFontMetrics();
+         int labelWidth = fm.stringWidth(n.mGetLabel());
+         int labelHeight = fm.getHeight();
+         int widthDifference = n.mGetWidth() - labelWidth;
+         if(widthDifference <= 0){
+            //dynamically resize the node so the label fits. (because it is a circle resize both height and width)
+            n.mSetWidth(labelWidth + 20);
+            n.mSetHeight(labelWidth + 20);
+            
+            widthDifference = n.mGetWidth() - labelWidth;
+         }
+         
+         int heightDifference = n.mGetHeight() - labelHeight;
+         if(heightDifference <= 0){
+            //dynamically resize the node so the label fits. (because it is a circle resize both height and width)
+            n.mSetWidth(labelHeight + 20);
+            n.mSetHeight(labelHeight + 20);
+            widthDifference = n.mGetWidth() - labelWidth;
+         }
+         
+         int labelLeftX = upperLeftX + widthDifference/2; //x coordinate of the lower left position of the string (for centering the string in the node)
+         int labelLeftY = upperLeftY + heightDifference/2 + labelHeight/2; //y coordinate of the lower left position of the string (for centering the string in the node)
+         
+         switch (n.mGetShape()){
+         case CIRCLE:
+         case OVAL:
+            //draw shape first so label is not overwritten
+            g.setColor(n.mGetFillColor());
+            g.fillOval(upperLeftX, upperLeftY, n.mGetWidth(), n.mGetHeight());
+            g.setColor(n.mGetBorderColor());
+            g.drawOval(upperLeftX, upperLeftY, n.mGetWidth(), n.mGetHeight());
+           
+            //draw the label
+            g.setColor(n.mGetLabelColor());
+            g.drawString(n.mGetLabel(), labelLeftX, labelLeftY);
+            
+            break;
+         case SQUARE:
+         case RECTANGLE:
+            //draw shape first so label is not overwritten
+            g.setColor(n.mGetFillColor());
+            g.fillRect(upperLeftX, upperLeftY, n.mGetWidth(), n.mGetHeight());
+            g.setColor(n.mGetBorderColor());
+            g.drawRect(upperLeftX, upperLeftY, n.mGetWidth(), n.mGetHeight());
+           
+            //draw the label
+            g.setColor(n.mGetLabelColor());
+            g.drawString(n.mGetLabel(), labelLeftX, labelLeftY);
+            break;
+         case TRIANGLE:
+            //TODO: implement drawing for Triangle nodes
+            break;
+         }
+      }
+   }
+   /**
+    * DrawEdge - Draws an edge between two nodes. The edge will dynamically choose one of 4 points on each
+    *            node as the start/end point
+    * @param g - The graphics object to draw the edge for.
+    */
+   private static void mDrawEdge(Graphics g, Edge e) {
+      //TODO: implement for non-straight edges
+      //TODO: implement for different endge styles/directions.
+      //TODO: implement label placement.
+      //TODO: figure out how we want to handle the case where the edge label is longer than the edge (if we need to recalculate node position etc.)
+      
+      g.setColor(e.mGetColor());
+      
+      int startX;
+      int startY;
+      int endX;
+      int endY;
+      int differenceX;
+      int differenceY;
+      
+      Node startNode = e.mGetStartNode();
+      Node endNode = e.mGetEndNode();
+      
+      int startNodeCenterX = startNode.mGetCenterX();
+      int startNodeCenterY = startNode.mGetCenterY();
+      int endNodeCenterX = endNode.mGetCenterX();
+      int endNodeCenterY = endNode.mGetCenterY();
+      
+      if(startNodeCenterX - endNodeCenterX > 0){
+         //we will either use the left, top, or bottom point
+         differenceX = startNodeCenterX - endNodeCenterX;
+         if(startNodeCenterY - endNodeCenterY > 0){
+            //we will either user the left point or the top point
+            differenceY = startNodeCenterY - endNodeCenterY;
+            if (differenceX > differenceY){ //startNodeX > endNodeX && startNodeY > endNodeY && x difference is bigger.
+               //use the left point on the start node and right point on the end node
+               startX = startNodeCenterX - startNode.mGetWidth()/2;
+               startY = startNodeCenterY;
+               endX = endNodeCenterX + endNode.mGetWidth()/2;
+               endY = endNodeCenterY;
+            }
+            else { // startNodex > endNodeX && startNodeY > endNodeY && y difference is bigger
+               //use the top point on the start node and bottom point on the end node
+               startX = startNodeCenterX;
+               startY = startNodeCenterY - startNode.mGetHeight()/2;
+               endX = endNodeCenterX;
+               endY = endNodeCenterY + endNode.mGetHeight()/2;
+            }
+         }
+         else{ // startNodeX > endNodeX && endNodeY >= startNodeY
+            //we will either use the left point or the bottom point
+            differenceY = endNodeCenterY - startNodeCenterY;
+            if (differenceX > differenceY){ //startNodeX > endNodeX && endNodeY >= startNodeY && differenceX > differenceY
+               //use the left point on the start node and the right point on the end node
+               startX = startNodeCenterX - startNode.mGetWidth()/2;
+               startY = startNodeCenterY;
+               endX =  endNodeCenterX + endNode.mGetWidth()/2;
+               endY = endNodeCenterY;
+            }
+            else{
+               //use the bottom point on the start node and the top point on the end node
+               startX = startNodeCenterX;
+               startY = startNodeCenterY + startNode.mGetHeight()/2;
+               endX = endNodeCenterX;
+               endY = endNodeCenterY - endNode.mGetHeight()/2;
+            }
+         }
+      }
+      else{
+         //we will either use the right, top, or bottom point on the start node
+         differenceX = endNodeCenterX - startNodeCenterX;
+         if(startNodeCenterY - endNodeCenterY > 0){
+            //use either right point or top point
+            differenceY = startNodeCenterY - endNodeCenterY;
+            if(differenceX > differenceY){
+               //use the right point on the start node and the left point on the end node
+               startX = startNodeCenterX + startNode.mGetWidth()/2;
+               startY = startNodeCenterY;
+               endX = endNodeCenterX - endNode.mGetWidth()/2;
+               endY = endNodeCenterY;
+            }
+            else{
+               //use the top point on the start node and the bottom point on the end node
+               startX = startNodeCenterX;
+               startY = startNodeCenterY - startNode.mGetHeight()/2;
+               endX = endNodeCenterX;
+               endY = endNodeCenterY + endNode.mGetWidth()/2;
+            }
+         }
+         else{
+            //use either right point or bottom point
+            differenceY = endNodeCenterY - startNodeCenterY;
+            if(differenceX > differenceY){
+               //use right point on the start node and the left point on the end node
+               startX = startNodeCenterX + startNode.mGetWidth()/2;
+               startY = startNodeCenterY;
+               endX = endNodeCenterX - endNode.mGetWidth()/2;
+               endY = endNodeCenterY;
+            }
+            else{
+               //use bottom point on the start node and the top point on the end node
+               startX = startNodeCenterX;
+               startY = startNodeCenterY + startNode.mGetHeight()/2;
+               endX = endNodeCenterX;
+               endY = endNodeCenterY - endNode.mGetHeight()/2;
+            }
+         }
+      }
+      
+      
+      g.drawLine(startX, startY, endX, endY);
    }
 }
