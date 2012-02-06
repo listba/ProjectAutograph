@@ -18,6 +18,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Attr;
 import org.xml.sax.SAXException;
 
 /**
@@ -27,7 +29,29 @@ import org.xml.sax.SAXException;
  * @version 1.0
  */
 public class GraphHelper {
-
+   private enum nodeAttributes{
+      ID,
+      LABEL,
+      SHAPE,
+      STYLE,
+      FILLCOLOR,
+      BORDERCOLOR,
+      LABELCOLOR,
+      FONT,
+      WIDTH,
+      HEIGHT
+   }
+   private static enum edgeAttributes{
+      ID,
+      LABEL,
+      STARTNODE,
+      ENDNODE,
+      DIRECTION,
+      STYLE,
+      EDGECOLOR,
+      LABELCOLOR,
+      FONT
+   }
    /**
     * Draws the graph object in the most efficient way possible
     *
@@ -36,20 +60,21 @@ public class GraphHelper {
     * @param   graph    The Graph to be drawn
     * @see     Graph
     */
-	
-	// TODO: To draw in the center you have to pass in the panel or coordinates
    public static void mDrawGraph(Graph graph, Graphics g) {
+      // TODO: To draw in the center you have to pass in the panel or coordinates
+      // TODO: This is a lot slower than it needs to be.. You should use a hash map with the node ID
+      //TODO: have user dynamically set width/height rather than hard coding it here. 
+	   //      (Or dynamically calculate height/width based on label size)
+	   //      At the momemnt the node size will be updated if the label does not 
+	   //      fit in the node within the mDrawNode function.
+	   
+	   // Set background color of graphics object to white
 	   g.setColor(Color.WHITE);
 	   
-	   // TODO: This is a lot slower than it needs to be.. You should use a hash map with the node ID
 	   // Draw nodes
 	   ArrayList<Node> nodes = graph.mGetNodeList();
-	   
-	   //TODO: have user dynamically set width/height rather than hard coding it here. (Or dynamically calculate height/width based on label size)
-	   //      currently, the node size will be updated if the label does not fit in the node within the mDrawNode function.
 	   int diameter = 50;
-	   
-	   //determine the location of each node in the graph, and draw that node.
+	   // Determine the location of each node in the graph, and draw that node.
 	   for (int n=0; n<nodes.size(); n++) {
 	      Node node = nodes.get(n);
 	      node.mSetCenterLocation(n*diameter*2 + diameter/2, 20 + diameter/2);
@@ -58,10 +83,10 @@ public class GraphHelper {
 	      mDrawNode(g, node);
 	   }
 	   
-	   // Draw edges
 	   // KMW NOTE: the current implementation of mDrawEdge will draw a straight line from startNode to endNode.
 	   //           Somewhere (either in the node placement algorithm or in the edge drawing algorithm) we will
 	   //           need to make sure that edges will not cross if we don't want them to.
+	   // Draw edges
 	   ArrayList<Edge> edges = graph.mGetEdgeList();
 	   for (Edge edge : edges) {
 		   mDrawEdge(g, edge);
@@ -224,20 +249,72 @@ public class GraphHelper {
    }
    
    /**
-    * Gets Node object from xml element
+    * Creates Node object from xml element
     * 
     * @param   el          The xml node element
     * @return              The Node object
     */
-   private static Node getNodeElement(Element el) throws InvalidXMLException{
+   private static Node getNodeElement(Element el) throws InvalidXMLException {
       // TODO: Get additional elements from XML
+      
+      // Create Node Object
       Node node = null;
       String id = el.getAttribute("id");
-      if (id != null) {
-         node = new Node(id, null, null, null);
-      }
-      else {
-         // Invalid XML for a node
+      if (!id.isEmpty()) {
+         node = new Node(id, el.getAttribute("label"), 
+                     el.getAttribute("shape"), el.getAttribute("style"));
+         // Get the rest of the attributes
+         NamedNodeMap attributes = el.getAttributes();
+         for (int i = 0; i < attributes.getLength(); i++) {
+            // Get Current Attribute
+            Attr a = (Attr)attributes.item(i);
+            // Set values for valid attributes
+            try {
+               switch (nodeAttributes.valueOf( a.getName().toUpperCase() )) {
+                  case FILLCOLOR:
+                     // TODO: Check for # and allow textual representation of colors ie "red"
+                     node.mSetFillColor(Color.decode( a.getValue() ));
+                     break;
+                  case BORDERCOLOR:
+                     // TODO: Check for # and allow textual representation of colors ie "red"
+                     node.mSetBorderColor(Color.decode( a.getValue() ));
+                     break;
+                  case LABELCOLOR:
+                     // TODO: Check for # and allow textual representation of colors ie "red"
+                     node.mSetLabelColor(Color.decode( a.getValue() ));
+                     break;
+                  case FONT:
+                     // TODO: Handle FONT ATTRIBUTE;
+                     break;
+                  case WIDTH:
+                     // TODO: Handle Width Attribute;
+                     break;
+                  case HEIGHT:
+                     // TODO: Handle Width Attribute;
+                     break;
+                  default: break;
+               }
+            } catch (NumberFormatException e) {
+               // COLOR VALUE ERROR
+               switch (nodeAttributes.valueOf( a.getName().toUpperCase() )) {
+                  case FILLCOLOR:
+                     // TODO: Print out warning (log) for invalid fill color
+                     break;
+                  case BORDERCOLOR:
+                     // TODO: Print out warning (log) for invalid border color
+                     break;
+                  case LABELCOLOR:
+                     // TODO: Print out warning (log) for invalid label color
+                     break;
+                  default: 
+                     //Print out Unknown Number Format Exception warning (log)
+                      break;
+               }
+            } catch (IllegalArgumentException e) {
+               // TODO: Print out warning (log) for invalid attribute
+            }
+         }
+      } else { // Invalid XML for a node
          throw new InvalidXMLException("Node Element is missing the required ID attribute");
       }
       return node;
@@ -256,30 +333,72 @@ public class GraphHelper {
       String id = el.getAttribute("id");
       Node startNode = graph.mGetNodeById(el.getAttribute("startNode"));
       Node endNode = graph.mGetNodeById(el.getAttribute("endNode"));
-      if (id != null && startNode != null && endNode != null) {
-         edge = new Edge(id, null, startNode, endNode, null, null);
+      if (!id.isEmpty() && startNode != null && endNode != null) {
+         edge = new Edge(id, el.getAttribute("label"), startNode, endNode, 
+                         el.getAttribute("direction"), el.getAttribute("edgeStyle"));
+         // Get the rest of the attributes
+         NamedNodeMap attributes = el.getAttributes();
+         for (int i = 0; i < attributes.getLength(); i++) {
+            // Get Current Attribute
+            Attr a = (Attr)attributes.item(i);
+            // Set values for valid attributes
+            try {
+               switch (edgeAttributes.valueOf( a.getName().toUpperCase() )) {
+                  case EDGECOLOR:
+                     // TODO: Check for # and allow textual representation of colors ie "red"
+                     edge.mSetEdgeColor(Color.decode( a.getValue() ));
+                     break;
+                  case LABELCOLOR:
+                     // TODO: Check for # and allow textual representation of colors ie "red"
+                     edge.mSetLabelColor(Color.decode( a.getValue() ));
+                     break;
+                  case FONT:
+                     // TODO: Handle FONT ATTRIBUTE;
+                     break;
+                  default: break;
+               }
+            } catch (NumberFormatException e) {
+               // COLOR VALUE ERROR
+               switch (edgeAttributes.valueOf( a.getName().toUpperCase() )) {
+                  case EDGECOLOR:
+                     // TODO: Print out warning (log) for invalid fill color
+                     break;
+                  case LABELCOLOR:
+                     // TODO: Print out warning (log) for invalid label color
+                     break;
+                  default: 
+                     //Print out Unknown Number Format Exception warning (log)
+                      break;
+               }
+            } catch (IllegalArgumentException e) {
+               // TODO: Print out warning (log) for invalid attribute
+            }
+         }
       }
-      else {
-         // Invalid XML for an edge
-         throw new InvalidXMLException("Edge Element is missing one or more of the following required attributes: " +
-         "ID, startNode, endNode");
+      else { // Invalid XML for an edge
+         throw new InvalidXMLException("Edge Element is missing one or more of the following " + 
+                                       "required attributes: ID, startNode, endNode");
       }
       return edge;
    }
    
-      /**
+   /**
     * DrawNode - renders the node given the node's position and the graphics object g.
-    * @param g - the graphics object in which to render the image.
+    *
+    * @param   g        The Graphics object the node is drawn on
+    * @param   n        The node object to draw on g
+    * @see     Node
     */
    private static void mDrawNode(Graphics g, Node n){
-      //make the assumption that no object's width should be 0
+      // make the assumption that no object's width should be 0
       if(n.mGetWidth() != 0){
          int upperLeftX = n.mGetUpperLeftX();
          int upperLeftY = n.mGetUpperLeftY();
          
-         //KMW Note: The Graphics2D library draws strings using the lower left part of the string as the beginning coordinates of the graph.
-         //          We now need to calculate the optimal position of the lower left portion of the string so that the string is centered within
-         //          the bounds of the circle.
+         // KMW Note: The Graphics2D library draws strings using the lower left part of the string 
+         //           as the beginning coordinates of the graph.
+         // We now need to calculate the optimal position of the lower left portion of the string 
+         // so that the string is centered within the bounds of the circle.
          g.setFont(n.mGetFont());
          FontMetrics fm = g.getFontMetrics();
          int labelWidth = fm.stringWidth(n.mGetLabel());
@@ -300,9 +419,10 @@ public class GraphHelper {
             n.mSetHeight(labelHeight + 20);
             widthDifference = n.mGetWidth() - labelWidth;
          }
-         
-         int labelLeftX = upperLeftX + widthDifference/2; //x coordinate of the lower left position of the string (for centering the string in the node)
-         int labelLeftY = upperLeftY + heightDifference/2 + labelHeight/2; //y coordinate of the lower left position of the string (for centering the string in the node)
+         //x coordinate of the lower left position of the string (for centering the string in the node)
+         int labelLeftX = upperLeftX + widthDifference/2; 
+         //y coordinate of the lower left position of the string (for centering the string in the node)
+         int labelLeftY = upperLeftY + heightDifference/2 + labelHeight/2; 
          
          switch (n.mGetShape()){
          case CIRCLE:
@@ -336,18 +456,23 @@ public class GraphHelper {
          }
       }
    }
+   
    /**
     * DrawEdge - Draws an edge between two nodes. The edge will dynamically choose one of 4 points on each
     *            node as the start/end point
-    * @param g - The graphics object to draw the edge for.
+    *
+    * @param   g        The Graphics object the edge is drawn on
+    * @param   e        The edge object to draw on g
+    * @see     Edge
     */
    private static void mDrawEdge(Graphics g, Edge e) {
       //TODO: implement for non-straight edges
       //TODO: implement for different endge styles/directions.
       //TODO: implement label placement.
-      //TODO: figure out how we want to handle the case where the edge label is longer than the edge (if we need to recalculate node position etc.)
+      //TODO: figure out how we want to handle the case where the edge label is longer than the edge 
+      //      (if we need to recalculate node position etc.)
       
-      g.setColor(e.mGetColor());
+      g.setColor(e.mGetEdgeColor());
       
       int startX;
       int startY;
@@ -370,7 +495,9 @@ public class GraphHelper {
          if(startNodeCenterY - endNodeCenterY > 0){
             //we will either user the left point or the top point
             differenceY = startNodeCenterY - endNodeCenterY;
-            if (differenceX > differenceY){ //startNodeX > endNodeX && startNodeY > endNodeY && x difference is bigger.
+            if (differenceX > differenceY){ 
+               //startNodeX > endNodeX && startNodeY > endNodeY && x difference is bigger.
+               
                //use the left point on the start node and right point on the end node
                startX = startNodeCenterX - startNode.mGetWidth()/2;
                startY = startNodeCenterY;
@@ -388,7 +515,9 @@ public class GraphHelper {
          else{ // startNodeX > endNodeX && endNodeY >= startNodeY
             //we will either use the left point or the bottom point
             differenceY = endNodeCenterY - startNodeCenterY;
-            if (differenceX > differenceY){ //startNodeX > endNodeX && endNodeY >= startNodeY && differenceX > differenceY
+            if (differenceX > differenceY) {
+               //startNodeX > endNodeX && endNodeY >= startNodeY && differenceX > differenceY 
+               
                //use the left point on the start node and the right point on the end node
                startX = startNodeCenterX - startNode.mGetWidth()/2;
                startY = startNodeCenterY;
@@ -444,8 +573,6 @@ public class GraphHelper {
             }
          }
       }
-      
-      
       g.drawLine(startX, startY, endX, endY);
    }
 }

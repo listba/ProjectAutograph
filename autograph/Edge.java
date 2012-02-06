@@ -40,7 +40,8 @@ public class Edge implements Serializable {
    private int vStartY;
    private int vEndX;
    private int vEndY;
-   private Color vColor;
+   private Color vEdgeColor;
+   private Color vLabelColor;
    
    private void mValidateEdge(String id, Node startNode, Node endNode) throws CannotAddEdgeException{
       if(id == null || id.isEmpty()){
@@ -63,16 +64,27 @@ public class Edge implements Serializable {
     * @see Direction
     */
    public Edge(String id, String label, Node startNode, Node endNode,
-           Direction direction, EdgeStyle style){
+           String direction, String style){
       try{
          mValidateEdge(id, startNode, endNode);
          vId = id;
          vLabel = label;
          vStartNode = startNode;
          vEndNode = endNode;
-         vDirection = direction;
-         vEdgeStyle = style;
-         vColor = Color.black;
+         
+         try {
+            vDirection = Direction.valueOf(direction.toUpperCase());
+         } catch (IllegalArgumentException e) {
+             vDirection = Direction.NODIRECTION;
+         }
+         
+         try {
+            vEdgeStyle = EdgeStyle.valueOf(style.toUpperCase());
+         } catch (IllegalArgumentException e) {
+             vEdgeStyle = EdgeStyle.SOLID;
+         }
+         
+         vEdgeColor = Color.black;
       }
       catch (CannotAddEdgeException e){
          //TODO: This may need changed to an error file, etc
@@ -230,18 +242,34 @@ public class Edge implements Serializable {
    }
    
    /**
-    * GetColor - returns the color of the edge
+    * GetEdgeColor - returns the color of the edge
     * @return - vColor
     */
-   public Color mGetColor(){
-      return vColor;
+   public Color mGetEdgeColor(){
+      return vEdgeColor;
    }
    
    /**
-    * SetColor - sets the color of the edge
+    * SetEdgeColor - sets the color of the edge
     * @param color - the color to set the edge
     */
-   public void mSetColor(Color color){
-      vColor = color;
+   public void mSetEdgeColor(Color color){
+      vEdgeColor = color;
+   }
+   
+   /**
+    * GetLabelColor - returns the color of the edge
+    * @return - vColor
+    */
+   public Color mGetLabelColor(){
+      return vLabelColor;
+   }
+   
+   /**
+    * SetLabelColor - sets the color of the edge
+    * @param color - the color to set the edge
+    */
+   public void mSetLabelColor(Color color){
+      vLabelColor = color;
    }
 }

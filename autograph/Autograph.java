@@ -13,11 +13,10 @@ import autograph.ui.mainWindow;
 public class Autograph extends JFrame {
 
 	public Autograph(String title) {
-		this.setTitle(title);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       String filePath = "Graph.xml";
-      //final Graph graph = GraphHelper.mImportGraphFromXML(filePath);
-		
+      final Graph graph = GraphHelper.mImportGraphFromXML(filePath);
+		this.setTitle(title + " - " + graph.mGetTitle());
 		JPanel panel = new JPanel() {
 			@Override
 			public void paint(Graphics g) {
@@ -25,15 +24,15 @@ public class Autograph extends JFrame {
 				g.setColor(Color.white);
 				g.fillRect(0, 0, getWidth(), getHeight());
 				
-				Graph graph = new Graph("TestGraph");
-				Node testNode1 = new Node("node1", "Test Label", Node.NodeShape.SQUARE, Node.NodeStyle.SOLID);
-				Node testNode2 = new Node("node2", "Test Label 2", Node.NodeShape.CIRCLE, Node.NodeStyle.SOLID);
-				Edge edge1 = new Edge("edge1", "Edge Label", testNode1, testNode2, Edge.Direction.NODIRECTION, Edge.EdgeStyle.SOLID);
+				//Graph graph = new Graph("TestGraph");
+				//Node testNode1 = new Node("node1", "Test Label", Node.NodeShape.SQUARE, Node.NodeStyle.SOLID);
+				//Node testNode2 = new Node("node2", "Test Label 2", Node.NodeShape.CIRCLE, Node.NodeStyle.SOLID);
+				//Edge edge1 = new Edge("edge1", "Edge Label", testNode1, testNode2, Edge.Direction.NODIRECTION, Edge.EdgeStyle.SOLID);
 
 				try{
-					graph.mAddNode(testNode1);
-					graph.mAddNode(testNode2);
-					graph.mAddEdge(edge1);
+					//graph.mAddNode(testNode1);
+					//graph.mAddNode(testNode2);
+					//graph.mAddEdge(edge1);
 					GraphHelper.mDrawGraph(graph,g);
 				}
 				catch(Exception e) {

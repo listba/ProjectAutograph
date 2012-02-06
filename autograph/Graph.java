@@ -63,6 +63,26 @@ public class Graph implements Serializable {
    }
    
    /**
+    * Returns title of Graph
+    *
+    * @return  The title of the graph
+    */
+   public String mGetTitle(){
+      return vTitle;
+   }
+   
+   /**
+    * Sets title of Graph
+    *
+    * @params  title    the new title of the graph
+    */
+   public void mSetTitle(String title){
+      if (title !=null && !title.isEmpty()) {
+         vTitle = title;
+      }
+   }
+   
+   /**
     * GetNodeById - returns the node with the selected Id
     *
     * @param id - id of the node 

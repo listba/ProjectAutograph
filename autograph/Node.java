@@ -36,15 +36,14 @@ public class Node implements Serializable {
    }
 
    //Member Variables
+   //KMW Note: The Graphics2D library begins drawing shapes (or at least ovals) at the upper left coordinate of shape.
+   //          However, we are storing the center locations. For drawing purposes, make sure you use the functions
+   //          mGetUpperLeft and mGetUpperRight as the parameters for the Graphics2D object to begin drawing.
    private String vId;
    private String  vLabel;
    private NodeShape vShape;
    private NodeStyle vStyle;
    private ArrayList<Edge> vEdges;
-   
-   //KMW Note: The Graphics2D library begins drawing shapes (or at least ovals) at the upper left coordinate of shape.
-   //          However, we are storing the center locations. For drawing purposes, make sure you use the functions
-   //          mGetUpperLeft and mGetUpperRight as the parameters for the Graphics2D object to begin drawing.
    private int vCenterX;
    private int vCenterY;
    private int vWidth; //this is the width of the node in pixels (or diameter in case of circle)
@@ -74,12 +73,12 @@ public class Node implements Serializable {
     *
     * @param name variable name to use for accessing the node
     * @param label label to be displayed in the node
-    * @param shape shape of the node
-    * @param style style of the node
+    * @param shape string value of shape of the node
+    * @param style string value of style of the node
     * @see NodeShape
     * @see NodeStyle
     */
-   public Node(String id, String label, NodeShape shape, NodeStyle style){
+   public Node(String id, String label, String shape, String style){
       try{
          mValidateNode(id);
          vId = id;
@@ -88,15 +87,17 @@ public class Node implements Serializable {
          else
             vLabel = "";
          
-         if(shape != null)
-            vShape = shape;
-         else
-            vShape = NodeShape.CIRCLE;
+         try {
+            vShape = NodeShape.valueOf(shape.toUpperCase());
+         } catch (IllegalArgumentException e) {
+             vShape = NodeShape.CIRCLE;
+         }
          
-         if(style != null)
-            vStyle = style;
-         else
-            vStyle = NodeStyle.SOLID;
+         try {
+            vStyle = NodeStyle.valueOf(style.toUpperCase());
+         } catch (IllegalArgumentException e) {
+              vStyle = NodeStyle.SOLID;
+         }
          
          //For now when we create a node we will not have any edge data. This may
          //change at some point.
@@ -112,9 +113,12 @@ public class Node implements Serializable {
          vFillColor = Color.white;
          vBorderColor = Color.black;
          vLabelColor = Color.black;
-         //default to 8pt Arial font with no styling (user will have ability to change this)
-         //KMW Note: the size is working, I'm not sure it is Arial though...we need to look into this more at some point
-         vFont = new Font("Arial", 0, 8);
+         //default to 10pt Monospaced font with bold styling (user will have ability to change this)
+         // BAL NOTE: Arial will only work if its installed on your pc, best to default to a logical font
+         //           like Monospaced to ensure that it works on all computers
+         //           For more info see: http://docs.oracle.com/javase/tutorial/2d/text/fonts.html
+         vFont = new Font("Monospaced", 0, 10);
+         System.out.println(vFont.getFontName());
       }
       catch(CannotAddNodeException e){
     	//TODO: This may need changed to an error file, etc
