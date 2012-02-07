@@ -16,6 +16,9 @@ public class Autograph extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       String filePath = "Graph.xml";
       final Graph graph = GraphHelper.mImportGraphFromXML(filePath);
+      int imageWidth = GraphHelper.mGetPreferredImageWidth(graph);
+      
+      this.setPreferredSize(new Dimension(imageWidth, imageWidth));
 		this.setTitle(title + " - " + graph.mGetTitle());
 		JPanel panel = new JPanel() {
 			@Override
@@ -33,7 +36,7 @@ public class Autograph extends JFrame {
 					//graph.mAddNode(testNode1);
 					//graph.mAddNode(testNode2);
 					//graph.mAddEdge(edge1);
-					GraphHelper.mDrawGraph(graph,g);
+					GraphHelper.mDrawGraph(graph,g, this);
 				}
 				catch(Exception e) {
 					e.getMessage();
@@ -45,7 +48,7 @@ public class Autograph extends JFrame {
 
 		
 		this.add(panel);
-		this.setPreferredSize(new Dimension(800, 600));
+		//this.setPreferredSize(new Dimension(800, 600));
 		this.pack();
 		this.setLocationRelativeTo(null);
 

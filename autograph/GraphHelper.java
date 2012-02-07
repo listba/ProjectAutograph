@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.JPanel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -52,6 +53,34 @@ public class GraphHelper {
       LABELCOLOR,
       FONT
    }
+   
+   /**
+    * GetOreferredImageWidth - dynamically calculates the width of the image we are creating (in pixels) so we know what width to set
+    *                          for the JPanel.
+    * @param graph - the graph that we will be drawing.
+    * @return - the width of the image.
+    */
+   public static int mGetPreferredImageWidth(Graph graph){
+      int imageWidth = 0;
+      ArrayList<Node> nodes = graph.mGetNodeList();
+      int maxNodeWidth = 0;
+      int numNodes = nodes.size();
+      for(int i = 0; i < numNodes; i++){
+         if(nodes.get(i).mGetWidth() == 0){
+            nodes.get(i).mSetWidth(50);
+            nodes.get(i).mSetHeight(50);
+         }
+         if(nodes.get(i).mGetWidth() > maxNodeWidth){
+            maxNodeWidth = nodes.get(i).mGetWidth();
+         }
+      }
+      //KMW Note: We'll make the circle the width of putting half the nodes in one line. This _should_ be enough
+      //to prevent node overlapping, but it may run into problems with edges overlapping nodes. We will
+      //tweak this as necessary
+      imageWidth = (numNodes/2)*maxNodeWidth+500;
+      return imageWidth;
+   }
+   
    /**
     * Draws the graph object in the most efficient way possible
     *
@@ -60,10 +89,10 @@ public class GraphHelper {
     * @param   graph    The Graph to be drawn
     * @see     Graph
     */
-   public static void mDrawGraph(Graph graph, Graphics g) {
-      // TODO: To draw in the center you have to pass in the panel or coordinates
+   public static void mDrawGraph(Graph graph, Graphics g, JPanel panel) {
+      // TODO: Change this logic to use the JPanel and arrange the nodes in a circle.
       // TODO: This is a lot slower than it needs to be.. You should use a hash map with the node ID
-      //TODO: have user dynamically set width/height rather than hard coding it here. 
+      // TODO: have user dynamically set width/height rather than hard coding it here. 
 	   //      (Or dynamically calculate height/width based on label size)
 	   //      At the momemnt the node size will be updated if the label does not 
 	   //      fit in the node within the mDrawNode function.
