@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.io.*;
 import autograph.exception.*;
 
@@ -488,19 +489,26 @@ public class GraphHelper {
          switch (n.mGetShape()){
          case CIRCLE:
          case OVAL:
+            //KMW Note: Graphics2D has antialiasing that renders the pictures much clearer.
+            Graphics2D g2 = (Graphics2D)g;
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             //draw shape first so label is not overwritten
-            g.setColor(n.mGetFillColor());
-            g.fillOval(upperLeftX, upperLeftY, n.mGetWidth(), n.mGetHeight());
-            g.setColor(n.mGetBorderColor());
-            g.drawOval(upperLeftX, upperLeftY, n.mGetWidth(), n.mGetHeight());
+            g2.setColor(n.mGetFillColor());
+            g2.fillOval(upperLeftX, upperLeftY, n.mGetWidth(), n.mGetHeight());
+            g2.setColor(n.mGetBorderColor());
+            g2.drawOval(upperLeftX, upperLeftY, n.mGetWidth(), n.mGetHeight());
            
             //draw the label
-            g.setColor(n.mGetLabelColor());
-            g.drawString(n.mGetLabel(), labelLeftX, labelLeftY);
+            //KMW Note: the text still looks kind of bad. It has a separate key/value combo of
+            //          KEY_TEXT_ANTIALIASING and VALUE_TEXT_ANTIALIAS_ON, but that didn't seem
+            //          to change the look of the text. Not sure if we can fix this.
+            g2.setColor(n.mGetLabelColor());
+            g2.drawString(n.mGetLabel(), labelLeftX, labelLeftY);
             
             break;
          case SQUARE:
          case RECTANGLE:
+            //KMW Note: don't need to antialias for squares/rectangles. They look fine as is.
             //draw shape first so label is not overwritten
             g.setColor(n.mGetFillColor());
             g.fillRect(upperLeftX, upperLeftY, n.mGetWidth(), n.mGetHeight());
