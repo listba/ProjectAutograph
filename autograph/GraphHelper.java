@@ -1,8 +1,10 @@
 package autograph;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Font;
 import java.awt.FontMetrics;
+import java.awt.Graphics2D;
 import java.io.*;
 import autograph.exception.*;
 
@@ -526,7 +528,7 @@ public class GraphHelper {
     */
    private static void mDrawEdge(Graphics g, Edge e) {
       //TODO: implement for non-straight edges
-      //TODO: implement for different endge styles/directions.
+      //TODO: implement for different edge styles/directions.
       //TODO: implement label placement.
       //TODO: figure out how we want to handle the case where the edge label is longer than the edge 
       //      (if we need to recalculate node position etc.)
@@ -632,6 +634,47 @@ public class GraphHelper {
             }
          }
       }
+      switch (e.mGetEdgeStyle()){
+      case DOTTED:
+        BasicStroke dotted =  new BasicStroke(
+               1f, 
+               BasicStroke.CAP_ROUND, 
+               BasicStroke.JOIN_ROUND, 
+               1f, 
+               new float[] {2f}, 
+               0f);
+        Graphics2D g2 = (Graphics2D)g;
+        g2.setStroke(dotted);
+        g2.drawLine(startX, startY, endX, endY);
+        break;
+      case DASHED:
+         float dash1[] = {10.0f};
+         BasicStroke dashed =
+             new BasicStroke(1.0f,
+                             BasicStroke.CAP_BUTT,
+                             BasicStroke.JOIN_MITER,
+                             10.0f, dash1, 0.0f);
+         Graphics2D gr2 = (Graphics2D)g;
+         gr2.setStroke(dashed);
+         gr2.drawLine(startX, startY, endX, endY);
+         break;
+      case SOLID:
+      default:
+         g.drawLine(startX, startY, endX, endY);
+         break;
+      }
       g.drawLine(startX, startY, endX, endY);
+      
+      switch(e.mGetDirection()){
+      case NODIRECTION:
+         break;
+      case STARTDIRECTION:
+         break;
+      case ENDDIRECTION:
+         break;
+      case DOUBLEDIRECTION:
+         break;
+      }
+         
    }
 }
