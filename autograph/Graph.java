@@ -190,6 +190,10 @@ public class Graph implements Serializable {
 	* 
     */
    public void mAddEdge(Edge edge) throws CannotAddEdgeException {
+      //TODO: link this function to the Add Edge button of the UI
+      //TODO: pass in or retrieve the graphics object in the JPanel,
+      //      clear the current image and call GraphHelper.mDrawGraph 
+      //      on the "this" object to rearrange the nodes with the new edge.
 	   try {
 		   vEdgeList.add(edge);
 	   }
@@ -206,6 +210,10 @@ public class Graph implements Serializable {
     * 
     */
    public void mRemoveEdge(Edge edge) throws CannotRemoveEdgeException {
+      //TODO: link this function to the delete functionality of the UI
+      //TODO: pass in or retrieve the graphics object in the JPanel,
+      //      clear the current image and call GraphHelper.mDrawGraph 
+      //      on the "this" object after the edge is removed.
 	   try {
 		   vEdgeList.remove(edge);
 	   }
@@ -222,6 +230,10 @@ public class Graph implements Serializable {
     * 
     */
    public void mAddNode(Node node) throws CannotAddNodeException {
+      //TODO: link this function to the Add Node button of the UI
+      //TODO: pass in or retrieve the graphics object in the JPanel,
+      //      clear the current image and call GraphHelper.mDrawGraph 
+      //      on the "this" object to rearrange the nodes with the new node.
 	   try {
 		   vNodeList.add(node);
 	   }
@@ -238,8 +250,13 @@ public class Graph implements Serializable {
     * 
     */
    public void mRemoveNode(Node node) throws CannotRemoveNodeException {
+      //TODO: link this function to the delete node functionality of the UI
+      //TODO: pass in or retrieve the graphics object in the JPanel,
+      //      clear the current image and call GraphHelper.mDrawGraph 
+      //      on the "this" object after the node is removed.
+      //TODO: remove any edges currently associated with this node.
 	   try {
-		   vEdgeList.remove(node);
+		   vNodeList.remove(node);
 	   }
 	   catch (Exception e) {
 		   throw new CannotRemoveNodeException("Error while removing node!", e);

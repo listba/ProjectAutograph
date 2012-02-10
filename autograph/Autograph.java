@@ -27,15 +27,7 @@ public class Autograph extends JFrame {
 				g.setColor(Color.white);
 				g.fillRect(0, 0, getWidth(), getHeight());
 				
-				//Graph graph = new Graph("TestGraph");
-				//Node testNode1 = new Node("node1", "Test Label", Node.NodeShape.SQUARE, Node.NodeStyle.SOLID);
-				//Node testNode2 = new Node("node2", "Test Label 2", Node.NodeShape.CIRCLE, Node.NodeStyle.SOLID);
-				//Edge edge1 = new Edge("edge1", "Edge Label", testNode1, testNode2, Edge.Direction.NODIRECTION, Edge.EdgeStyle.SOLID);
-
 				try{
-					//graph.mAddNode(testNode1);
-					//graph.mAddNode(testNode2);
-					//graph.mAddEdge(edge1);
 					GraphHelper.mDrawGraph(graph,g, this);
 				}
 				catch(Exception e) {

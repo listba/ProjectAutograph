@@ -520,7 +520,24 @@ public class GraphHelper {
             g.drawString(n.mGetLabel(), labelLeftX, labelLeftY);
             break;
          case TRIANGLE:
-            //TODO: implement drawing for Triangle nodes
+            //TODO: recalculate label location to fit in the triangle.
+            int x[] = new int[3];
+            x[0] = upperLeftX; // left point x coordinte
+            x[1] = upperLeftX + n.mGetWidth(); //right point x coordinate
+            x[2] = upperLeftX + n.mGetWidth()/2; //middle point x coordinate
+            
+            int y[] = new int[3];
+            y[0] = upperLeftY + n.mGetHeight(); //left point y coordinate
+            y[1] = upperLeftY + n.mGetHeight(); //right point y coordinate
+            y[2] = upperLeftY; //middle point y coordinate
+            
+            g.setColor(n.mGetFillColor());
+            g.fillPolygon(x, y, 3);
+            g.setColor(n.mGetBorderColor());
+            g.drawPolygon(x, y, 3);
+            
+            g.setColor(n.mGetLabelColor());
+            g.drawString(n.mGetLabel(), labelLeftX, labelLeftY);
             break;
          }
       }
@@ -540,6 +557,7 @@ public class GraphHelper {
       //TODO: implement label placement.
       //TODO: figure out how we want to handle the case where the edge label is longer than the edge 
       //      (if we need to recalculate node position etc.)
+      //TODO: account for triangle nodes (edges currently do not intersect at correct locations for triangles)
       
       g.setColor(e.mGetEdgeColor());
       
