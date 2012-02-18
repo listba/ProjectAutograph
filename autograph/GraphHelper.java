@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 import javax.swing.JPanel;
@@ -142,12 +143,22 @@ public class GraphHelper {
    public static void mDrawForceDirectedGraph(Graph graph, Graphics g, JPanel panel) {
 	   ArrayList<Node> nodes = graph.mGetNodeList();
 	   ArrayList<Edge> edges = graph.mGetEdgeList();
+	   
 	   int numNodes = nodes.size();
 	   int numEdges = edges.size();
 	   
 	   double width = panel.getWidth();
 	   double height = panel.getHeight();
 	   double area = width * height;
+	   
+	   // Set each node at a random location
+	   Random generator = new Random();
+	   for(int i = 0; i < numNodes; i++) {
+		   Node v = nodes.get(i);
+		   double randX = generator.nextDouble() * (width - 20);
+		   double randY = generator.nextDouble() * (height - 20);
+		   v.mSetCenterLocation((int)randX, (int)randY);
+	   }
 	   
 	   // Value for the ideal distance between nodes
 	   double k = Math.sqrt(area / nodes.size());
@@ -160,18 +171,18 @@ public class GraphHelper {
 	   GraphVector diff = new GraphVector(); 
 	   
 	   // While the graph has not "cooled off"
-	   while( temp != 0.0) {
+	   while( temp > 0.0) {
 		   // Calculate the repulsive forces
-		   for(int i = 0; i < nodes.size(); i++) {
+		   for(int i = 0; i < numNodes; i++) {
 			   // The current node
 			   Node v = nodes.get(i);
 			   v.mSetDispX(0);
 			   v.mSetDispY(0);
 			   // Look at the rest of the nodes
-			   for(int j = 0; j < nodes.size(); j++) {
+			   for(int j = 0; j < numNodes; j++) {
 				   Node u = nodes.get(j);
 				   // if the two nodes are not the same
-				   if (v != u) {
+				   if (!v.equals(u)) {
 					   // Set the difference vector
 					   diff.mSetXCor(v.mGetCenterX() - u.mGetCenterX());
 					   diff.mSetYCor(v.mGetCenterY() - u.mGetCenterY());
@@ -181,7 +192,7 @@ public class GraphHelper {
 			   }
 		   }
 		   // Calculate the attractive forces
-		   for(int i = 0; i < edges.size(); i++) {
+		   for(int i = 0; i < numEdges; i++) {
 			   // The current edge
 			   Edge e = edges.get(i);
 			   // Set the difference vector
@@ -195,7 +206,7 @@ public class GraphHelper {
 			   e.mGetEndNode().mSetDispY((int)(e.mGetEndNode().mGetDispY() + (diff.mGetYCor() / diff.mGetDistance()) * diff.mCalcAttractive(k)));
 		   }
 		   // Limit max displacement to temp and prevent from displacement outside panel
-		   for(int i = 0; i < nodes.size(); i++) {
+		   for(int i = 0; i < numNodes; i++) {
 			   // the current node
 			   Node v = nodes.get(i);
 			   // Reposition the node
@@ -210,11 +221,11 @@ public class GraphHelper {
 	   }
 	   
 	   // Draw the nodes
-	   for(int i = 0; i < nodes.size(); i++) {
+	   for(int i = 0; i < numNodes; i++) {
 		   mDrawNode(g, nodes.get(i));
 	   }
 	   // Draw the edges
-	   for(int i = 0; i < edges.size(); i++) {
+	   for(int i = 0; i < numNodes; i++) {
 		   mDrawEdge(g, edges.get(i));
 	   }
    }
