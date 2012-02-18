@@ -155,8 +155,8 @@ public class GraphHelper {
 	   Random generator = new Random();
 	   for(int i = 0; i < numNodes; i++) {
 		   Node v = nodes.get(i);
-		   double randX = generator.nextDouble() * (width - 20);
-		   double randY = generator.nextDouble() * (height - 20);
+		   double randX = generator.nextDouble() * (width - v.mGetWidth());
+		   double randY = generator.nextDouble() * (height - v.mGetWidth());
 		   v.mSetCenterLocation((int)randX, (int)randY);
 	   }
 	   
