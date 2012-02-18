@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.swing.JPanel;
 import javax.xml.parsers.DocumentBuilder;
@@ -388,19 +389,78 @@ public class GraphHelper {
     * @param   fileLoc     The location to save the agl file to
     * @see     Graph
     */
-   public static void mExportGraphToLanguage(Graph graph, String fileName, String fileLoc) {
+   public static void mExportGraphToGML(Graph graph, String fileName, String fileLoc) {
    }
    
+   /**
+    * Finds the text from currentIndex to the next instance of the ' ' character.
+    * @param text - the total text to parse for the next word
+    * @param currentIndex - the index of the current location
+    */
+   private static String mGetNextWord(String text, int currentIndex){
+      int nextSpaceLoc = text.indexOf(" ", currentIndex);
+      String word = text.substring(currentIndex, nextSpaceLoc);
+      return word;
+   }
    /**
     * Imports a graph from a plaintext document in our Graphing Language
     *
     * @param   fileName    The file name to be loaded (with .agl extension)
     * @param   fileLoc     The location to load the agl file from
     * @return              The graph loaded from the agl file
+    * @throws CannotLoadGraph, IOException
     * @see     Graph
     */
-   public static Graph mImportGraphFromLanguage(String fileName, String fileLoc) {
+   public static Graph mImportGraphFromGML(String fileName, String fileLoc) throws IOException, CannotLoadGraph {
+      //KMW Note: GML supports many attribute values that are not listed here. For now we will only support importing
+      //          this subset of the attributes because our drawing only handles this subset of the attributes. If we
+      //          change what our drawing handles we will have to add logic for handling those attributes here.
+      final String[] graphAttributes = {"label", "node", "edge", "hierarchic"};
+      final String[] nodeAttributes = {"id", "label", "name", "LabelGraphics", "graphics"};
+      final String[] nodeGraphicsAttributes = {"w", "h", "type", "fill", "outline", "outlineStyle"};
+      final String[] nodeLabelGraphicsAttributes = {"text", "fontSize", "fontStyle", "fontName", "color"};
+      final String[] edgeAttributes = {"source", "target", "label", "graphics", "LableGraphics"};
+      final String[] edgeGraphicsAttributes = {"style", "fill", "arrow"};
+      final String[] edgeLabelGraphicsAttributes = {"text", "color", "fontSize", "fontStyle", "fontName"};
+      
+      
       Graph graph = new Graph("");
+      if(!fileName.isEmpty()){
+         String fullFilePath;
+         if(!fileLoc.isEmpty()){
+            fullFilePath = fileLoc + fileName;
+         }
+         else{
+            fullFilePath = fileName;
+         }
+         Scanner scanner = new Scanner(new FileInputStream(fullFilePath));
+         StringBuilder fileText = new StringBuilder();
+         String NL = System.getProperty("line.separator");
+         
+         //Read in all of the text into a StringBuilder.
+         try{
+            while(scanner.hasNextLine()){
+               fileText.append(scanner.nextLine() + NL);
+            }
+         }
+         finally{
+            scanner.close();
+         }
+         
+         int currentIndex = 0;
+         //Begin parsing the text into a graph.
+         if(fileText.indexOf("graph")!= -1){
+            currentIndex = fileText.indexOf("graph") + "graph".length();
+            
+         }
+         else{
+            throw new CannotLoadGraph("Invalid GML syntax");
+         }
+         
+      }
+      else{
+         throw new CannotLoadGraph("Invalid GML file");
+      }
       return graph;
    }
    
