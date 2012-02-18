@@ -46,6 +46,8 @@ public class Node implements Serializable {
    private ArrayList<Edge> vEdges;
    private int vCenterX;
    private int vCenterY;
+   private int vDispX; // displacement x
+   private int vDispY; // displacement y
    private int vWidth; //this is the width of the node in pixels (or diameter in case of circle)
    private int vHeight;
    private Color vFillColor;
@@ -127,6 +129,14 @@ public class Node implements Serializable {
    }
 
 
+   /**
+	 *  Method to return the distance of the displacement vector
+	 * @return the distance
+	 */
+	public double mGetDispDistance() {
+		return Math.sqrt(Math.pow(vDispX, 2.0) + Math.pow(vDispY, 2.0));
+	}
+   
    /**
     * GetName - used to access the variable name of the node to differentiate
     * from other nodes
@@ -256,6 +266,38 @@ public class Node implements Serializable {
    public void mSetCenterLocation(int x, int y){
       vCenterX = x;
       vCenterY = y;
+   }
+   
+   /**
+    *  Get the displacement x
+    * @return the displacement x
+    */
+   public int mGetDispX() {
+	   return vDispX;
+   }
+   
+   /**
+    *  Get the displacement y
+    * @return the displacement y
+    */
+   public int mGetDispY() {
+	   return vDispY;
+   }
+   
+   /**
+    *  Set the displacement x
+    * @param x - the new displacement x
+    */
+   public void mSetDispX(int x) {
+	   vDispX = x;
+   }
+   
+   /**
+    *  Set the displacement y
+    * @param y - the new displacement y
+    */
+   public void mSetDispY(int y) {
+	   vDispY = y;
    }
    
    /**

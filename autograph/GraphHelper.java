@@ -125,6 +125,100 @@ public class GraphHelper {
    }
    
    /**
+    *  This is the primary graph drawing method. Implements the force-directed graph
+    *  drawing algorithm. No animation between timesteps at this time.
+    *  
+    *  Reference:
+    *  http://www.cs.brown.edu/~rt/gdhandbook/chapters/force-directed.pdf
+    * 
+    * @author Jeff Farris
+    * 
+    * @param graph - the graph object being drawn
+    * @param g - the graphics object where the graph will be drawn
+    * @param panel - the panel holding the graphics
+    * 
+    */
+   public static void mDrawForceDirectedGraph(Graph graph, Graphics g, JPanel panel) {
+	   ArrayList<Node> nodes = graph.mGetNodeList();
+	   ArrayList<Edge> edges = graph.mGetEdgeList();
+	   int numNodes = nodes.size();
+	   int numEdges = edges.size();
+	   
+	   double width = panel.getWidth();
+	   double height = panel.getHeight();
+	   double area = width * height;
+	   
+	   // Value for the ideal distance between nodes
+	   double k = Math.sqrt(area / nodes.size());
+	   
+	   // This value is used to make sure nodes don't move too much
+	   // as well as makes sure the graph is slowly coming to rest.
+	   double temp = width / 10;
+	   double tempStep = temp / 100;
+	   
+	   GraphVector diff = new GraphVector(); 
+	   
+	   // While the graph has not "cooled off"
+	   while( temp != 0.0) {
+		   // Calculate the repulsive forces
+		   for(int i = 0; i < nodes.size(); i++) {
+			   // The current node
+			   Node v = nodes.get(i);
+			   v.mSetDispX(0);
+			   v.mSetDispY(0);
+			   // Look at the rest of the nodes
+			   for(int j = 0; j < nodes.size(); j++) {
+				   Node u = nodes.get(j);
+				   // if the two nodes are not the same
+				   if (v != u) {
+					   // Set the difference vector
+					   diff.mSetXCor(v.mGetCenterX() - u.mGetCenterX());
+					   diff.mSetYCor(v.mGetCenterY() - u.mGetCenterY());
+					   v.mSetDispX((int)(v.mGetDispX() + (diff.mGetXCor() / diff.mGetDistance()) * diff.mCalcRepulsive(k)));
+					   v.mSetDispY((int)(v.mGetDispY() + (diff.mGetYCor() / diff.mGetDistance()) * diff.mCalcRepulsive(k)));
+				   }  
+			   }
+		   }
+		   // Calculate the attractive forces
+		   for(int i = 0; i < edges.size(); i++) {
+			   // The current edge
+			   Edge e = edges.get(i);
+			   // Set the difference vector
+			   diff.mSetXCor(e.mGetStartNode().mGetCenterX() - e.mGetEndNode().mGetCenterX());
+			   diff.mSetYCor(e.mGetStartNode().mGetCenterY() - e.mGetEndNode().mGetCenterY());
+			   // Displace the first node
+			   e.mGetStartNode().mSetDispX((int)(e.mGetStartNode().mGetDispX() - (diff.mGetXCor() / diff.mGetDistance()) * diff.mCalcAttractive(k)));
+			   e.mGetStartNode().mSetDispY((int)(e.mGetStartNode().mGetDispY() - (diff.mGetYCor() / diff.mGetDistance()) * diff.mCalcAttractive(k)));
+			   // Displace the second node
+			   e.mGetEndNode().mSetDispX((int)(e.mGetEndNode().mGetDispX() + (diff.mGetXCor() / diff.mGetDistance()) * diff.mCalcAttractive(k)));
+			   e.mGetEndNode().mSetDispY((int)(e.mGetEndNode().mGetDispY() + (diff.mGetYCor() / diff.mGetDistance()) * diff.mCalcAttractive(k)));
+		   }
+		   // Limit max displacement to temp and prevent from displacement outside panel
+		   for(int i = 0; i < nodes.size(); i++) {
+			   // the current node
+			   Node v = nodes.get(i);
+			   // Reposition the node
+			   v.mSetCenterLocation((int)(v.mGetCenterX() + (v.mGetDispX() / v.mGetDispDistance()) * Math.min(v.mGetDispX(), temp)), 
+					   				(int)(v.mGetCenterY() + (v.mGetDispY() / v.mGetDispDistance()) * Math.min(v.mGetDispY(), temp)));
+			   // Make sure none of the nodes are off the screen
+			   v.mSetCenterLocation((int)(Math.min((width / 2), Math.max((-width / 2), v.mGetCenterX()))), 
+					   				(int)(Math.min((height / 2), Math.max((-height / 2), v.mGetCenterY()))));
+		   }
+		   // Reduce temp so the graph eventually slows into place
+		   temp -= tempStep;
+	   }
+	   
+	   // Draw the nodes
+	   for(int i = 0; i < nodes.size(); i++) {
+		   mDrawNode(g, nodes.get(i));
+	   }
+	   // Draw the edges
+	   for(int i = 0; i < edges.size(); i++) {
+		   mDrawEdge(g, edges.get(i));
+	   }
+   }
+   
+   /**
     * Draws the graph object in the most efficient way possible
     *
     * Note: Probably going to have a Java drawing return type, not sure on details of implementation yet.

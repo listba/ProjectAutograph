@@ -74,7 +74,7 @@ public class Graph implements Serializable {
    /**
     * Sets title of Graph
     *
-    * @params  title    the new title of the graph
+    * @param title - the new title of the graph
     */
    public void mSetTitle(String title){
       if (title !=null && !title.isEmpty()) {
