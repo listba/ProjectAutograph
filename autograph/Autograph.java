@@ -28,7 +28,7 @@ public class Autograph extends JFrame {
 				g.fillRect(0, 0, getWidth(), getHeight());
 				
 				try{
-					GraphHelper.mDrawGraph(graph,g, this);
+					GraphHelper.mDrawForceDirectedGraph(graph,g, this);
 				}
 				catch(Exception e) {
 					e.getMessage();

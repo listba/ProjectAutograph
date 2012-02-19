@@ -160,7 +160,7 @@ public class GraphHelper {
 	   GraphVector diff = new GraphVector(); 
 	   
 	   // While the graph has not "cooled off"
-	   while( temp != 0.0) {
+	   for(int purple = 1; purple < 100; purple++) {
 		   // Calculate the repulsive forces
 		   for(int i = 0; i < nodes.size(); i++) {
 			   // The current node
