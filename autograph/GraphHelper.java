@@ -214,32 +214,37 @@ public class GraphHelper {
 	   Random generator = new Random();
 	   for(int i = 0; i < numNodes; i++) {
 		   Node v = nodes.get(i);
-		   double randX = generator.nextDouble() * (width - v.mGetWidth());
-		   double randY = generator.nextDouble() * (height - v.mGetWidth());
+		   double randX = generator.nextDouble() * (width - v.mGetWidth()) + v.mGetWidth();
+		   double randY = generator.nextDouble() * (height - v.mGetWidth()) + v.mGetWidth();
 		   v.mSetCenterLocation((int)randX, (int)randY);
 		   
 		   System.out.println("Node"+i+"="+v.mGetCenterX()+","+v.mGetCenterY());
 		   
-	   }
+	   } 
 	   
 	   // Value for the ideal distance between nodes
 	   double k = Math.sqrt(area / numNodes);
 	   
 	   // This value is used to make sure nodes don't move too much
 	   // as well as makes sure the graph is slowly coming to rest.
-	   double temp = width / 20;
-	   double tempStep = temp / 100;
+	   double temp = width / (numNodes * 2);
 	   
 	   System.out.println("nn="+numNodes+" ne="+numEdges+" "+width+"x"+height+"="+area+
-			   " k="+k+" temp="+temp+" ts="+tempStep);
+			   " k="+k+" temp="+temp);
 	   
 	   GraphVector diff = new GraphVector();
+	   double displaceX;
+	   double displaceY;
+	   double totalDist;
 	   
 	   // While the graph has not "cooled off"
-	   while(temp > 0.0) {
+	   while(temp > 1) {
 		   // Calculate the repulsive forces 
 		   
 		   System.out.println("Rep!");
+		   
+		   diff.mSetXCor(0.0);
+		   diff.mSetYCor(0.0);
 		   
 		   for(int i = 0; i < numNodes; i++) {
 			   // The current node
@@ -264,7 +269,7 @@ public class GraphHelper {
 					   diff.mSetXCor(v.mGetCenterX() - u.mGetCenterX());
 					   diff.mSetYCor(v.mGetCenterY() - u.mGetCenterY());
 					   
-					   System.out.println("diff="+diff.mGetXCor()+","+diff.mGetYCor()+" set!");
+					   System.out.println("diff="+diff.mGetXCor()+","+diff.mGetYCor()+" dist="+diff.mGetDistance()+" set!");
 					   
 					   // Add the repulsive forces
 					   v.mSetDispX(v.mGetDispX() + (diff.mGetXCor() / diff.mGetDistance()) * diff.mCalcRepulsive(k));
@@ -309,21 +314,56 @@ public class GraphHelper {
 			   
 			   System.out.println("Node="+b);
 			   
-			   v.mSetCenterLocation((int)(v.mGetCenterX() + (v.mGetDispX() / v.mGetDispDistance()) * Math.min(v.mGetDispX(), temp)), 
-					   				(int)(v.mGetCenterY() + (v.mGetDispY() / v.mGetDispDistance()) * Math.min(v.mGetDispY(), temp)));
-			   // Make sure none of the nodes are off the screen
-			   v.mSetCenterLocation(Math.min((width / 2), Math.max((-width / 2), v.mGetCenterX())), 
-					   				Math.min((height / 2), Math.max((-height / 2), v.mGetCenterY())));
+			   // Make sure the displacement isn't too much (x-dir)
+			   if(v.mGetDispX() < 0)
+				   displaceX = Math.max(v.mGetDispX(), -temp);
+			   else
+				   displaceX = Math.min(v.mGetDispX(), temp);
 			   
-			   System.out.println("Node"+b+" location="+(int)(v.mGetCenterX() + (v.mGetDispX() / v.mGetDispDistance()) * Math.min(v.mGetDispX(), temp))+","+
-					   (int)(v.mGetCenterY() + (v.mGetDispY() / v.mGetDispDistance()) * Math.min(v.mGetDispY(), temp)));
+			   // Make sure the displacement isn't too much (y-dir)
+			   if(v.mGetDispY() < 0)
+				   displaceY = Math.max(v.mGetDispY(), -temp);
+			   else
+				   displaceY = Math.min(v.mGetDispY(), temp);
+			   
+			   System.out.println("Disp="+displaceX+","+displaceY);
+			   
+			   v.mSetCenterLocation((int)(v.mGetCenterX() + (v.mGetDispX() / v.mGetDispDistance()) * displaceX), 
+					   				(int)(v.mGetCenterY() + (v.mGetDispY() / v.mGetDispDistance()) * displaceY));
+			   
+			   System.out.println("Node"+b+" location="+v.mGetCenterX()+","+v.mGetCenterY());
+			   
+			   // Make sure none of the nodes are off the screen
+			   v.mSetCenterLocation((int)(Math.min(width - v.mGetWidth(), Math.max(v.mGetWidth(), v.mGetCenterX()))), 
+					   				(int)(Math.min(height - v.mGetHeight(), Math.max(v.mGetHeight(), v.mGetCenterY()))));
+			   
+			   System.out.println("Node"+b+" location="+v.mGetCenterX()+","+v.mGetCenterY());
 			   
 		   }
+		   
+		   totalDist = 0.0;
+		   // Get the total of the distances between nodes
+		   for(int f = 0; f < numNodes; f++) {	   
+			   Node v = nodes.get(f);
+			   for(int h = 0; h < numNodes; h++) {
+				   Node u = nodes.get(h);
+				   if(!v.equals(u)) {
+					   diff.mSetXCor(v.mGetCenterX() - u.mGetCenterX());
+					   diff.mSetYCor(v.mGetCenterY() - u.mGetCenterY());
+					   // We want only positive distances (there are n
+					   // positive and n negative distances)
+					   if(diff.mGetDistance() > 0)
+						   totalDist += diff.mGetDistance();
+				   }
+			   }
+		   }
+		   
+		   System.out.println("td="+totalDist);
+		   
 		   // Reduce temp so the graph eventually slows into place
+		   temp *= ((Math.abs(k - (totalDist / numNodes))) / k);
 		   
-		   System.out.println("temp="+temp+" ts="+tempStep);
-		   
-		   temp -= tempStep;
+		   System.out.println("temp="+temp);
 	   }
 	   
 	   // Draw the nodes

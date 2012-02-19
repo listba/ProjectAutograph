@@ -111,6 +111,8 @@ public class Node implements Serializable {
          vCenterY = 0;
          vWidth = 0;
          vHeight = 0;
+         vDispX = 0.0;
+         vDispY = 0.0;
          
          vFillColor = Color.white;
          vBorderColor = Color.black;
@@ -127,15 +129,6 @@ public class Node implements Serializable {
     	  System.out.println("Error while trying to add node: " + e.getError());
       }
    }
-
-
-   /**
-	 *  Method to return the distance of the displacement vector
-	 * @return the distance
-	 */
-	public double mGetDispDistance() {
-		return Math.sqrt(Math.pow(vDispX, 2.0) + Math.pow(vDispY, 2.0));
-	}
    
    /**
     * GetName - used to access the variable name of the node to differentiate
@@ -238,7 +231,7 @@ public class Node implements Serializable {
     * GetEdgeList - returns a list of edges for the node
     * @return - vEdges
     */
-   public ArrayList mGetEdgeList(){
+   public ArrayList<Edge> mGetEdgeList(){
       return vEdges;
    }
    
@@ -299,6 +292,14 @@ public class Node implements Serializable {
    public void mSetDispY(double y) {
 	   vDispY = y;
    }
+   
+   /**
+	 *  Method to return the distance of the displacement vector
+	 * @return the distance
+	 */
+	public double mGetDispDistance() {
+		return Math.sqrt(Math.pow(vDispX, 2.0) + Math.pow(vDispY, 2.0));
+	}
    
    /**
     * GetCenterX - returns the x coordinate (in pixels) in the image of the center of the node.
