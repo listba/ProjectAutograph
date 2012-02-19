@@ -10,8 +10,8 @@ package autograph;
  */
 public class GraphVector {
 	
-	private int xCor;
-	private int yCor;
+	private double xCor;
+	private double yCor;
 	
 	/**
 	 * Constructor with 0 parameters, initializes to 0,0
@@ -27,7 +27,7 @@ public class GraphVector {
 	 * @param x - x coordinate
 	 * @param y - y coordinate
 	 */
-	public GraphVector(int x, int y) {
+	public GraphVector(double x, double y) {
 		xCor = x;
 		yCor = y;
 	}
@@ -36,7 +36,7 @@ public class GraphVector {
 	 *  Method to return the x coordinate
 	 * @return xCor
 	 */
-	public int mGetXCor() {
+	public double mGetXCor() {
 		return xCor;
 	}
 	
@@ -44,7 +44,7 @@ public class GraphVector {
 	 *  Method to return the y coordinate
 	 * @return yCor
 	 */
-	public int mGetYCor() {
+	public double mGetYCor() {
 		return yCor;
 	}
 	
@@ -52,7 +52,7 @@ public class GraphVector {
 	 *  Method to set the x coordinate
 	 * @param x - xCor
 	 */
-	public void mSetXCor(int x) {
+	public void mSetXCor(double x) {
 		xCor = x;
 	}
 	
@@ -60,7 +60,7 @@ public class GraphVector {
 	 *  Method to set the y coordinate
 	 * @param y - yCor
 	 */
-	public void mSetYCor(int y) {
+	public void mSetYCor(double y) {
 		yCor = y;
 	}
 	

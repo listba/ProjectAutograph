@@ -17,7 +17,7 @@ public class Autograph extends JFrame {
 		String filePath = "Graph.xml";
 		final Graph graph = GraphHelper.mImportGraphFromXML(filePath);
 		int imageWidth = GraphHelper.mGetPreferredImageWidth(graph);
-
+		imageWidth = 800;
 		this.setPreferredSize(new Dimension(imageWidth, imageWidth));
 		this.setTitle(title + " - " + graph.mGetTitle());
 		JPanel panel = new JPanel() {
