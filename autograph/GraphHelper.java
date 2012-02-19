@@ -7,6 +7,9 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.io.*;
+
+import autograph.Edge.Direction;
+import autograph.Edge.EdgeStyle;
 import autograph.exception.*;
 
 import java.io.IOException;
@@ -15,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Stack;
 
 import javax.swing.JPanel;
 import javax.xml.parsers.DocumentBuilder;
@@ -35,6 +39,61 @@ import org.xml.sax.SAXException;
  * @version 1.0
  */
 public class GraphHelper {
+   
+   private static enum graphAttributesGML{
+      LABEL,
+      NODE,
+      EDGE,
+      HIERARCHIC
+   }
+   
+   private static enum nodeAttributesGML{
+      ID,
+      LABEL,
+      NAME,
+      LABELGRAPHICS,
+      GRAPHICS
+   }
+   
+   private static enum nodeGraphicsAttributesGML{
+      W,
+      H,
+      TYPE,
+      FILL,
+      OUTLINE,
+      OUTLINESTYLE,
+   }
+   
+   private static enum nodeLabelGraphicsAttributesGML{
+      TEXT,
+      FONTSIZE,
+      FONTSTYLE,
+      FONTNAME,
+      COLOR
+   }
+   
+   private static enum edgeAttributesGML{
+      SOURCE,
+      TARGET,
+      LABEL,
+      GRAPHICS,
+      LABELGRAPHICS
+   }
+   
+   private enum edgeGraphicsAttributesGML{
+      STYLE,
+      FILL,
+      ARROW
+   }
+   
+   private enum edgeLabelGraphicsAttributesGML{
+      TEXT,
+      COLOR,
+      FONTSIZE,
+      FONTSTYLE,
+      FONTNAME
+   }
+   
    private enum nodeAttributes{
       ID,
       LABEL,
@@ -455,11 +514,162 @@ public class GraphHelper {
     * @param text - the total text to parse for the next word
     * @param currentIndex - the index of the current location
     */
-   private static String mGetNextWord(String text, int currentIndex){
+   private static String mGetNextWord(StringBuilder text, int currentIndex){
       int nextSpaceLoc = text.indexOf(" ", currentIndex);
       String word = text.substring(currentIndex, nextSpaceLoc);
+      currentIndex = nextSpaceLoc+1;
       return word;
    }
+   
+   /**
+    * Gets the style and color attributes for the edge from the GML file and puts them in the graph
+    * @param edge - the edge to populate
+    * @param graphLoc - the current stack location of the gml file (mostly for debugging)
+    * @param text - the text of the file we are parsing
+    * @param currentIndex - the current index of the file we are parsing
+    */
+   private static void mGetEdgeGraphicsAttributesGML(Edge edge, Stack<String> graphLoc, StringBuilder text, int currentIndex){
+      String nextAttribute = "";
+      while(nextAttribute != "]"){
+         nextAttribute = mGetNextWord(text, currentIndex);
+         switch(edgeGraphicsAttributesGML.valueOf(nextAttribute.toUpperCase())){
+            case STYLE:
+               //dotted, dashed, or solid
+               try{
+                  edge.mSetEdgeStyle(EdgeStyle.valueOf(mGetNextWord(text, currentIndex).toUpperCase()));
+               }
+               catch(IllegalArgumentException e){
+                  edge.mSetEdgeStyle(EdgeStyle.SOLID);
+               }
+               break;
+            case FILL:
+               //GML supports colors in the form of "#RRGGBB".
+               //TODO: write code to interpret color formats like that into 3 values from 1-255.
+               break;
+            case ARROW:
+               String direction = mGetNextWord(text, currentIndex);
+               if(direction == "last"){
+                  edge.mSetDirection(Direction.ENDDIRECTION);
+               }
+               else if(direction == "first"){
+                  edge.mSetDirection(Direction.STARTDIRECTION);
+               }
+               else if(direction == "both"){
+                  edge.mSetDirection(Direction.DOUBLEDIRECTION);
+               }
+               else{
+                  edge.mSetDirection(Direction.NODIRECTION);
+               }
+            default:
+               break;
+         }
+      }
+      graphLoc.pop();
+   }
+   
+   /**
+    * Populates the edge with the appearance data for the edge label based on GML input string
+    * @param edge - the edge to populate
+    * @param graphLoc - the current stack location for the gml (mostly for debugging)
+    * @param text - the text we are parsing to populate the graph
+    * @param currentIndex - the current index in the text.
+    */
+   private static void mGetEdgeLabelGraphicsAttributesGML(Edge edge, Stack<String> graphLoc, StringBuilder text, int currentIndex){
+      String nextAttribute = "";
+      while(nextAttribute != "]"){
+         nextAttribute = mGetNextWord(text, currentIndex);
+         switch(edgeLabelGraphicsAttributesGML.valueOf(nextAttribute.toUpperCase())){
+            case TEXT:
+               //KMW Note: This code is not always going to work. In the case where there is more than
+               //          one word in the label the parsing code will break. We will need to account for
+               //          attributes and attribute values separately when parsing I suspect.
+               edge.mSetLabel(mGetNextWord(text, currentIndex));
+               break;
+            case COLOR:
+               //TODO: convert #RRGGBB style into 3 ints ranging from 1-255.
+            case FONTSIZE:
+               //TODO: impelment font stuff for edges (not yet done in drawing either).
+            case FONTSTYLE:
+            case FONTNAME:
+            default:
+               break;
+         }
+      }
+   }
+   
+   /**
+    * Creates a new edge for a graph during GML import based on the GML file.
+    * @param g - the graph object being populated
+    * @param graphLoc - the current stack depth of the gml file (mostly for debugging)
+    * @param text - the text of the file we are parsing
+    * @param currentIndex - the current index in the text
+    * @return - the edge we are populating for the graph
+    */
+   private static Edge mGetEdgeAttributesGML(Graph g, Stack<String> graphLoc, StringBuilder text, int currentIndex){
+      //initialize a new edge to all null values.
+      Edge edge = new Edge(null, null, null, null, null, null);
+      String nextAttribute = "";
+      while(nextAttribute != "]"){
+         nextAttribute = mGetNextWord(text, currentIndex);
+         switch(edgeAttributesGML.valueOf(nextAttribute.toUpperCase())){
+            case SOURCE:
+               edge.mSetStartNode(g.mGetNodeById(mGetNextWord(text, currentIndex)));
+               break;
+            case TARGET:
+               edge.mSetEndNode(g.mGetNodeById(mGetNextWord(text, currentIndex)));
+               break;
+            case LABEL:
+               edge.mSetLabel(mGetNextWord(text, currentIndex));
+               break;
+            case GRAPHICS:
+               graphLoc.push("edgeGraphics");
+               mGetEdgeGraphicsAttributesGML(edge, graphLoc, text, currentIndex);
+               break;
+            case LABELGRAPHICS:
+               graphLoc.push("edgeLabelGraphics");
+               mGetEdgeLabelGraphicsAttributesGML(edge, graphLoc, text, currentIndex);
+               break;
+            default:
+               break;
+         }
+      }
+      graphLoc.pop();
+      return edge;
+   }
+   
+   /**
+    * Updates the selected graph based on the attributes it finds in the GML file.
+    * @param g - The graph we are building
+    * @param graphLoc - the current stack depth of the gml file (mostly for debugging purposes)
+    * @param text - the text of the file we are parsing
+    * @param currentIndex - the current index in the text
+    */
+   private static void mGetGraphAttributesGML(Graph g, Stack graphLoc, StringBuilder text, int currentIndex){
+      String nextAttribute = "";
+      try{
+         while(nextAttribute != "]"){
+            nextAttribute = mGetNextWord(text, currentIndex);
+            switch(graphAttributesGML.valueOf(nextAttribute.toUpperCase())){
+               case LABEL:
+                  g.mSetTitle(mGetNextWord(text, currentIndex));
+                  break;
+               case EDGE:
+                  graphLoc.push("edge");
+                  g.mAddEdge(mGetEdgeAttributesGML(g, graphLoc, text, currentIndex));
+                  break;
+               case NODE:
+                  
+               case HIERARCHIC:
+                  
+               default:
+            }
+         }
+      }
+      catch(Exception e){
+         
+      }
+   }
+   
    /**
     * Imports a graph from a plaintext document in our Graphing Language
     *
@@ -473,15 +683,9 @@ public class GraphHelper {
       //KMW Note: GML supports many attribute values that are not listed here. For now we will only support importing
       //          this subset of the attributes because our drawing only handles this subset of the attributes. If we
       //          change what our drawing handles we will have to add logic for handling those attributes here.
-      final String[] graphAttributes = {"label", "node", "edge", "hierarchic"};
-      final String[] nodeAttributes = {"id", "label", "name", "LabelGraphics", "graphics"};
-      final String[] nodeGraphicsAttributes = {"w", "h", "type", "fill", "outline", "outlineStyle"};
-      final String[] nodeLabelGraphicsAttributes = {"text", "fontSize", "fontStyle", "fontName", "color"};
-      final String[] edgeAttributes = {"source", "target", "label", "graphics", "LableGraphics"};
-      final String[] edgeGraphicsAttributes = {"style", "fill", "arrow"};
-      final String[] edgeLabelGraphicsAttributes = {"text", "color", "fontSize", "fontStyle", "fontName"};
       
       
+      Stack graphLocation = new Stack<String>();
       Graph graph = new Graph("");
       if(!fileName.isEmpty()){
          String fullFilePath;
@@ -509,6 +713,12 @@ public class GraphHelper {
          //Begin parsing the text into a graph.
          if(fileText.indexOf("graph")!= -1){
             currentIndex = fileText.indexOf("graph") + "graph".length();
+            if(mGetNextWord(fileText, currentIndex) == "["){
+               graphLocation.push("graph");
+            }
+            if(graphLocation.peek()=="graph"){
+               mGetGraphAttributesGML(graph, graphLocation, fileText, currentIndex);
+            }
             
          }
          else{
