@@ -14,11 +14,11 @@ public class Autograph extends JFrame {
 
 	public Autograph(String title) {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      String filePath = "Graph.xml";
-      final Graph graph = GraphHelper.mImportGraphFromXML(filePath);
-      int imageWidth = GraphHelper.mGetPreferredImageWidth(graph);
-      
-      this.setPreferredSize(new Dimension(imageWidth, imageWidth));
+		String filePath = "Graph.xml";
+		final Graph graph = GraphHelper.mImportGraphFromXML(filePath);
+		int imageWidth = GraphHelper.mGetPreferredImageWidth(graph);
+		imageWidth = 800;
+		this.setPreferredSize(new Dimension(imageWidth, imageWidth));
 		this.setTitle(title + " - " + graph.mGetTitle());
 		JPanel panel = new JPanel() {
 			@Override
@@ -26,9 +26,9 @@ public class Autograph extends JFrame {
 				super.paint(g);
 				g.setColor(Color.white);
 				g.fillRect(0, 0, getWidth(), getHeight());
-				
+
 				try{
-					GraphHelper.mDrawForceDirectedGraph(graph,g, this);
+					GraphHelper.mDrawForceDirectedGraph(graph, g, this);
 				}
 				catch(Exception e) {
 					e.getMessage();
@@ -38,7 +38,7 @@ public class Autograph extends JFrame {
 		};
 		//	mainWindow win =  new mainWindow();
 
-		
+
 		this.add(panel);
 		//this.setPreferredSize(new Dimension(800, 600));
 		this.pack();

@@ -46,8 +46,8 @@ public class Node implements Serializable {
    private ArrayList<Edge> vEdges;
    private int vCenterX;
    private int vCenterY;
-   private int vDispX; // displacement x
-   private int vDispY; // displacement y
+   private double vDispX; // displacement x
+   private double vDispY; // displacement y
    private int vWidth; //this is the width of the node in pixels (or diameter in case of circle)
    private int vHeight;
    private Color vFillColor;
@@ -272,7 +272,7 @@ public class Node implements Serializable {
     *  Get the displacement x
     * @return the displacement x
     */
-   public int mGetDispX() {
+   public double mGetDispX() {
 	   return vDispX;
    }
    
@@ -280,7 +280,7 @@ public class Node implements Serializable {
     *  Get the displacement y
     * @return the displacement y
     */
-   public int mGetDispY() {
+   public double mGetDispY() {
 	   return vDispY;
    }
    
@@ -288,7 +288,7 @@ public class Node implements Serializable {
     *  Set the displacement x
     * @param x - the new displacement x
     */
-   public void mSetDispX(int x) {
+   public void mSetDispX(double x) {
 	   vDispX = x;
    }
    
@@ -296,7 +296,7 @@ public class Node implements Serializable {
     *  Set the displacement y
     * @param y - the new displacement y
     */
-   public void mSetDispY(int y) {
+   public void mSetDispY(double y) {
 	   vDispY = y;
    }
    
