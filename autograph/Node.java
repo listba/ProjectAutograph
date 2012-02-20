@@ -138,6 +138,10 @@ public class Node implements Serializable {
    public String mGetId(){
       return vId;
    }
+   
+   public void mSetID(String id){
+      vId = id;
+   }
 
    /**
     * SetLabel - change the label on the node
