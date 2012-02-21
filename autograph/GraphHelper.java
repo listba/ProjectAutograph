@@ -41,59 +41,7 @@ import org.xml.sax.SAXException;
  */
 public class GraphHelper {
    
-   private static enum graphAttributesGML{
-      LABEL,
-      NODE,
-      EDGE,
-      HIERARCHIC
-   }
    
-   private static enum nodeAttributesGML{
-      ID,
-      LABEL,
-      NAME,
-      LABELGRAPHICS,
-      GRAPHICS
-   }
-   
-   private static enum nodeGraphicsAttributesGML{
-      W,
-      H,
-      TYPE,
-      FILL,
-      OUTLINE,
-      OUTLINESTYLE,
-   }
-   
-   private static enum nodeLabelGraphicsAttributesGML{
-      TEXT,
-      FONTSIZE,
-      FONTSTYLE,
-      FONTNAME,
-      COLOR
-   }
-   
-   private static enum edgeAttributesGML{
-      SOURCE,
-      TARGET,
-      LABEL,
-      GRAPHICS,
-      LABELGRAPHICS
-   }
-   
-   private enum edgeGraphicsAttributesGML{
-      STYLE,
-      FILL,
-      ARROW
-   }
-   
-   private enum edgeLabelGraphicsAttributesGML{
-      TEXT,
-      COLOR,
-      FONTSIZE,
-      FONTSTYLE,
-      FONTNAME
-   }
    
    private enum nodeAttributes{
       ID,
@@ -239,7 +187,8 @@ public class GraphHelper {
 	   double totalDist;
 	   
 	   // While the graph has not "cooled off"
-	   while(temp > 1) {
+	   for (int p = 0; p < 6; p++) { 
+	   //while(temp > 1) {
 		   // Calculate the repulsive forces 
 		   
 		   System.out.println("Rep!");
@@ -550,357 +499,7 @@ public class GraphHelper {
    public static void mExportGraphToGML(Graph graph, String fileName, String fileLoc) {
    }
    
-   /**
-    * Finds the text from currentIndex to the next instance of the ' ' character.
-    * @param text - the total text to parse for the next word
-    * @param currentIndex - the index of the current location
-    */
-   private static String mGetNextWord(StringBuilder text, int currentIndex){
-      int nextSpaceLoc = text.indexOf(" ", currentIndex);
-      String word = text.substring(currentIndex, nextSpaceLoc);
-      if(word.startsWith("\"")){
-         //if the word starts with " then find the corresponding closing "
-         //and take the text from in between those quotes
-         nextSpaceLoc = text.indexOf("\"", currentIndex+1) + 1;
-         word = text.substring(currentIndex + 1, nextSpaceLoc - 2);
-         
-      }
-      currentIndex = nextSpaceLoc+1;
-      return word;
-   }
-   
-   /**
-    * Gets the style and color attributes for the edge from the GML file and puts them in the graph
-    * @param edge - the edge to populate
-    * @param graphLoc - the current stack location of the gml file (mostly for debugging)
-    * @param text - the text of the file we are parsing
-    * @param currentIndex - the current index of the file we are parsing
-    */
-   private static void mGetEdgeGraphicsAttributesGML(Edge edge, Stack<String> graphLoc, StringBuilder text, int currentIndex) throws CannotLoadGraph{
-      if(graphLoc.peek() == "edgeGraphics"){
-         String nextAttribute = "";
-         while(nextAttribute != "]"){
-            nextAttribute = mGetNextWord(text, currentIndex);
-            switch(edgeGraphicsAttributesGML.valueOf(nextAttribute.toUpperCase())){
-               case STYLE:
-                  //dotted, dashed, or solid
-                  try{
-                     edge.mSetEdgeStyle(EdgeStyle.valueOf(mGetNextWord(text, currentIndex).toUpperCase()));
-                  }
-                  catch(IllegalArgumentException e){
-                     edge.mSetEdgeStyle(EdgeStyle.SOLID);
-                  }
-                  break;
-               case FILL:
-                  //GML supports colors in the form of "#RRGGBB".
-                  //TODO: write code to interpret color formats like that into 3 values from 1-255.
-                  break;
-               case ARROW:
-                  String direction = mGetNextWord(text, currentIndex);
-                  if(direction == "last"){
-                     edge.mSetDirection(Direction.ENDDIRECTION);
-                  }
-                  else if(direction == "first"){
-                     edge.mSetDirection(Direction.STARTDIRECTION);
-                  }
-                  else if(direction == "both"){
-                     edge.mSetDirection(Direction.DOUBLEDIRECTION);
-                  }
-                  else{
-                     edge.mSetDirection(Direction.NODIRECTION);
-                  }
-               default:
-                  break;
-            }
-         }
-         graphLoc.pop();
-      }
-      else{
-         throw new CannotLoadGraph("Parse Error - Cannot load edge graphic data");
-      }
-   }
-   
-   /**
-    * Populates the edge with the appearance data for the edge label based on GML input string
-    * @param edge - the edge to populate
-    * @param graphLoc - the current stack location for the gml (mostly for debugging)
-    * @param text - the text we are parsing to populate the graph
-    * @param currentIndex - the current index in the text.
-    */
-   private static void mGetEdgeLabelGraphicsAttributesGML(Edge edge, Stack<String> graphLoc, StringBuilder text, int currentIndex) throws CannotLoadGraph{
-      if(graphLoc.peek() == "edgeLabelGraphics"){
-         String nextAttribute = "";
-         while(nextAttribute != "]"){
-            nextAttribute = mGetNextWord(text, currentIndex);
-            switch(edgeLabelGraphicsAttributesGML.valueOf(nextAttribute.toUpperCase())){
-               case TEXT:
-                  edge.mSetLabel(mGetNextWord(text, currentIndex));
-                  break;
-               case COLOR:
-                  //TODO: convert #RRGGBB style into 3 ints ranging from 1-255.
-               case FONTSIZE:
-                  //TODO: impelment font stuff for edges (not yet done in drawing either).
-               case FONTSTYLE:
-               case FONTNAME:
-               default:
-                  break;
-            }
-         }
-         graphLoc.pop();
-      }
-      else{
-         throw new CannotLoadGraph("Parse Error - Cannot load edge label graphic data");
-      }
-   }
-   
-   /**
-    * Creates a new edge for a graph during GML import based on the GML file.
-    * @param g - the graph object being populated
-    * @param graphLoc - the current stack depth of the gml file (mostly for debugging)
-    * @param text - the text of the file we are parsing
-    * @param currentIndex - the current index in the text
-    * @return - the edge we are populating for the graph
-    * @throws CannotLoadGraph 
-    */
-   private static Edge mGetEdgeAttributesGML(Graph g, Stack<String> graphLoc, StringBuilder text, int currentIndex) throws CannotLoadGraph{
-      //initialize a new edge to all null values.
-      Edge edge = new Edge(null, null, null, null, null, null);
-      if(graphLoc.peek() == "edge"){
-         String nextAttribute = "";
-         while(nextAttribute != "]"){
-            nextAttribute = mGetNextWord(text, currentIndex);
-            switch(edgeAttributesGML.valueOf(nextAttribute.toUpperCase())){
-               case SOURCE:
-                  edge.mSetStartNode(g.mGetNodeById(mGetNextWord(text, currentIndex)));
-                  break;
-               case TARGET:
-                  edge.mSetEndNode(g.mGetNodeById(mGetNextWord(text, currentIndex)));
-                  break;
-               case LABEL:
-                  edge.mSetLabel(mGetNextWord(text, currentIndex));
-                  break;
-               case GRAPHICS:
-                  graphLoc.push("edgeGraphics");
-                  mGetEdgeGraphicsAttributesGML(edge, graphLoc, text, currentIndex);
-                  break;
-               case LABELGRAPHICS:
-                  graphLoc.push("edgeLabelGraphics");
-                  mGetEdgeLabelGraphicsAttributesGML(edge, graphLoc, text, currentIndex);
-                  break;
-               default:
-                  break;
-            }
-         }
-         graphLoc.pop();
-      }
-      else{
-         throw new CannotLoadGraph("Parse Error - Cannot load edge data");
-      }
-      return edge;
-   }
-   
-   /**
-    * Updates the node's label attributes based on text found in the gml file
-    * @param node - the node to update
-    * @param graphLoc - the current stack location of the GML file
-    * @param text - the text to parse
-    * @param currentIndex - the current index in the text to parse
-    * @throws CannotLoadGraph
-    */
-   private static void mGetNodeLabelGraphicsAttributesGML(Node node, Stack<String> graphLoc, StringBuilder text, int currentIndex) throws CannotLoadGraph{
-      if(graphLoc.peek() == "nodeLabelGraphics"){
-         String nextAttribute = "";
-         //because of the way fonts seem to work in java we will keep track of the font data separately
-         //so that we can create a font at the end of the function and assign that to the node.
-         int fontSize = 10;
-         int fontStyle = Font.PLAIN;
-         String fontName = "Monospaced";
-         while(nextAttribute !="]"){
-            nextAttribute = mGetNextWord(text, currentIndex);
-            switch(nodeLabelGraphicsAttributesGML.valueOf(nextAttribute.toUpperCase())){
-               case TEXT:
-                  node.mSetLabel(mGetNextWord(text, currentIndex));
-                  break;
-               case FONTSIZE:
-                  try{
-                     fontSize = Integer.parseInt(mGetNextWord(text, currentIndex));
-                  }
-                  catch(NumberFormatException e){
-                     throw new CannotLoadGraph("Parse Error - Failed to parse node label font size");
-                  }
-                  break;
-               case FONTSTYLE:
-                  String style = mGetNextWord(text, currentIndex);
-                  if(style == "plain"){
-                     fontStyle = Font.PLAIN;
-                  }
-                  else if(style == "italic"){
-                     fontStyle = Font.ITALIC;
-                  }
-                  else if(style == "bold"){
-                     fontStyle = Font.BOLD;
-                  }
-               case FONTNAME:
-                  fontName = mGetNextWord(text, currentIndex);
-                  break;
-               case COLOR:
-                  //TODO: write code to parse the color from #RRGGBB format
-               default:
-                  break;
-            }
-         }
-         Font font = new Font(fontName, fontStyle, fontSize);
-         node.mSetFont(font);
-         graphLoc.pop();
-      }
-      else{
-         throw new CannotLoadGraph("Parse Error- Cannot load node label graphics");
-      }
-   }
-   
-   /**
-    * Updates a node with the graphics attributes found in the GML syntax for that node
-    * @param node - the node to update
-    * @param graphLoc - the current stack position of that node in the gml
-    * @param text - the text containing the gml
-    * @param currentIndex - the current index of the text
-    * @throws CannotLoadGraph
-    */
-   private static void mGetNodeGraphicsAttributesGML(Node node, Stack<String> graphLoc, StringBuilder text, int currentIndex) throws CannotLoadGraph{
-      if(graphLoc.peek() == "nodeGraphics"){
-         String nextAttribute = "";
-         while(nextAttribute != "]"){
-            nextAttribute = mGetNextWord(text, currentIndex);
-            switch(nodeGraphicsAttributesGML.valueOf(nextAttribute.toUpperCase())){
-               case W:
-                  node.mSetWidth(Integer.parseInt(mGetNextWord(text, currentIndex)));
-                  break;
-               case H:
-                  node.mSetHeight(Integer.parseInt(mGetNextWord(text, currentIndex)));
-                  break;
-               case TYPE:
-                  //KMW Note: square is not a valid shape for GML, but it will be supported by
-                  //          rectangle anyway, so it's no big deal.
-                  String type = mGetNextWord(text, currentIndex);
-                  if(type == "oval"){
-                     node.mSetShape(NodeShape.OVAL);
-                  }
-                  else if(type == "circle"){
-                     node.mSetShape(NodeShape.CIRCLE);
-                  }
-                  else if(type == "rectangle"){
-                     node.mSetShape(NodeShape.RECTANGLE);
-                  }
-                  else if(type == "triangle"){
-                     node.mSetShape(NodeShape.TRIANGLE);
-                  }
-                  else{
-                     //default to circle for node shapes we don't support.
-                     node.mSetShape(NodeShape.CIRCLE);
-                  }
-                  break;
-               case FILL:
-                  //TODO: write code to parse color data out of #RRGGBB format
-                  break;
-               case OUTLINE:
-                  //TOOD: write code to parse color data out of #RRGGBB format
-               case OUTLINESTYLE:
-                  //TODO: write code to supporw drawing different outline styles
-                  //      (dotted, dashed, solid) and then write code to parse this 
-                  //      from GML.
-               default:
-                  break;
-            }
-         }
-         graphLoc.pop();
-      }
-      else{
-         throw new CannotLoadGraph("Parse Error- failed to load node graphics data");
-      }
-   }
-   
-   /**
-    * Updates a graph's node based on the attributes it finds in the GML text.
-    * @param g - The graph we are building
-    * @param graphLoc - the current stack depth of the gml file (mostly for debugging purposes)
-    * @param text - the text of the file we are parsing
-    * @param currentIndex - the current index in the text
-    */
-   private static Node mGetNodeAttributesGML(Graph g, Stack graphLoc, StringBuilder text, int currentIndex) throws CannotLoadGraph{
-      //Default to null values (constructor should fill in default values where necessary)
-      Node node = new Node(null, null, null, null);
-      if(graphLoc.peek() == "node"){
-         String nextAttribute = "";
-         while(nextAttribute !="]"){
-            nextAttribute = mGetNextWord(text, currentIndex);
-            switch(nodeAttributesGML.valueOf(nextAttribute.toUpperCase())){
-               case ID:
-                  node.mSetID(mGetNextWord(text, currentIndex));
-                  break;
-               case LABEL:
-                  node.mSetLabel(mGetNextWord(text, currentIndex));
-                  break;
-               case NAME:
-                  node.mSetLabel(mGetNextWord(text, currentIndex));
-                  break;
-               case LABELGRAPHICS:
-                  graphLoc.push("nodeLabelGraphics");
-                  mGetNodeLabelGraphicsAttributesGML(node, graphLoc, text, currentIndex);
-                  break;
-               case GRAPHICS:
-                  graphLoc.push("nodeGraphics");
-                  mGetNodeGraphicsAttributesGML(node, graphLoc, text, currentIndex);
-                  break;
-               default:
-                  break;
-            }
-         }
-         graphLoc.pop();
-      }
-      else{
-         throw new CannotLoadGraph("Parse Error - Cannot load node values");
-      }
-      return node;
-   }
-   
-   /**
-    * Updates the selected graph based on the attributes it finds in the GML file.
-    * @param g - The graph we are building
-    * @param graphLoc - the current stack depth of the gml file (mostly for debugging purposes)
-    * @param text - the text of the file we are parsing
-    * @param currentIndex - the current index in the text
-    */
-   private static void mGetGraphAttributesGML(Graph g, Stack graphLoc, StringBuilder text, int currentIndex) throws CannotLoadGraph{
-      String nextAttribute = "";
-      try{
-         while(nextAttribute != "]"){
-            nextAttribute = mGetNextWord(text, currentIndex);
-            switch(graphAttributesGML.valueOf(nextAttribute.toUpperCase())){
-               case LABEL:
-                  g.mSetTitle(mGetNextWord(text, currentIndex));
-                  break;
-               case EDGE:
-                  graphLoc.push("edge");
-                  g.mAddEdge(mGetEdgeAttributesGML(g, graphLoc, text, currentIndex));
-                  break;
-               case NODE:
-                  graphLoc.push("node");
-                  g.mAddNode(mGetNodeAttributesGML(g, graphLoc, text, currentIndex));
-                  break;
-               case HIERARCHIC:
-                  int hierarchic = Integer.parseInt(mGetNextWord(text, currentIndex));
-                  if(hierarchic > 0){
-                     throw new CannotLoadGraph("Parse Error - Hierarchic graphs are not supported by Autograph.");
-                  }
-               default:
-                  break;
-            }
-         }
-      }
-      catch(Exception e){
-         //TODO: report the failure to the user with the most recent exception's text.
-      }
-   }
+
    
    /**
     * Imports a graph from a plaintext document in our Graphing Language
@@ -912,16 +511,12 @@ public class GraphHelper {
     * @see     Graph
     */
    public static Graph mImportGraphFromGML(String fileName, String fileLoc){
-      //KMW Note: GML supports many attribute values that are not listed here. For now we will only support importing
-      //          this subset of the attributes because our drawing only handles this subset of the attributes. If we
-      //          change what our drawing handles we will have to add logic for handling those attributes here.
-      
-      
-      Stack graphLocation = new Stack<String>();
+       
+      Stack<String> graphLocation = new Stack<String>();
       Graph graph = new Graph("");
       if(!fileName.isEmpty()){
          String fullFilePath;
-         if(!fileLoc.isEmpty()){
+         if(fileLoc != null){
             fullFilePath = fileLoc + fileName;
          }
          else{
@@ -948,16 +543,18 @@ public class GraphHelper {
                scanner.close();
             }
          }
-         int currentIndex = 0;
+
          //Begin parsing the text into a graph.
          if(fileText.indexOf("graph")!= -1){
-            currentIndex = fileText.indexOf("graph") + "graph".length();
-            if(mGetNextWord(fileText, currentIndex) == "["){
+            int currentIndex = fileText.indexOf("graph") + "graph".length();
+            GMLParser parser = new GMLParser(fileText, currentIndex);
+            String word = parser.mGetNextWord();
+            if(word.equals("[")){
                graphLocation.push("graph");
             }
             if(graphLocation.peek()=="graph"){
                try {
-                  mGetGraphAttributesGML(graph, graphLocation, fileText, currentIndex);
+                  parser.mGetGraphAttributesGML(graph, graphLocation);
                } catch (CannotLoadGraph e) {
                   // TODO report failures to user
                   e.printStackTrace();
@@ -1063,7 +660,7 @@ public class GraphHelper {
       Node endNode = graph.mGetNodeById(el.getAttribute("endNode"));
       if (!id.isEmpty() && startNode != null && endNode != null) {
          edge = new Edge(id, el.getAttribute("label"), startNode, endNode, 
-                         el.getAttribute("direction"), el.getAttribute("edgeStyle"));
+                         el.getAttribute("direction"), el.getAttribute("edgeStyle"), false);
          // Get the rest of the attributes
          NamedNodeMap attributes = el.getAttributes();
          for (int i = 0; i < attributes.getLength(); i++) {

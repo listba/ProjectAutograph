@@ -89,18 +89,28 @@ public class Node implements Serializable {
          else
             vLabel = "";
          
-         try {
-            vShape = NodeShape.valueOf(shape.toUpperCase());
-         } catch (IllegalArgumentException e) {
-             vShape = NodeShape.CIRCLE;
+         if(shape != null){
+            try {
+               vShape = NodeShape.valueOf(shape.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                vShape = NodeShape.CIRCLE;
+            }
+         }
+         else{
+            vShape = NodeShape.CIRCLE;
          }
          
-         try {
-            vStyle = NodeStyle.valueOf(style.toUpperCase());
-         } catch (IllegalArgumentException e) {
-              vStyle = NodeStyle.SOLID;
+         if(style != null)
+         {
+            try {
+               vStyle = NodeStyle.valueOf(style.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                 vStyle = NodeStyle.SOLID;
+            }
          }
-         
+         else{
+            vStyle = NodeStyle.SOLID;
+         }
          //For now when we create a node we will not have any edge data. This may
          //change at some point.
          vEdges = new ArrayList<Edge>();

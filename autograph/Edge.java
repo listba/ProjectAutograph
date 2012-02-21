@@ -64,24 +64,36 @@ public class Edge implements Serializable {
     * @see Direction
     */
    public Edge(String id, String label, Node startNode, Node endNode,
-           String direction, String style){
+           String direction, String style, boolean bIgnoreValidation){
       try{
-         mValidateEdge(id, startNode, endNode);
+         if(!bIgnoreValidation){
+            mValidateEdge(id, startNode, endNode);
+         }
          vId = id;
          vLabel = label;
          vStartNode = startNode;
          vEndNode = endNode;
          
-         try {
-            vDirection = Direction.valueOf(direction.toUpperCase());
-         } catch (IllegalArgumentException e) {
-             vDirection = Direction.NODIRECTION;
+         if(direction != null){
+            try {
+               vDirection = Direction.valueOf(direction.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                vDirection = Direction.NODIRECTION;
+            }
+         }
+         else{
+            vDirection = Direction.NODIRECTION;
          }
          
-         try {
-            vEdgeStyle = EdgeStyle.valueOf(style.toUpperCase());
-         } catch (IllegalArgumentException e) {
-             vEdgeStyle = EdgeStyle.SOLID;
+         if(style != null){
+            try {
+               vEdgeStyle = EdgeStyle.valueOf(style.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                vEdgeStyle = EdgeStyle.SOLID;
+            }
+         }
+         else{
+            vEdgeStyle = EdgeStyle.SOLID;
          }
          
          vEdgeColor = Color.black;
