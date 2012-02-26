@@ -313,17 +313,19 @@ public class GraphHelper {
 			   v.mSetCenterLocation((int)(v.mGetCenterX() + (v.mGetDispX() / v.mGetDispDistance()) * displaceX), 
 					   				(int)(v.mGetCenterY() + (v.mGetDispY() / v.mGetDispDistance()) * displaceY));
 			   
-			   System.out.println("Node"+b+" location="+v.mGetCenterX()+","+v.mGetCenterY());
-			   
-			   // Make sure none of the nodes are off the screen
-			   v.mSetCenterLocation((int)(Math.min(width - v.mGetWidth(), Math.max(v.mGetWidth(), v.mGetCenterX()))), 
-					   				(int)(Math.min(height - v.mGetHeight(), Math.max(v.mGetHeight(), v.mGetCenterY()))));
-			   
-			   System.out.println("Node"+b+" location="+v.mGetCenterX()+","+v.mGetCenterY());
-			   
+			   System.out.println("Node"+b+" location="+v.mGetCenterX()+","+v.mGetCenterY());			   
 		   }
 		   
 		   iterator--;
+	   }
+	   
+	   // Make sure none of the nodes are off the screen
+	   for(int p = 0; p < numNodes; p++) {
+		   // the current node
+		   Node v = nodes.get(p);
+		   
+		   v.mSetCenterLocation((int)(Math.min(width - v.mGetWidth(), Math.max(v.mGetWidth(), v.mGetCenterX()))), 
+				   				(int)(Math.min(height - v.mGetHeight(), Math.max(v.mGetHeight(), v.mGetCenterY()))));  
 	   }
 	   
 	   // Draw the nodes
