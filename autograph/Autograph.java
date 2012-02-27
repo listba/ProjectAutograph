@@ -14,8 +14,8 @@ public class Autograph extends JFrame {
 
 	public Autograph(String title) {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		String filePath = "Graph.txt";
-		final Graph graph = GraphHelper.mImportGraphFromGML(filePath, null);
+		String filePath = "Graph.xml";
+		final Graph graph = GraphHelper.mImportGraphFromXML(filePath);
 		int imageWidth = GraphHelper.mGetPreferredImageWidth(graph);
 		imageWidth = 800;
 		this.setPreferredSize(new Dimension(imageWidth, imageWidth));

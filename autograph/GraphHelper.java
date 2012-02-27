@@ -164,11 +164,8 @@ public class GraphHelper {
 	   for(int i = 0; i < numNodes; i++) {
 		   Node v = nodes.get(i);
 		   double randX = generator.nextDouble() * (width - v.mGetWidth()) + v.mGetWidth();
-		   double randY = generator.nextDouble() * (height - v.mGetWidth()) + v.mGetWidth();
-		   v.mSetCenterLocation((int)randX, (int)randY);
-		   
-		   System.out.println("Node"+i+"="+v.mGetCenterX()+","+v.mGetCenterY());
-		   
+		   double randY = generator.nextDouble() * (height - v.mGetHeight()) + v.mGetHeight();
+		   v.mSetCenterLocation((int)randX, (int)randY);   
 	   } 
 	   
 	   // Value for the ideal distance between nodes
@@ -176,22 +173,126 @@ public class GraphHelper {
 	   
 	   // This value is used to make sure nodes don't move too much
 	   // as well as makes sure the graph is slowly coming to rest.
-	   double temp = width / (numNodes * 2);
+	   double temp = width / (numNodes + numEdges);
 	   
-	   System.out.println("nn="+numNodes+" ne="+numEdges+" "+width+"x"+height+"="+area+
-			   " k="+k+" temp="+temp);
+	   // Values used for making sure the graph stays centered on the screen
+	   int totalX = 0;
+	   int totalY = 0;
+	   int centerScreenX = width / 2;
+	   int centerScreenY = height / 2;
 	   
+	   // Values for calculating displacement
 	   GraphVector diff = new GraphVector();
 	   double displaceX;
 	   double displaceY;
 	   double smallDist;
 	   
-	   int iterator = numNodes * 2;
+	   // Use this iterator to keep the temperature
+	   // maturation in check
+	   int iterator = numNodes + numEdges;
 	   
 	   // While the graph has not "cooled off"
 	   while(temp > 1 && iterator > 0) {
+	   
+		   diff.mSetXCor(0.0);
+		   diff.mSetYCor(0.0);
 		   
-		   smallDist = width;
+		   /**
+		    * Calculate the repulsive forces 
+		    */
+		   for(int i = 0; i < numNodes; i++) {
+			   // The current node
+			   Node v = nodes.get(i);
+			   
+			   v.mSetDispX(0.0);
+			   v.mSetDispY(0.0);
+			   
+			   /**
+			    * Give the edges of the screen repulsive forces in order to
+			    * keep the nodes inside the screen (ideally)
+			    */  
+			   // Set the difference vector for the max edges
+			   diff.mSetXCor(width - v.mGetCenterX());
+			   diff.mSetYCor(height - v.mGetCenterY());
+			   
+			   // Add the repulsive forces
+			   v.mSetDispX(v.mGetDispX() + (diff.mGetXCor() / Math.sqrt(Math.pow(width - v.mGetCenterX(), 2.0))) * diff.mCalcRepulsive(k));
+			   v.mSetDispY(v.mGetDispY() + (diff.mGetYCor() / Math.sqrt(Math.pow(height - v.mGetCenterY(), 2.0))) * diff.mCalcRepulsive(k));			
+			   
+			   // Set the difference vector for the min edges
+			   diff.mSetXCor(0.0 - v.mGetCenterX());
+			   diff.mSetYCor(0.0 - v.mGetCenterY());
+			   
+			   // Add the repulsive forces
+			   v.mSetDispX(v.mGetDispX() + (diff.mGetXCor() / Math.sqrt(Math.pow(0.0 - v.mGetCenterX(), 2.0))) * diff.mCalcRepulsive(k));
+			   v.mSetDispY(v.mGetDispY() + (diff.mGetYCor() / Math.sqrt(Math.pow(0.0 - v.mGetCenterY(), 2.0))) * diff.mCalcRepulsive(k));	
+			   
+			   /**
+			    * Look at the rest of the nodes
+			    */
+			   for(int j = 0; j < numNodes; j++) {
+				   Node u = nodes.get(j);
+				   
+				   // if the two nodes are not the same
+				   if (!v.equals(u)) {
+					   // Set the difference vector
+					   diff.mSetXCor(v.mGetCenterX() - u.mGetCenterX());
+					   diff.mSetYCor(v.mGetCenterY() - u.mGetCenterY());
+					   
+					   // Add the repulsive forces
+					   v.mSetDispX(v.mGetDispX() + (diff.mGetXCor() / diff.mGetDistance()) * diff.mCalcRepulsive(k));
+					   v.mSetDispY(v.mGetDispY() + (diff.mGetYCor() / diff.mGetDistance()) * diff.mCalcRepulsive(k));
+				   }
+			   }
+		   }  
+		   /**
+		    * Calculate the attractive forces
+		    */
+		   for(int a = 0; a < numEdges; a++) {
+			   // The current edge
+			   Edge e = edges.get(a);
+			   
+			   // Set the difference vector
+			   diff.mSetXCor(e.mGetStartNode().mGetCenterX() - e.mGetEndNode().mGetCenterX());
+			   diff.mSetYCor(e.mGetStartNode().mGetCenterY() - e.mGetEndNode().mGetCenterY());
+
+			   // Displace the first node
+			   e.mGetStartNode().mSetDispX(e.mGetStartNode().mGetDispX() - (diff.mGetXCor() / diff.mGetDistance()) * diff.mCalcAttractive(k));
+			   e.mGetStartNode().mSetDispY(e.mGetStartNode().mGetDispY() - (diff.mGetYCor() / diff.mGetDistance()) * diff.mCalcAttractive(k));
+
+			   // Displace the second node
+			   e.mGetEndNode().mSetDispX(e.mGetEndNode().mGetDispX() + (diff.mGetXCor() / diff.mGetDistance()) * diff.mCalcAttractive(k));
+			   e.mGetEndNode().mSetDispY(e.mGetEndNode().mGetDispY() + (diff.mGetYCor() / diff.mGetDistance()) * diff.mCalcAttractive(k));
+		   }
+		   /**
+		    * Limit max displacement to temp and prevent from displacement outside panel
+		    */
+		   for(int b = 0; b < numNodes; b++) {
+			   // the current node
+			   Node v = nodes.get(b);
+			   
+			   // Make sure the displacement isn't too much (x-dir)
+			   if(v.mGetDispX() < 0)
+				   displaceX = Math.max(v.mGetDispX(), -temp);
+			   else
+				   displaceX = Math.min(v.mGetDispX(), temp);
+			   
+			   // Make sure the displacement isn't too much (y-dir)
+			   if(v.mGetDispY() < 0)
+				   displaceY = Math.max(v.mGetDispY(), -temp);
+			   else
+				   displaceY = Math.min(v.mGetDispY(), temp);
+			   
+			   // Reposition the node
+			   v.mSetCenterLocation((int)(v.mGetCenterX() + (v.mGetDispX() / v.mGetDispDistance()) * displaceX), 
+					   				(int)(v.mGetCenterY() + (v.mGetDispY() / v.mGetDispDistance()) * displaceY));
+		   }
+		   
+		   /**
+		    * Cool the temperature as the graph is taking
+		    * shape (ideally)
+		    */
+		   smallDist = width * height;
 		   // Get the total of the distances between nodes
 		   for(int f = 0; f < numNodes; f++) {	   
 			   Node v = nodes.get(f);
@@ -208,124 +309,40 @@ public class GraphHelper {
 			   }
 		   }
 		   
-		   System.out.println("sd="+smallDist);
-		   
 		   // Reduce temp so the graph eventually slows into place
 		   temp *= ((Math.abs(k - smallDist)) / k);
-		   
-		   System.out.println("temp="+temp);
-		   
-		   // Calculate the repulsive forces 
-		   
-		   System.out.println("Rep!");
-		   
-		   diff.mSetXCor(0.0);
-		   diff.mSetYCor(0.0);
-		   
-		   for(int i = 0; i < numNodes; i++) {
-			   // The current node
-			   Node v = nodes.get(i);
-			   
-			   System.out.println("Node="+i);
-			   
-			   v.mSetDispX(0.0);
-			   v.mSetDispY(0.0);
-			   
-			   System.out.println("Disp="+v.mGetDispX()+","+v.mGetDispY());
-			   
-			   // Look at the rest of the nodes
-			   for(int j = 0; j < numNodes; j++) {
-				   Node u = nodes.get(j);
-				   // if the two nodes are not the same
-				   
-				   System.out.println("OtherNode="+j);
-				   
-				   if (!v.equals(u)) {
-					   // Set the difference vector
-					   diff.mSetXCor(v.mGetCenterX() - u.mGetCenterX());
-					   diff.mSetYCor(v.mGetCenterY() - u.mGetCenterY());
-					   
-					   System.out.println("diff="+diff.mGetXCor()+","+diff.mGetYCor()+" dist="+diff.mGetDistance()+" set!");
-					   
-					   System.out.println("repForX="+(diff.mGetXCor() / diff.mGetDistance()) * diff.mCalcRepulsive(k));
-					   System.out.println("repForY="+(diff.mGetYCor() / diff.mGetDistance()) * diff.mCalcRepulsive(k));
-					   
-					   // Add the repulsive forces
-					   v.mSetDispX(v.mGetDispX() + (diff.mGetXCor() / diff.mGetDistance()) * diff.mCalcRepulsive(k));
-					   v.mSetDispY(v.mGetDispY() + (diff.mGetYCor() / diff.mGetDistance()) * diff.mCalcRepulsive(k));
-					   
-					   System.out.println("Disp="+v.mGetDispX()+","+v.mGetDispY()+" set!");
-				   }  
-			   }
-		   }
-		   System.out.println("Att!");
-		   // Calculate the attractive forces
-		   for(int a = 0; a < numEdges; a++) {
-			   // The current edge
-			   Edge e = edges.get(a);
-			   
-			   System.out.println("Edge="+a);
-			   
-			   // Set the difference vector
-			   diff.mSetXCor(e.mGetStartNode().mGetCenterX() - e.mGetEndNode().mGetCenterX());
-			   diff.mSetYCor(e.mGetStartNode().mGetCenterY() - e.mGetEndNode().mGetCenterY());
-			   
-			   System.out.println("diffDist="+diff.mGetDistance()+" set!");
-			   
-			   System.out.println("attForX="+(diff.mGetXCor() / diff.mGetDistance()) * diff.mCalcAttractive(k));
-			   System.out.println("attForY="+(diff.mGetYCor() / diff.mGetDistance()) * diff.mCalcAttractive(k));
-			   
-			   // Displace the first node
-			   e.mGetStartNode().mSetDispX(e.mGetStartNode().mGetDispX() - (diff.mGetXCor() / diff.mGetDistance()) * diff.mCalcAttractive(k));
-			   e.mGetStartNode().mSetDispY(e.mGetStartNode().mGetDispY() - (diff.mGetYCor() / diff.mGetDistance()) * diff.mCalcAttractive(k));
-			   
-			   System.out.println("Node 1 Disp="+e.mGetStartNode().mGetDispX()+","+e.mGetStartNode().mGetDispY()+" set!");
-			   
-			   // Displace the second node
-			   e.mGetEndNode().mSetDispX(e.mGetEndNode().mGetDispX() + (diff.mGetXCor() / diff.mGetDistance()) * diff.mCalcAttractive(k));
-			   e.mGetEndNode().mSetDispY(e.mGetEndNode().mGetDispY() + (diff.mGetYCor() / diff.mGetDistance()) * diff.mCalcAttractive(k));
-			   
-			   System.out.println("Node 2 Disp="+e.mGetEndNode().mGetDispX()+","+e.mGetEndNode().mGetDispY()+" set!");
-		   }
-		   System.out.println("Set!");
-		   // Limit max displacement to temp and prevent from displacement outside panel
-		   for(int b = 0; b < numNodes; b++) {
-			   // the current node
-			   Node v = nodes.get(b);
-			   // Reposition the node
-			   
-			   System.out.println("Node="+b);
-			   
-			   // Make sure the displacement isn't too much (x-dir)
-			   if(v.mGetDispX() < 0)
-				   displaceX = Math.max(v.mGetDispX(), -temp);
-			   else
-				   displaceX = Math.min(v.mGetDispX(), temp);
-			   
-			   // Make sure the displacement isn't too much (y-dir)
-			   if(v.mGetDispY() < 0)
-				   displaceY = Math.max(v.mGetDispY(), -temp);
-			   else
-				   displaceY = Math.min(v.mGetDispY(), temp);
-			   
-			   System.out.println("Disp="+displaceX+","+displaceY);
-			   
-			   v.mSetCenterLocation((int)(v.mGetCenterX() + (v.mGetDispX() / v.mGetDispDistance()) * displaceX), 
-					   				(int)(v.mGetCenterY() + (v.mGetDispY() / v.mGetDispDistance()) * displaceY));
-			   
-			   System.out.println("Node"+b+" location="+v.mGetCenterX()+","+v.mGetCenterY());			   
-		   }
-		   
+
 		   iterator--;
 	   }
-	   
-	   // Make sure none of the nodes are off the screen
+	      
+	   /**
+	    * Shift the entire graph back to the middle
+	    * of the screen by calculating the center of
+	    * the graph the dispersing each node back
+	    * toward the center of the screen.
+	    */   
 	   for(int p = 0; p < numNodes; p++) {
-		   // the current node
 		   Node v = nodes.get(p);
-		   
+		   // Get the totals for calculating the center of the graph
+		   totalX += v.mGetCenterX();
+		   totalY += v.mGetCenterY();
+	   }
+	   
+	   // Make the total values = the average values
+	   totalX /= numNodes;
+	   totalY /= numNodes;
+	   
+	   // Make the total values = the amount to displace all nodes
+	   totalX -= centerScreenX;
+	   totalY -= centerScreenY;
+	   
+	   // Change each node's position
+	   for(int q = 0; q < numNodes; q++) {
+		   Node v = nodes.get(q);
+		   v.mSetCenterLocation(v.mGetCenterX() - totalX, v.mGetCenterY() - totalY);
+		   // Make sure none of the nodes are off the screen
 		   v.mSetCenterLocation((int)(Math.min(width - v.mGetWidth(), Math.max(v.mGetWidth(), v.mGetCenterX()))), 
-				   				(int)(Math.min(height - v.mGetHeight(), Math.max(v.mGetHeight(), v.mGetCenterY()))));  
+	   				(int)(Math.min(height - v.mGetHeight(), Math.max(v.mGetHeight(), v.mGetCenterY()))));
 	   }
 	   
 	   // Draw the nodes
