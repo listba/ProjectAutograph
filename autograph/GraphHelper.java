@@ -331,7 +331,7 @@ public class GraphHelper {
 		   mDrawNode(g, nodes.get(c));
 	   }
 	   // Draw the edges
-	   for(int d = 0; d < numNodes; d++) {
+	   for(int d = 0; d < numEdges; d++) {
 		   mDrawEdge(g, edges.get(d));
 	   }
    }
