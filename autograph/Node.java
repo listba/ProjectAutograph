@@ -132,7 +132,6 @@ public class Node implements Serializable {
          //           like Monospaced to ensure that it works on all computers
          //           For more info see: http://docs.oracle.com/javase/tutorial/2d/text/fonts.html
          vFont = new Font("Monospaced", 0, 10);
-         System.out.println(vFont.getFontName());
       }
       catch(CannotAddNodeException e){
     	//TODO: This may need changed to an error file, etc

@@ -26,6 +26,12 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -418,6 +424,122 @@ public class GraphHelper {
     * @see     Graph
     */
    public static void mExportGraphToXML(Graph graph, String filePath) {
+      // Get Node and Edge list and the number of nodes and edges
+      ArrayList<Node> nodes = graph.mGetNodeList();
+      ArrayList<Edge> edges = graph.mGetEdgeList();
+      int numNodes = nodes.size();
+      int numEdges = edges.size();
+
+      try {
+         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+         // Create and add root element to document
+         Document doc = docBuilder.newDocument();
+         Element rootElement = doc.createElement("Autograph");
+         doc.appendChild(rootElement);
+         rootElement.setAttribute("title", graph.mGetTitle());
+    
+         // Nodes element
+         Element nodesElement = doc.createElement("Nodes");
+         // Append Nodes element to root
+         rootElement.appendChild(nodesElement);
+         // Edges element
+         Element edgesElement = doc.createElement("Edges");
+         // Append Edges element to root
+         rootElement.appendChild(edgesElement);
+
+         // Loop through each node, add it as a child element to the Nodes Element
+         // The grab each attribute for it and write the attribute to that element
+         for (int i = 0; i < numNodes; i++) {
+            Node node = nodes.get(i);
+            // Create new node element
+            Element nodeElement = doc.createElement("Node");
+            // Append node element to Parent (Nodes)
+            nodesElement.appendChild(nodeElement);
+            for (nodeAttributes na : nodeAttributes.values() ) {
+               // Get String Value of Attribute
+               String value = mGetNodeAttributeValue(node, na);
+               // Add attribute and associated value
+               switch (na) {
+                  case LABEL: // The label element can be empty, we want to ignore it if this is the case
+                     if (value != "") 
+                        nodeElement.setAttribute(na.name().toLowerCase(), value);
+                     break;
+                  case FILLCOLOR: //Because XML is case sensitive
+                     nodeElement.setAttribute("fillColor", value);
+                     break;
+                  case BORDERCOLOR: //Because XML is case sensitive
+                     nodeElement.setAttribute("borderColor", value);
+                     break;
+                  case LABELCOLOR: //Because XML is case sensitive
+                     nodeElement.setAttribute("labelColor", value);
+                     break;
+                  case WIDTH: // Width can be empty (defaults to 0), we want to ignore it if this is the case
+                     if (!value.equals("0")) {
+                        nodeElement.setAttribute(na.name().toLowerCase(), value);
+                     }
+                     break;
+                  case HEIGHT: // Height can be empty (defaults to 0), we want to ignore it if this is the case
+                     if (!value.equals("0")) {
+                        nodeElement.setAttribute(na.name().toLowerCase(), value);
+                     }
+                     break;
+                  default: // Add attribute to current edge
+                     nodeElement.setAttribute(na.name().toLowerCase(), value);
+                     break;
+               }
+            }
+         }
+         // Loop through each edge, add it as a child element to the Edges Element
+         // The grab each attribute for it and write the attribute to that element
+         for (int i = 0; i < numEdges; i++) {
+            // Get next edge
+            Edge edge = edges.get(i);
+            // Create new edge element
+            Element edgeElement = doc.createElement("Edge");
+            // Append edge element to Parrent (Edges)
+            edgesElement.appendChild(edgeElement);
+            for (edgeAttributes ea : edgeAttributes.values() ) {
+               // Get string value of associated attribute
+               String value = mGetEdgeAttributeValue(edge, ea);
+               // Add attribute ans associated value
+               switch (ea) {
+                  case LABEL: // The label element can be empty, we want to ignore it if this is the case
+                     if (value != "")
+                        edgeElement.setAttribute(ea.name().toLowerCase(), value);
+                     break;
+                  case STARTNODE: //Because XML is case sensitive
+                     edgeElement.setAttribute("startNode", value);
+                     break;
+                  case ENDNODE: //Because XML is case sensitive
+                     edgeElement.setAttribute("endNode", value);
+                     break;
+                  case EDGECOLOR: //Because XML is case sensitive
+                     edgeElement.setAttribute("edgeColor", value);
+                     break;
+                  case LABELCOLOR: //Because XML is case sensitive
+                     edgeElement.setAttribute("labelColor", value);
+                     break;
+                  default: // Add attribute to current edge
+                     edgeElement.setAttribute(ea.name().toLowerCase(), value);
+                     break;
+               }
+            }
+         }
+         // write the content into xml file
+         TransformerFactory transformerFactory = TransformerFactory.newInstance();
+         Transformer transformer = transformerFactory.newTransformer();
+         DOMSource source = new DOMSource(doc);
+         StreamResult result = new StreamResult(new File(filePath));
+         transformer.transform(source, result);
+
+      } catch (ParserConfigurationException pce) {
+         pce.printStackTrace();
+     } catch (TransformerException tfe) {
+         tfe.printStackTrace();
+     }
+
    }
    
    /**
@@ -448,8 +570,7 @@ public class GraphHelper {
             for(int i = 0; i < nl.getLength(); i++) {
                Element el = (Element)nl.item(i);
                try {
-                  Node node = getNodeElement(el);
-                  System.out.println(node.mGetId() + " added ("+ i +")");
+                  Node node = mGetNodeElement(el);
                   graph.mAddNode(node);
                } catch (InvalidXMLException e) {
                   e.getMessage();
@@ -469,8 +590,7 @@ public class GraphHelper {
             for(int i = 0; i < nl.getLength(); i++) {
                Element el = (Element)nl.item(i);
                try {
-                  Edge edge = getEdgeElement(el, graph);
-                  System.out.println(edge.mGetId() + " added ("+ i +")");
+                  Edge edge = mGetEdgeElement(el, graph);
                   graph.mAddEdge(edge);
                } catch (InvalidXMLException e) {
                   e.getMessage();
@@ -576,14 +696,128 @@ public class GraphHelper {
       }
       return graph;
    }
-   
+   /**
+    * Returns string value of requested attribute given a node object
+    * 
+    * @param   node        The node object
+    * @param   attribute   The nodeAttribute
+    * @return              The value of the attribute as a string
+    */
+   private static String mGetNodeAttributeValue(Node node, nodeAttributes attribute) {
+      String value = "";
+      try {
+         switch (attribute) {
+            case ID:
+               value = node.mGetId();
+               break;
+            case LABEL:
+               value = node.mGetLabel();
+               break;
+            case SHAPE:
+               value = node.mGetShape().name();
+               break;
+            case STYLE:
+               value = node.mGetStyle().name();
+               break;
+            case FILLCOLOR:;
+               // get hax value of color as a string
+               value = Integer.toHexString(node.mGetFillColor().getRGB());
+               // Remove ff from begining of value, add a # symbol and make all caps
+               value = "#" + value.substring(2, value.length()).toUpperCase();
+               break;
+            case BORDERCOLOR:
+               // get hax value of color as a string
+               value = Integer.toHexString(node.mGetBorderColor().getRGB());
+               // Remove ff from begining of value, add a # symbol and make all caps
+               value = "#" + value.substring(2, value.length()).toUpperCase();
+               break;
+            case LABELCOLOR:
+               // get hax value of color as a string
+               value = Integer.toHexString(node.mGetLabelColor().getRGB());
+               // Remove ff from begining of value, add a # symbol and make all caps
+               value = "#" + value.substring(2, value.length()).toUpperCase();
+               break;
+            case FONT:
+               Font f = node.mGetFont();
+               value = f.getFontName() + " " + f.getStyle() + " " + f.getSize();
+               break;
+            case WIDTH:
+               value = String.valueOf(node.mGetWidth());
+               break;
+            case HEIGHT:
+               value = String.valueOf(node.mGetHeight());
+               break;
+            default: break;
+         }
+      } catch (IllegalArgumentException e) {
+         // TODO: Print out warning (log) for invalid attribute
+         // This function is only ever called by code, and the associated enums
+         // are from an existing graph object and therefore should never happen.
+      }
+      return value;
+   }
+
+   /**
+    * Returns string value of requested attribute given an edge object
+    * 
+    * @param   edge        The edge object
+    * @param   attribute   The edgeAttribute
+    * @return              The value of the attribute as a string
+    */
+   private static String mGetEdgeAttributeValue(Edge edge, edgeAttributes attribute) {
+      String value = "";
+      try {
+         switch (attribute) {
+            case ID:
+               value = edge.mGetId();
+               break;
+            case LABEL:
+               value = edge.mGetLabel();
+               break;
+            case STARTNODE:
+               value = edge.mGetStartNode().mGetId();
+               break;
+            case ENDNODE:
+               value = edge.mGetEndNode().mGetId();
+               break;
+            case DIRECTION:
+               value = edge.mGetDirection().name();
+               break;
+            case STYLE:
+               value = edge.mGetEdgeStyle().name();
+               break;
+            case EDGECOLOR:;
+               // get hax value of color as a string
+               value = Integer.toHexString(edge.mGetEdgeColor().getRGB());
+               // Remove ff from begining of value, add a # symbol and make all caps
+               value = "#" + value.substring(2, value.length()).toUpperCase();
+               break;
+            case LABELCOLOR:
+               // get hax value of color as a string
+               value = Integer.toHexString(edge.mGetLabelColor().getRGB());
+               // Remove ff from begining of value, add a # symbol and make all caps
+               value = "#" + value.substring(2, value.length()).toUpperCase();
+               break;
+            case FONT:
+               Font f = edge.mGetFont();
+               value = f.getFontName() + " " + f.getStyle() + " " + f.getSize();
+               break;
+            default: break;
+         }
+      } catch (IllegalArgumentException e) {
+         // TODO: Print out warning (log) for invalid attribute
+         // This function is only ever called by code, and the associated enums
+         // are from an existing graph object and therefore should never happen.
+      }
+      return value;
+   }
    /**
     * Creates Node object from xml element
     * 
     * @param   el          The xml node element
     * @return              The Node object
     */
-   private static Node getNodeElement(Element el) throws InvalidXMLException {
+   private static Node mGetNodeElement(Element el) throws InvalidXMLException {
       // TODO: Get additional elements from XML
       
       // Create Node Object
@@ -656,7 +890,7 @@ public class GraphHelper {
     * @param   graph       The current graph with the nodes 
     * @return              The edge object
     */
-   private static Edge getEdgeElement(Element el, Graph graph) throws InvalidXMLException {
+   private static Edge mGetEdgeElement(Element el, Graph graph) throws InvalidXMLException {
       // TODO: Get additional elements from XML
       Edge edge = null;
       String id = el.getAttribute("id");

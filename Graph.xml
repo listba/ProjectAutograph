@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Autograph title="Graph1">
+<Autograph title="MyXMLGraph">
    <Nodes>
-      <Node />
       <Node id="NodeA" label="Node A" shape="circle" style="dashed" puddin="jello" 
             fillColor="#2c2c2c" borderColor="#00FF00" labelColor="#FFFFFF"/>
       <Node id="NodeB" label="Node B" shape="square"/>
