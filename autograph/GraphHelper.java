@@ -160,11 +160,12 @@ public class GraphHelper {
 	   int area = width * height;
 	   
 	   // Set each node at a random location
+	   // within the center 60% of the screen
 	   Random generator = new Random();
 	   for(int i = 0; i < numNodes; i++) {
 		   Node v = nodes.get(i);
-		   double randX = generator.nextDouble() * (width - v.mGetWidth()) + v.mGetWidth();
-		   double randY = generator.nextDouble() * (height - v.mGetHeight()) + v.mGetHeight();
+		   double randX = generator.nextDouble() * (width - (width / 5)) + (width / 5);
+		   double randY = generator.nextDouble() * (height - (height / 5)) + (height / 5);
 		   v.mSetCenterLocation((int)randX, (int)randY);   
 	   } 
 	   
@@ -187,12 +188,8 @@ public class GraphHelper {
 	   double displaceY;
 	   double smallDist;
 	   
-	   // Use this iterator to keep the temperature
-	   // maturation in check
-	   int iterator = numNodes + numEdges;
-	   
 	   // While the graph has not "cooled off"
-	   while(temp > 1 && iterator > 0) {
+	   while(temp > 1) {
 	   
 		   diff.mSetXCor(0.0);
 		   diff.mSetYCor(0.0);
@@ -206,26 +203,6 @@ public class GraphHelper {
 			   
 			   v.mSetDispX(0.0);
 			   v.mSetDispY(0.0);
-			   
-			   /**
-			    * Give the edges of the screen repulsive forces in order to
-			    * keep the nodes inside the screen (ideally)
-			    */  
-			   // Set the difference vector for the max edges
-			   diff.mSetXCor(width - v.mGetCenterX());
-			   diff.mSetYCor(height - v.mGetCenterY());
-			   
-			   // Add the repulsive forces
-			   v.mSetDispX(v.mGetDispX() + (diff.mGetXCor() / Math.sqrt(Math.pow(width - v.mGetCenterX(), 2.0))) * diff.mCalcRepulsive(k));
-			   v.mSetDispY(v.mGetDispY() + (diff.mGetYCor() / Math.sqrt(Math.pow(height - v.mGetCenterY(), 2.0))) * diff.mCalcRepulsive(k));			
-			   
-			   // Set the difference vector for the min edges
-			   diff.mSetXCor(0.0 - v.mGetCenterX());
-			   diff.mSetYCor(0.0 - v.mGetCenterY());
-			   
-			   // Add the repulsive forces
-			   v.mSetDispX(v.mGetDispX() + (diff.mGetXCor() / Math.sqrt(Math.pow(0.0 - v.mGetCenterX(), 2.0))) * diff.mCalcRepulsive(k));
-			   v.mSetDispY(v.mGetDispY() + (diff.mGetYCor() / Math.sqrt(Math.pow(0.0 - v.mGetCenterY(), 2.0))) * diff.mCalcRepulsive(k));	
 			   
 			   /**
 			    * Look at the rest of the nodes
@@ -311,8 +288,6 @@ public class GraphHelper {
 		   
 		   // Reduce temp so the graph eventually slows into place
 		   temp *= ((Math.abs(k - smallDist)) / k);
-
-		   iterator--;
 	   }
 	      
 	   /**
