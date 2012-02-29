@@ -180,7 +180,8 @@ public class GraphHelper {
 	   
 	   // This value is used to make sure nodes don't move too much
 	   // as well as makes sure the graph is slowly coming to rest.
-	   double temp = width / (numNodes + numEdges);
+	   double temp = width / 10;
+	   double tempOrig = temp;
 	   
 	   // Values used for making sure the graph stays centered on the screen
 	   int totalX = 0;
@@ -190,13 +191,11 @@ public class GraphHelper {
 	   
 	   // Values for calculating displacement
 	   GraphVector diff = new GraphVector();
-	   double displaceX;
-	   double displaceY;
-	   double smallDist;
+	   double displace;
 	   
 	   // While the graph has not "cooled off"
 	   while(temp > 1) {
-	   
+		   
 		   diff.mSetXCor(0.0);
 		   diff.mSetYCor(0.0);
 		   
@@ -222,9 +221,19 @@ public class GraphHelper {
 					   diff.mSetXCor(v.mGetCenterX() - u.mGetCenterX());
 					   diff.mSetYCor(v.mGetCenterY() - u.mGetCenterY());
 					   
-					   // Add the repulsive forces
-					   v.mSetDispX(v.mGetDispX() + (diff.mGetXCor() / diff.mGetDistance()) * diff.mCalcRepulsive(k));
-					   v.mSetDispY(v.mGetDispY() + (diff.mGetYCor() / diff.mGetDistance()) * diff.mCalcRepulsive(k));
+					   // If the nodes are not on top of each other
+					   if(diff.mGetDistance() != 0) {
+						// Add the repulsive forces
+						   v.mSetDispX(v.mGetDispX() + (diff.mGetXCor() / diff.mGetDistance()) * diff.mCalcRepulsive(k, tempOrig));
+						   v.mSetDispY(v.mGetDispY() + (diff.mGetYCor() / diff.mGetDistance()) * diff.mCalcRepulsive(k, tempOrig));
+					   }
+					   else {
+						   // otherwise force the nodes apart!
+						   v.mSetDispX(-1 * width / 4);
+						   v.mSetDispY(-1 * width / 4);
+						   u.mSetDispX(width / 4);
+						   u.mSetDispY(width / 4);
+					   }
 				   }
 			   }
 		   }  
@@ -238,14 +247,17 @@ public class GraphHelper {
 			   // Set the difference vector
 			   diff.mSetXCor(e.mGetStartNode().mGetCenterX() - e.mGetEndNode().mGetCenterX());
 			   diff.mSetYCor(e.mGetStartNode().mGetCenterY() - e.mGetEndNode().mGetCenterY());
+			   
+			   // Only displace if they're not on top of each other
+			   if(diff.mGetDistance() != 0.0) {
+				   // Displace the first node
+				   e.mGetStartNode().mSetDispX(e.mGetStartNode().mGetDispX() - (diff.mGetXCor() / diff.mGetDistance()) * diff.mCalcAttractive(k));
+				   e.mGetStartNode().mSetDispY(e.mGetStartNode().mGetDispY() - (diff.mGetYCor() / diff.mGetDistance()) * diff.mCalcAttractive(k));
 
-			   // Displace the first node
-			   e.mGetStartNode().mSetDispX(e.mGetStartNode().mGetDispX() - (diff.mGetXCor() / diff.mGetDistance()) * diff.mCalcAttractive(k));
-			   e.mGetStartNode().mSetDispY(e.mGetStartNode().mGetDispY() - (diff.mGetYCor() / diff.mGetDistance()) * diff.mCalcAttractive(k));
-
-			   // Displace the second node
-			   e.mGetEndNode().mSetDispX(e.mGetEndNode().mGetDispX() + (diff.mGetXCor() / diff.mGetDistance()) * diff.mCalcAttractive(k));
-			   e.mGetEndNode().mSetDispY(e.mGetEndNode().mGetDispY() + (diff.mGetYCor() / diff.mGetDistance()) * diff.mCalcAttractive(k));
+				   // Displace the second node
+				   e.mGetEndNode().mSetDispX(e.mGetEndNode().mGetDispX() + (diff.mGetXCor() / diff.mGetDistance()) * diff.mCalcAttractive(k));
+				   e.mGetEndNode().mSetDispY(e.mGetEndNode().mGetDispY() + (diff.mGetYCor() / diff.mGetDistance()) * diff.mCalcAttractive(k));
+			   }
 		   }
 		   /**
 		    * Limit max displacement to temp and prevent from displacement outside panel
@@ -254,46 +266,26 @@ public class GraphHelper {
 			   // the current node
 			   Node v = nodes.get(b);
 			   
-			   // Make sure the displacement isn't too much (x-dir)
-			   if(v.mGetDispX() < 0)
-				   displaceX = Math.max(v.mGetDispX(), -temp);
+			   // Make sure the displacement isn't too much
+			   if(Math.abs(v.mGetDispDistance()) > temp)
+				   displace = temp;
 			   else
-				   displaceX = Math.min(v.mGetDispX(), temp);
-			   
-			   // Make sure the displacement isn't too much (y-dir)
-			   if(v.mGetDispY() < 0)
-				   displaceY = Math.max(v.mGetDispY(), -temp);
-			   else
-				   displaceY = Math.min(v.mGetDispY(), temp);
+				   displace = v.mGetDispDistance();
 			   
 			   // Reposition the node
-			   v.mSetCenterLocation((int)(v.mGetCenterX() + (v.mGetDispX() / v.mGetDispDistance()) * displaceX), 
-					   				(int)(v.mGetCenterY() + (v.mGetDispY() / v.mGetDispDistance()) * displaceY));
+			   v.mSetCenterLocation((int)(v.mGetCenterX() + (v.mGetDispX() / v.mGetDispDistance()) * displace), 
+					   				(int)(v.mGetCenterY() + (v.mGetDispY() / v.mGetDispDistance()) * displace));
+			   
+			   // Make sure none of the nodes are off the screen
+			   v.mSetCenterLocation((int)(Math.min(width - v.mGetWidth(), Math.max(v.mGetWidth(), v.mGetCenterX()))), 
+		   				(int)(Math.min(height - v.mGetHeight(), Math.max(v.mGetHeight(), v.mGetCenterY()))));
 		   }
 		   
 		   /**
 		    * Cool the temperature as the graph is taking
 		    * shape (ideally)
 		    */
-		   smallDist = width * height;
-		   // Get the total of the distances between nodes
-		   for(int f = 0; f < numNodes; f++) {	   
-			   Node v = nodes.get(f);
-			   for(int h = 0; h < numNodes; h++) {
-				   Node u = nodes.get(h);
-				   if(!v.equals(u)) {
-					   diff.mSetXCor(v.mGetCenterX() - u.mGetCenterX());
-					   diff.mSetYCor(v.mGetCenterY() - u.mGetCenterY());
-					   // We want only positive distances (there are n
-					   // positive and n negative distances)
-					   if(diff.mGetDistance() > 0 && diff.mGetDistance() < smallDist)
-						   smallDist = diff.mGetDistance();
-				   }
-			   }
-		   }
-		   
-		   // Reduce temp so the graph eventually slows into place
-		   temp *= ((Math.abs(k - smallDist)) / k);
+		   temp -= 0.5;
 	   }
 	      
 	   /**
@@ -301,7 +293,7 @@ public class GraphHelper {
 	    * of the screen by calculating the center of
 	    * the graph the dispersing each node back
 	    * toward the center of the screen.
-	    */   
+	    */
 	   for(int p = 0; p < numNodes; p++) {
 		   Node v = nodes.get(p);
 		   // Get the totals for calculating the center of the graph
@@ -321,9 +313,6 @@ public class GraphHelper {
 	   for(int q = 0; q < numNodes; q++) {
 		   Node v = nodes.get(q);
 		   v.mSetCenterLocation(v.mGetCenterX() - totalX, v.mGetCenterY() - totalY);
-		   // Make sure none of the nodes are off the screen
-		   v.mSetCenterLocation((int)(Math.min(width - v.mGetWidth(), Math.max(v.mGetWidth(), v.mGetCenterX()))), 
-	   				(int)(Math.min(height - v.mGetHeight(), Math.max(v.mGetHeight(), v.mGetCenterY()))));
 	   }
 	   
 	   // Draw the nodes

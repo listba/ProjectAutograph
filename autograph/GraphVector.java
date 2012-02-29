@@ -77,10 +77,11 @@ public class GraphVector {
 	 * 
 	 * @param distance - the distance between the two nodes in question
 	 * @param k - the ideal distance for nodes
+	 * @param temp - the max distance allowed to move
 	 * @return - the repulsive force for the nodes
 	 */
-	public double mCalcRepulsive(double k) {
-		return Math.pow(k, 2.0) / mGetDistance();
+	public double mCalcRepulsive(double k, double temp) {
+		return /*Math.pow(k, 2.0)*/ temp * k / mGetDistance();
 	}
 
 	/**
