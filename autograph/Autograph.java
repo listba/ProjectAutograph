@@ -14,7 +14,7 @@ public class Autograph extends JFrame {
 
 	public Autograph(String title) {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		String filePath = "Graph.xml";
+		String filePath = "NewGraph.xml";
 		String writeTo = "NewGraph.xml";
 		final Graph graph = GraphHelper.mImportGraphFromXML(filePath);
 		GraphHelper.mExportGraphToXML(graph, writeTo);
