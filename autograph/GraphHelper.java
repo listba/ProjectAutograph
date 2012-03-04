@@ -106,7 +106,8 @@ public class GraphHelper {
     * @param g - the graphics element to use for drawing
     * @param panel - the panel to draw on
     */
-   public static void mDrawGraphInCircle(Graph graph, Graphics g, JPanel panel){
+   public static void mDrawGraphInCircle(GraphPanel panel){
+      Graph graph = panel.graph;
       ArrayList<Node> nodes = graph.mGetNodeList();
       int numNodes = nodes.size();
       double currentAngle = 0;
@@ -134,8 +135,8 @@ public class GraphHelper {
          else{
             nodeY = (int)(Math.sin(currentAngle)*radius) + centerY;
          }
-         nodes.get(i).mSetCenterLocation(nodeX, nodeY);
-         mDrawNode(g, nodes.get(i));
+         //nodes.get(i).mSetCenterLocation(nodeX, nodeY);
+         //mDrawNode(g, nodes.get(i));
          currentAngle = currentAngle+angleIncrement;
       }
    }
@@ -154,7 +155,8 @@ public class GraphHelper {
     * @param panel - the panel holding the graphics
     * 
     */
-   public static void mDrawForceDirectedGraph(Graph graph, Graphics g, JPanel panel) {
+   public static void mDrawForceDirectedGraph(GraphPanel panel) {
+     Graph graph = panel.graph;
 	   ArrayList<Node> nodes = graph.mGetNodeList();
 	   ArrayList<Edge> edges = graph.mGetEdgeList();
 	   
@@ -164,7 +166,7 @@ public class GraphHelper {
 	   int width = panel.getWidth();
 	   int height = panel.getHeight();
 	   int area = width * height;
-	   
+	   System.out.println(width);
 	   // Set each node at a random location
 	   // within the center 60% of the screen
 	   Random generator = new Random();
@@ -314,15 +316,6 @@ public class GraphHelper {
 		   Node v = nodes.get(q);
 		   v.mSetCenterLocation(v.mGetCenterX() - totalX, v.mGetCenterY() - totalY);
 	   }
-	   
-	   // Draw the nodes
-	   for(int c = 0; c < numNodes; c++) {
-		   mDrawNode(g, nodes.get(c));
-	   }
-	   // Draw the edges
-	   for(int d = 0; d < numEdges; d++) {
-		   mDrawEdge(g, edges.get(d));
-	   }
    }
    
    /**
@@ -333,7 +326,7 @@ public class GraphHelper {
     * @param   graph    The Graph to be drawn
     * @see     Graph
     */
-   public static void mDrawGraph(Graph graph, Graphics g, JPanel panel) {
+   public static void mDrawGraph(Graph graph, Graphics g, GraphPanel panel) {
       // TODO: Implement options for which graph drawing algorithm to use. (currently only uses circle algorithm).
       // TODO: This is a lot slower than it needs to be.. You should use a hash map with the node ID
       // TODO: have user dynamically set width/height rather than hard coding it here. 
@@ -344,7 +337,7 @@ public class GraphHelper {
 	   // Set background color of graphics object to white
 	   g.setColor(Color.WHITE);
 	   
-	   mDrawGraphInCircle(graph, g, panel);
+	   mDrawGraphInCircle(panel);
 	   
 	   // KMW NOTE: the current implementation of mDrawEdge will draw a straight line from startNode to endNode.
 	   //           Somewhere (either in the node placement algorithm or in the edge drawing algorithm) we will
@@ -941,7 +934,7 @@ public class GraphHelper {
     * @param   n        The node object to draw on g
     * @see     Node
     */
-   private static void mDrawNode(Graphics g, Node n){
+   public static void mDrawNode(Graphics g, Node n){
       // make the assumption that no object's width should be 0
       if(n.mGetWidth() != 0){
          int upperLeftX = n.mGetUpperLeftX();
@@ -1041,7 +1034,7 @@ public class GraphHelper {
     * @param   e        The edge object to draw on g
     * @see     Edge
     */
-   private static void mDrawEdge(Graphics g, Edge e) {
+   public static void mDrawEdge(Graphics g, Edge e) {
       //TODO: implement for non-straight edges
       //TODO: implement for different edge styles/directions.
       //TODO: implement label placement.

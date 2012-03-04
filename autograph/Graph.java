@@ -12,6 +12,7 @@ public class Graph implements Serializable {
    private ArrayList<Node> vNodeList;
    private ArrayList<Edge> vEdgeList;
    private String vTitle;
+   public SelectedItems vSelectedItems;
 
    /**
     * ValidateGraph - ensures valid data is passed to the graph constructor
@@ -29,6 +30,7 @@ public class Graph implements Serializable {
          mValidateGraph(title);
          vNodeList = new ArrayList<Node>();
          vEdgeList = new ArrayList<Edge>();
+         vSelectedItems = new SelectedItems();
          if(title.isEmpty()){
             vTitle = "New Graph";
          }
