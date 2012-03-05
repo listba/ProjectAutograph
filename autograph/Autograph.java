@@ -68,6 +68,11 @@ class GraphPanel extends JPanel implements MouseListener {
 		this.addMouseListener(this);
 		setLayout(null);
 	}
+   /**
+    * paint - overides the default paint method for panels
+    *         so we can define our own drawing method
+    *         this function draws all nodes and edges, then all selected items
+    */
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
@@ -88,7 +93,7 @@ class GraphPanel extends JPanel implements MouseListener {
 			   GraphHelper.mDrawEdge(g, edges.get(i));
 		   }
 		   for(int i = 0; i < sNodes.size(); i++) {
-		   	GraphHelper.mDrawSelectedNode(g, nodes.get(i));
+		   	GraphHelper.mDrawSelectedNode(g, sNodes.get(i));
 		   }
 		}
 		catch(Exception e) {
@@ -97,37 +102,49 @@ class GraphPanel extends JPanel implements MouseListener {
 		}
 	}
 
-	// Find what element was clicked, if any and register
-	/* TODO: we can use the isShiftDown(), isControlDown(), isAltDown()
-	 *       To check key states so we can register multiple objects
-	 *       as being selected.
-	*/
+	/** 
+    * mouseClicked - Find what element was clicked, if any and register
+    * 
+    * @param e    Mouse event that stores information about mouse click
+	 */
 	public void mouseClicked(MouseEvent e) {
     	System.out.println("Mouse Clicked");
     	System.out.println("x:"+e.getX()+",y:"+e.getY());
     	ArrayList<Node> nodes = graph.mGetNodeList();
-      ArrayList<Node> wat = graph.vSelectedItems.mGetSelectedNodes();
+      boolean itemSelected = false;
     	for (int i = 0; i < nodes.size(); i++){
     		if (nodes.get(i).mContains(e.getX(), e.getY()))
     		{
-            Node n = nodes.get(i);
-    			graph.vSelectedItems.mSelectANode(n);
+            if (e.isControlDown()) {
+               graph.vSelectedItems.mAppendNode(nodes.get(i));
+            } else if (e.isShiftDown()) {
+               graph.vSelectedItems.mSelectAllNodes(nodes);
+            } else {
+    			   graph.vSelectedItems.mSelectNode(nodes.get(i));
+            }
+            itemSelected = true;
     			System.out.println("NODE #"+i);
     			break;
     		}
     	}
+      // TODO: Select Edges, I need to figure out a good way to figure out
+      /// the bounding box arround edges
+      if (!itemSelected) {
+         graph.vSelectedItems.mClearSelectedItems();
+      }
     	this.repaint();
-    }
-
+   } 
+   // Other Mouse Events, since we are implementing an interface we 
+   // must include implementations for these even if we don't use it
    public void mousePressed(MouseEvent e) {
    }
 
-    public void mouseReleased(MouseEvent e) {
-    }
+   public void mouseReleased(MouseEvent e) {
+   }
 
-    public void mouseEntered(MouseEvent e) {
-    }
+   public void mouseEntered(MouseEvent e) {
+   }
 
-    public void mouseExited(MouseEvent e) {
-    }
+   public void mouseExited(MouseEvent e) {
+   }
 }

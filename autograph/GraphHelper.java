@@ -1187,9 +1187,25 @@ public class GraphHelper {
          
    }
 
+   /**
+    * mDrawSelectedNode - Draws a Cyan Bounding Box arround a node object
+    *                     to indicate that the object is selected
+    *
+    * @param   g        The Graphics object the selection is drawn on
+    * @param   e        The node object to draw the selection arround
+    * @see     Node
+    * @see     SelectedItems
+    */
    public static void mDrawSelectedNode(Graphics g, Node n) {
       Graphics2D g2d = (Graphics2D)g;
-      g.setColor(Color.cyan);
-      g.drawRect(n.mGetUpperLeftX()-5, n.mGetUpperLeftY()-5, n.mGetWidth()+10, n.mGetHeight()+10);
+      float dash1[] = {10.0f};
+         BasicStroke dashed =
+             new BasicStroke(1.0f,
+                             BasicStroke.CAP_BUTT,
+                             BasicStroke.JOIN_MITER,
+                             10.0f, dash1, 0.0f);
+      g2d.setStroke(dashed);
+      g2d.setColor(Color.cyan);
+      g2d.drawRect(n.mGetUpperLeftX()-5, n.mGetUpperLeftY()-5, n.mGetWidth()+10, n.mGetHeight()+10);
    }
 }
