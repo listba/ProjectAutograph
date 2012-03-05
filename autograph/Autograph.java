@@ -76,6 +76,7 @@ class GraphPanel extends JPanel implements MouseListener {
 		g.fillRect(0, 0, getWidth(), getHeight());
 		ArrayList<Node> nodes = graph.mGetNodeList();
 		ArrayList<Edge> edges = graph.mGetEdgeList();
+		ArrayList<Node> sNodes = graph.vSelectedItems.mGetSelectedNodes();
 		try{
 			//GraphHelper.mDrawForceDirectedGraph(graph, g, this);
 			// Draw the nodes
@@ -86,12 +87,16 @@ class GraphPanel extends JPanel implements MouseListener {
 		   for(int i = 0; i < edges.size(); i++) {
 			   GraphHelper.mDrawEdge(g, edges.get(i));
 		   }
+		   for(int i = 0; i < sNodes.size(); i++) {
+		   	GraphHelper.mDrawSelectedNode(g, nodes.get(i));
+		   }
 		}
 		catch(Exception e) {
 			e.getMessage();
 			e.getCause();
 		}
 	}
+
 	// Find what element was clicked, if any and register
 	/* TODO: we can use the isShiftDown(), isControlDown(), isAltDown()
 	 *       To check key states so we can register multiple objects
@@ -101,17 +106,21 @@ class GraphPanel extends JPanel implements MouseListener {
     	System.out.println("Mouse Clicked");
     	System.out.println("x:"+e.getX()+",y:"+e.getY());
     	ArrayList<Node> nodes = graph.mGetNodeList();
+      ArrayList<Node> wat = graph.vSelectedItems.mGetSelectedNodes();
     	for (int i = 0; i < nodes.size(); i++){
     		if (nodes.get(i).mContains(e.getX(), e.getY()))
     		{
+            Node n = nodes.get(i);
+    			graph.vSelectedItems.mSelectANode(n);
     			System.out.println("NODE #"+i);
     			break;
     		}
     	}
+    	this.repaint();
     }
 
-	public void mousePressed(MouseEvent e) {
-	}
+   public void mousePressed(MouseEvent e) {
+   }
 
     public void mouseReleased(MouseEvent e) {
     }

@@ -1186,4 +1186,10 @@ public class GraphHelper {
       }
          
    }
+
+   public static void mDrawSelectedNode(Graphics g, Node n) {
+      Graphics2D g2d = (Graphics2D)g;
+      g.setColor(Color.cyan);
+      g.drawRect(n.mGetUpperLeftX()-5, n.mGetUpperLeftY()-5, n.mGetWidth()+10, n.mGetHeight()+10);
+   }
 }
