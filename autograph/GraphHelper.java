@@ -1,11 +1,6 @@
 package autograph;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.awt.*;
+import java.awt.image.*;
 import java.io.*;
 
 import autograph.Edge.Direction;
@@ -21,7 +16,8 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.Stack;
 
-import javax.swing.JPanel;
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -1207,5 +1203,97 @@ public class GraphHelper {
       g2d.setStroke(dashed);
       g2d.setColor(Color.cyan);
       g2d.drawRect(n.mGetUpperLeftX()-5, n.mGetUpperLeftY()-5, n.mGetWidth()+10, n.mGetHeight()+10);
+   }
+   
+   /**
+    * savePNG - Save a graph as a .png file
+    * 
+    * @param panel - the object holding the graph drawing
+    * 
+    */
+   public static void mSavePNG(GraphPanel panel) {
+	   Dimension size = panel.getSize();  //panel == JPanel
+       BufferedImage myImage = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
+       Graphics2D g2 = myImage.createGraphics();
+       panel.paint(g2);
+	   g2.dispose();
+	   try
+	   {
+		// This file location only works for Jeff's Mac laptop...we can make a filechooser later
+		   ImageIO.write(myImage, "png", new File("/Users/Markues/Desktop/MyGraph.png"));
+	   }
+	   catch (IOException e)
+	   {
+		   e.printStackTrace();
+	   }
+   }
+   
+   /**
+    * saveJPG - Save a graph as a .jpg file
+    * 
+    * @param panel - the object holding the graph drawing
+    * 
+    */
+   public static void mSaveJPG(GraphPanel panel) {
+	   Dimension size = panel.getSize();  //panel == JPanel
+       BufferedImage myImage = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
+       Graphics2D g2 = myImage.createGraphics();
+       panel.paint(g2);
+	   g2.dispose();
+	   try
+	   {
+		   // This file location only works for Jeff's Mac laptop...we can make a filechooser later
+		   ImageIO.write(myImage, "jpg", new File("/Users/Markues/Desktop/MyGraph.jpg"));
+	   }
+	   catch (IOException e)
+	   {
+		   e.printStackTrace();
+	   }
+   }
+   
+   /**
+    * saveBMP - Save a graph as a .bmp file
+    * 
+    * @param panel - the object holding the graph drawing
+    * 
+    */
+   public static void mSaveBMP(GraphPanel panel) {
+	   Dimension size = panel.getSize();  //panel == JPanel
+       BufferedImage myImage = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
+       Graphics2D g2 = myImage.createGraphics();
+       panel.paint(g2);
+	   g2.dispose();
+	   try
+	   {
+		   // This file location only works for Jeff's Mac laptop...we can make a filechooser later
+		   ImageIO.write(myImage, "bmp", new File("/Users/Markues/Desktop/MyGraph.bmp"));
+	   }
+	   catch (IOException e)
+	   {
+		   e.printStackTrace();
+	   }
+   }
+   
+   /**
+    * saveGIF - save a graph as a .gif file
+    * 
+    * @param panel - the object holding the graph drawing
+    * 
+    */
+   public static void mSaveGIF(GraphPanel panel) {
+	   Dimension size = panel.getSize();  //panel == JPanel
+       BufferedImage myImage = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
+       Graphics2D g2 = myImage.createGraphics();
+       panel.paint(g2);
+	   g2.dispose();
+	   try
+	   {
+		   // This file location only works for Jeff's Mac laptop...we can make a filechooser later
+		   ImageIO.write(myImage, "gif", new File("/Users/Markues/Desktop/MyGraph.gif"));
+	   }
+	   catch (IOException e)
+	   {
+		   e.printStackTrace();
+	   }
    }
 }

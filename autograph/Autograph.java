@@ -43,6 +43,8 @@ public class Autograph extends JFrame {
 		// Draw Initial Graph
 		GraphHelper.mDrawForceDirectedGraph(panel);
 		panel.repaint();
+		
+		//GraphHelper.mSavePNG(panel);
 
 	}
 
