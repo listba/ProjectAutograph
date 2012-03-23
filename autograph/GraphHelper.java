@@ -323,7 +323,6 @@ public class GraphHelper {
     * @see     Graph
     */
    public static void mDrawGraph(Graph graph, Graphics g, GraphPanel panel) {
-      // TODO: Implement options for which graph drawing algorithm to use. (currently only uses circle algorithm).
       // TODO: This is a lot slower than it needs to be.. You should use a hash map with the node ID
       // TODO: have user dynamically set width/height rather than hard coding it here. 
 	   //      (Or dynamically calculate height/width based on label size)
@@ -335,9 +334,6 @@ public class GraphHelper {
 	   
 	   mDrawGraphInCircle(panel);
 	   
-	   // KMW NOTE: the current implementation of mDrawEdge will draw a straight line from startNode to endNode.
-	   //           Somewhere (either in the node placement algorithm or in the edge drawing algorithm) we will
-	   //           need to make sure that edges will not cross if we don't want them to.
 	   // Draw edges
 	   ArrayList<Edge> edges = graph.mGetEdgeList();
 	   for (Edge edge : edges) {
@@ -598,7 +594,23 @@ public class GraphHelper {
     * @param   fileLoc     The location to save the agl file to
     * @see     Graph
     */
-   public static void mExportGraphToGML(Graph graph, String fileName, String fileLoc) {
+   public static void mExportGraphToGML(Graph graph, String fileName, String fileLoc) throws IOException{
+      StringBuilder gml = new StringBuilder();
+      GMLBuilder gmlBuilder = new GMLBuilder(gml);
+      
+      //create the gml string
+      gmlBuilder.mBuildGML(graph);
+      
+      String filePath = fileName;
+      if(fileLoc != null && !fileLoc.isEmpty()){
+         filePath = fileLoc + fileName;
+      }
+      
+      FileWriter file = new FileWriter(filePath);
+      BufferedWriter out = new BufferedWriter(file);
+      
+      out.write(gmlBuilder.mGetGML().toString());
+      out.close();
    }
    
 
@@ -1055,6 +1067,7 @@ public class GraphHelper {
       int endNodeCenterX = endNode.mGetCenterX();
       int endNodeCenterY = endNode.mGetCenterY();
       
+      //first thing we do is calculate which of the 4 points we will draw the edge from on each node
       if(startNodeCenterX - endNodeCenterX > 0){
          //we will either use the left, top, or bottom point
          differenceX = startNodeCenterX - endNodeCenterX;
@@ -1139,46 +1152,68 @@ public class GraphHelper {
             }
          }
       }
+      
       switch (e.mGetEdgeStyle()){
-      case DOTTED:
-        BasicStroke dotted =  new BasicStroke(
-               1f, 
-               BasicStroke.CAP_ROUND, 
-               BasicStroke.JOIN_ROUND, 
-               1f, 
-               new float[] {2f}, 
-               0f);
-        Graphics2D g2 = (Graphics2D)g;
-        g2.setStroke(dotted);
-        g2.drawLine(startX, startY, endX, endY);
-        break;
-      case DASHED:
-         float dash1[] = {10.0f};
-         BasicStroke dashed =
-             new BasicStroke(1.0f,
-                             BasicStroke.CAP_BUTT,
-                             BasicStroke.JOIN_MITER,
-                             10.0f, dash1, 0.0f);
-         Graphics2D gr2 = (Graphics2D)g;
-         gr2.setStroke(dashed);
-         gr2.drawLine(startX, startY, endX, endY);
-         break;
-      case SOLID:
-      default:
-         g.drawLine(startX, startY, endX, endY);
-         break;
+         case DOTTED:
+           BasicStroke dotted =  new BasicStroke(
+                  1f, 
+                  BasicStroke.CAP_ROUND, 
+                  BasicStroke.JOIN_ROUND, 
+                  1f, 
+                  new float[] {2f}, 
+                  0f);
+           Graphics2D g2 = (Graphics2D)g;
+           g2.setStroke(dotted);
+           g2.drawLine(startX, startY, endX, endY);
+           break;
+         case DASHED:
+            float dash1[] = {10.0f};
+            BasicStroke dashed =
+                new BasicStroke(1.0f,
+                                BasicStroke.CAP_BUTT,
+                                BasicStroke.JOIN_MITER,
+                                10.0f, dash1, 0.0f);
+            Graphics2D gr2 = (Graphics2D)g;
+            gr2.setStroke(dashed);
+            gr2.drawLine(startX, startY, endX, endY);
+            break;
+         case SOLID:
+         default:
+            g.drawLine(startX, startY, endX, endY);
+            break;
       }
       g.drawLine(startX, startY, endX, endY);
       
+      //KMW Note: for now we will only support one style of arrow. (a filled in triangle)
+      //          at some point we will need to support the other types.
       switch(e.mGetDirection()){
-      case NODIRECTION:
-         break;
-      case STARTDIRECTION:
-         break;
-      case ENDDIRECTION:
-         break;
-      case DOUBLEDIRECTION:
-         break;
+         case NODIRECTION:
+            //we are done. It will work
+            break;
+         case STARTDIRECTION:
+            //KMW Note: I'm having difficulty coming up with good code to do this.
+            //          I know we can use sin/cos/tan to calculate points to draw a
+            //          triangle, but every way I think of to do this we would need to
+            //          break it into 4 cases for each combination of node placements in
+            //          relation to each other, and this seems unnecessary to me.
+            /*int x[] = new int[3];
+            int y[] = new int[3];
+            x[0] = startX;
+            y[0] = startY;
+            
+            x[1] = ;
+            y[1] = ;
+            
+            x[3] = ;
+            y[3] = ;
+            g.drawPolygon(x, y, 3);*/
+            break;
+         case ENDDIRECTION:
+            
+            break;
+         case DOUBLEDIRECTION:
+            
+            break;
       }
          
    }

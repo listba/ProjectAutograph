@@ -18,8 +18,9 @@ public class Autograph extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		// Create New Graph Panel
 		// And Load in graph from XML file
-		String filePath = "NewGraph.xml";
-		GraphPanel panel = new GraphPanel(GraphHelper.mImportGraphFromXML(filePath));
+		String filePath = "Graph.xml";
+		Graph graph = GraphHelper.mImportGraphFromXML(filePath);
+		GraphPanel panel = new GraphPanel(graph);
 		// Write Graph to XML file
 		/*
 		String writeTo = "NewGraph.xml";
@@ -45,6 +46,12 @@ public class Autograph extends JFrame {
 		panel.repaint();
 		
 		//GraphHelper.mSavePNG(panel);
+		try{
+		   GraphHelper.mExportGraphToGML(graph, "graphGML.txt", null);
+		}
+		catch(Exception e){
+		   
+		}
 
 	}
 
