@@ -1153,6 +1153,9 @@ public class GraphHelper {
          }
       }
       
+      int labelX = (startX + endX)/2 + 5;
+      int labelY = (startY +endY)/2 - 5;
+      
       switch (e.mGetEdgeStyle()){
          case DOTTED:
            BasicStroke dotted =  new BasicStroke(
@@ -1182,7 +1185,8 @@ public class GraphHelper {
             g.drawLine(startX, startY, endX, endY);
             break;
       }
-      g.drawLine(startX, startY, endX, endY);
+      
+      mDrawEdgeLabel(g, e, startX, startY, endX, endY);
       
       //KMW Note: for now we will only support one style of arrow. (a filled in triangle)
       //          at some point we will need to support the other types.
@@ -1218,6 +1222,45 @@ public class GraphHelper {
          
    }
 
+   /**
+    * Calculates the edge label position and draws it to the panel.
+    * @param g - the graphics object doing the drawing.
+    * @param e - the Edge to calculate the label position for.
+    * @param startX - the start point of the edge's x coordinate
+    * @param startY - the start point of the edge's y coordinate
+    * @param endX - the end point of the edge's x coordinate
+    * @param endY - the end point of the edge's y coordinate
+    */
+   public static void mDrawEdgeLabel(Graphics g, Edge e, int startX, int startY, int endX, int endY){
+      g.setColor(e.mGetLabelColor());
+      
+      //calculate the label position.
+      //KMW Note: this is not working correctly yet. Somtimes the edge lables are going throught the middle
+      //          of the edge.
+      int labelX;
+      int labelY;
+      
+      if(startX < endX){
+         labelX = (startX + endX)/2 + 5;
+         if(startY > endY){
+            labelY = (startY + endY)/2 + 5;
+         }
+         else{
+            labelY = (startY + endY)/2 - 5;
+         }
+      }
+      else{
+         labelX = (startX + endX)/2 - 5;
+         if(startY > endY){
+            labelY = (startY + endY)/2 + 5;
+         }
+         else{
+            labelY = (startY + endY)/2 - 5;
+         }
+      }
+      g.drawString(e.mGetLabel(), labelX, labelY);
+   }
+   
    /**
     * mDrawSelectedNode - Draws a Cyan Bounding Box arround a node object
     *                     to indicate that the object is selected
