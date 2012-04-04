@@ -132,7 +132,6 @@ public class Node implements Serializable {
          //           like Monospaced to ensure that it works on all computers
          //           For more info see: http://docs.oracle.com/javase/tutorial/2d/text/fonts.html
          vFont = new Font("Monospaced", 0, 10);
-         System.out.println(vFont.getFontName());
       }
       catch(CannotAddNodeException e){
     	//TODO: This may need changed to an error file, etc
@@ -334,6 +333,18 @@ public class Node implements Serializable {
       upperLeftY = vCenterY - vHeight/2;
       return upperLeftY;
    }
+
+   public int mGetLowerRightX(){
+      return (int)(vCenterX + vWidth/2);
+   }
+   
+   /**
+    * GetCenterY - returns the y coordinate (in pixels) in the image of the center of the node.
+    * @return - vCenterX
+    */
+   public int mGetLowerRightY(){
+      return (int)(vCenterY + vHeight/2);
+   }
    
    
    /**
@@ -430,6 +441,21 @@ public class Node implements Serializable {
     */
    public void mSetFont(Font font){
       vFont = font;
+   }
+
+   public boolean mContains(int x, int y) {
+      int nX = this.mGetUpperLeftX();
+      int nY = this.mGetUpperLeftY();
+      int lX = this.mGetLowerRightX();
+      int lY = this.mGetLowerRightY();
+      //System.out.println(nX + " <= " + x + " <= " + lX);
+      //System.out.println(nY + " <= " + y + " <= " + lY);
+      if ( (x >= nX && x <= lX) &&
+           (y >= nY && y <= lY) ) {
+         return true;
+      } else {
+         return false;
+      }
    }
    
 }

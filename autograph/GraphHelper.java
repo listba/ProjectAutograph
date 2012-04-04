@@ -1,11 +1,6 @@
 package autograph;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.awt.*;
+import java.awt.image.*;
 import java.io.*;
 
 import autograph.Edge.Direction;
@@ -21,10 +16,17 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.Stack;
 
-import javax.swing.JPanel;
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -100,7 +102,8 @@ public class GraphHelper {
     * @param g - the graphics element to use for drawing
     * @param panel - the panel to draw on
     */
-   public static void mDrawGraphInCircle(Graph graph, Graphics g, JPanel panel){
+   public static void mDrawGraphInCircle(GraphPanel panel){
+      Graph graph = panel.graph;
       ArrayList<Node> nodes = graph.mGetNodeList();
       int numNodes = nodes.size();
       double currentAngle = 0;
@@ -128,8 +131,8 @@ public class GraphHelper {
          else{
             nodeY = (int)(Math.sin(currentAngle)*radius) + centerY;
          }
-         nodes.get(i).mSetCenterLocation(nodeX, nodeY);
-         mDrawNode(g, nodes.get(i));
+         //nodes.get(i).mSetCenterLocation(nodeX, nodeY);
+         //mDrawNode(g, nodes.get(i));
          currentAngle = currentAngle+angleIncrement;
       }
    }
@@ -148,7 +151,8 @@ public class GraphHelper {
     * @param panel - the panel holding the graphics
     * 
     */
-   public static void mDrawForceDirectedGraph(Graph graph, Graphics g, JPanel panel) {
+   public static void mDrawForceDirectedGraph(GraphPanel panel) {
+     Graph graph = panel.graph;
 	   ArrayList<Node> nodes = graph.mGetNodeList();
 	   ArrayList<Edge> edges = graph.mGetEdgeList();
 	   
@@ -158,17 +162,15 @@ public class GraphHelper {
 	   int width = panel.getWidth();
 	   int height = panel.getHeight();
 	   int area = width * height;
-	   
+	   System.out.println(width);
 	   // Set each node at a random location
+	   // within the center 60% of the screen
 	   Random generator = new Random();
 	   for(int i = 0; i < numNodes; i++) {
 		   Node v = nodes.get(i);
-		   double randX = generator.nextDouble() * (width - v.mGetWidth()) + v.mGetWidth();
-		   double randY = generator.nextDouble() * (height - v.mGetWidth()) + v.mGetWidth();
-		   v.mSetCenterLocation((int)randX, (int)randY);
-		   
-		   System.out.println("Node"+i+"="+v.mGetCenterX()+","+v.mGetCenterY());
-		   
+		   double randX = generator.nextDouble() * (width - (width / 5)) + (width / 5);
+		   double randY = generator.nextDouble() * (height - (height / 5)) + (height / 5);
+		   v.mSetCenterLocation((int)randX, (int)randY);   
 	   } 
 	   
 	   // Value for the ideal distance between nodes
@@ -176,153 +178,139 @@ public class GraphHelper {
 	   
 	   // This value is used to make sure nodes don't move too much
 	   // as well as makes sure the graph is slowly coming to rest.
-	   double temp = width / (numNodes * 2);
+	   double temp = width / 10;
+	   double tempOrig = temp;
 	   
-	   System.out.println("nn="+numNodes+" ne="+numEdges+" "+width+"x"+height+"="+area+
-			   " k="+k+" temp="+temp);
+	   // Values used for making sure the graph stays centered on the screen
+	   int totalX = 0;
+	   int totalY = 0;
+	   int centerScreenX = width / 2;
+	   int centerScreenY = height / 2;
 	   
+	   // Values for calculating displacement
 	   GraphVector diff = new GraphVector();
-	   double displaceX;
-	   double displaceY;
-	   double totalDist;
+	   double displace;
 	   
 	   // While the graph has not "cooled off"
-	   for (int p = 0; p < 6; p++) { 
-	   //while(temp > 1) {
-		   // Calculate the repulsive forces 
-		   
-		   System.out.println("Rep!");
+	   while(temp > 1) {
 		   
 		   diff.mSetXCor(0.0);
 		   diff.mSetYCor(0.0);
 		   
+		   /**
+		    * Calculate the repulsive forces 
+		    */
 		   for(int i = 0; i < numNodes; i++) {
 			   // The current node
 			   Node v = nodes.get(i);
 			   
-			   System.out.println("Node="+i);
-			   
 			   v.mSetDispX(0.0);
 			   v.mSetDispY(0.0);
 			   
-			   System.out.println("Disp="+v.mGetDispX()+","+v.mGetDispY());
-			   
-			   // Look at the rest of the nodes
+			   /**
+			    * Look at the rest of the nodes
+			    */
 			   for(int j = 0; j < numNodes; j++) {
 				   Node u = nodes.get(j);
+				   
 				   // if the two nodes are not the same
-				   
-				   System.out.println("OtherNode="+j);
-				   
 				   if (!v.equals(u)) {
 					   // Set the difference vector
 					   diff.mSetXCor(v.mGetCenterX() - u.mGetCenterX());
 					   diff.mSetYCor(v.mGetCenterY() - u.mGetCenterY());
 					   
-					   System.out.println("diff="+diff.mGetXCor()+","+diff.mGetYCor()+" dist="+diff.mGetDistance()+" set!");
-					   
-					   // Add the repulsive forces
-					   v.mSetDispX(v.mGetDispX() + (diff.mGetXCor() / diff.mGetDistance()) * diff.mCalcRepulsive(k));
-					   v.mSetDispY(v.mGetDispY() + (diff.mGetYCor() / diff.mGetDistance()) * diff.mCalcRepulsive(k));
-					   
-					   System.out.println("Disp="+v.mGetDispX()+","+v.mGetDispY()+" set!");
-				   }  
+					   // If the nodes are not on top of each other
+					   if(diff.mGetDistance() != 0) {
+						// Add the repulsive forces
+						   v.mSetDispX(v.mGetDispX() + (diff.mGetXCor() / diff.mGetDistance()) * diff.mCalcRepulsive(k, tempOrig));
+						   v.mSetDispY(v.mGetDispY() + (diff.mGetYCor() / diff.mGetDistance()) * diff.mCalcRepulsive(k, tempOrig));
+					   }
+					   else {
+						   // otherwise force the nodes apart!
+						   v.mSetDispX(-1 * width / 4);
+						   v.mSetDispY(-1 * width / 4);
+						   u.mSetDispX(width / 4);
+						   u.mSetDispY(width / 4);
+					   }
+				   }
 			   }
-		   }
-		   System.out.println("Att!");
-		   // Calculate the attractive forces
+		   }  
+		   /**
+		    * Calculate the attractive forces
+		    */
 		   for(int a = 0; a < numEdges; a++) {
 			   // The current edge
 			   Edge e = edges.get(a);
-			   
-			   System.out.println("Edge="+a);
 			   
 			   // Set the difference vector
 			   diff.mSetXCor(e.mGetStartNode().mGetCenterX() - e.mGetEndNode().mGetCenterX());
 			   diff.mSetYCor(e.mGetStartNode().mGetCenterY() - e.mGetEndNode().mGetCenterY());
 			   
-			   System.out.println("diffDist="+diff.mGetDistance()+" set!");
-			   
-			   // Displace the first node
-			   e.mGetStartNode().mSetDispX(e.mGetStartNode().mGetDispX() - (diff.mGetXCor() / diff.mGetDistance()) * diff.mCalcAttractive(k));
-			   e.mGetStartNode().mSetDispY(e.mGetStartNode().mGetDispY() - (diff.mGetYCor() / diff.mGetDistance()) * diff.mCalcAttractive(k));
-			   
-			   System.out.println("Node 1 Disp="+e.mGetStartNode().mGetDispX()+","+e.mGetStartNode().mGetDispY()+" set!");
-			   
-			   // Displace the second node
-			   e.mGetEndNode().mSetDispX(e.mGetEndNode().mGetDispX() + (diff.mGetXCor() / diff.mGetDistance()) * diff.mCalcAttractive(k));
-			   e.mGetEndNode().mSetDispY(e.mGetEndNode().mGetDispY() + (diff.mGetYCor() / diff.mGetDistance()) * diff.mCalcAttractive(k));
-			   
-			   System.out.println("Node 2 Disp="+e.mGetEndNode().mGetDispX()+","+e.mGetEndNode().mGetDispY()+" set!");
+			   // Only displace if they're not on top of each other
+			   if(diff.mGetDistance() != 0.0) {
+				   // Displace the first node
+				   e.mGetStartNode().mSetDispX(e.mGetStartNode().mGetDispX() - (diff.mGetXCor() / diff.mGetDistance()) * diff.mCalcAttractive(k));
+				   e.mGetStartNode().mSetDispY(e.mGetStartNode().mGetDispY() - (diff.mGetYCor() / diff.mGetDistance()) * diff.mCalcAttractive(k));
+
+				   // Displace the second node
+				   e.mGetEndNode().mSetDispX(e.mGetEndNode().mGetDispX() + (diff.mGetXCor() / diff.mGetDistance()) * diff.mCalcAttractive(k));
+				   e.mGetEndNode().mSetDispY(e.mGetEndNode().mGetDispY() + (diff.mGetYCor() / diff.mGetDistance()) * diff.mCalcAttractive(k));
+			   }
 		   }
-		   System.out.println("Set!");
-		   // Limit max displacement to temp and prevent from displacement outside panel
+		   /**
+		    * Limit max displacement to temp and prevent from displacement outside panel
+		    */
 		   for(int b = 0; b < numNodes; b++) {
 			   // the current node
 			   Node v = nodes.get(b);
+			   
+			   // Make sure the displacement isn't too much
+			   if(Math.abs(v.mGetDispDistance()) > temp)
+				   displace = temp;
+			   else
+				   displace = v.mGetDispDistance();
+			   
 			   // Reposition the node
-			   
-			   System.out.println("Node="+b);
-			   
-			   // Make sure the displacement isn't too much (x-dir)
-			   if(v.mGetDispX() < 0)
-				   displaceX = Math.max(v.mGetDispX(), -temp);
-			   else
-				   displaceX = Math.min(v.mGetDispX(), temp);
-			   
-			   // Make sure the displacement isn't too much (y-dir)
-			   if(v.mGetDispY() < 0)
-				   displaceY = Math.max(v.mGetDispY(), -temp);
-			   else
-				   displaceY = Math.min(v.mGetDispY(), temp);
-			   
-			   System.out.println("Disp="+displaceX+","+displaceY);
-			   
-			   v.mSetCenterLocation((int)(v.mGetCenterX() + (v.mGetDispX() / v.mGetDispDistance()) * displaceX), 
-					   				(int)(v.mGetCenterY() + (v.mGetDispY() / v.mGetDispDistance()) * displaceY));
-			   
-			   System.out.println("Node"+b+" location="+v.mGetCenterX()+","+v.mGetCenterY());
+			   v.mSetCenterLocation((int)(v.mGetCenterX() + (v.mGetDispX() / v.mGetDispDistance()) * displace), 
+					   				(int)(v.mGetCenterY() + (v.mGetDispY() / v.mGetDispDistance()) * displace));
 			   
 			   // Make sure none of the nodes are off the screen
 			   v.mSetCenterLocation((int)(Math.min(width - v.mGetWidth(), Math.max(v.mGetWidth(), v.mGetCenterX()))), 
-					   				(int)(Math.min(height - v.mGetHeight(), Math.max(v.mGetHeight(), v.mGetCenterY()))));
-			   
-			   System.out.println("Node"+b+" location="+v.mGetCenterX()+","+v.mGetCenterY());
-			   
+		   				(int)(Math.min(height - v.mGetHeight(), Math.max(v.mGetHeight(), v.mGetCenterY()))));
 		   }
 		   
-		   totalDist = 0.0;
-		   // Get the total of the distances between nodes
-		   for(int f = 0; f < numNodes; f++) {	   
-			   Node v = nodes.get(f);
-			   for(int h = 0; h < numNodes; h++) {
-				   Node u = nodes.get(h);
-				   if(!v.equals(u)) {
-					   diff.mSetXCor(v.mGetCenterX() - u.mGetCenterX());
-					   diff.mSetYCor(v.mGetCenterY() - u.mGetCenterY());
-					   // We want only positive distances (there are n
-					   // positive and n negative distances)
-					   if(diff.mGetDistance() > 0)
-						   totalDist += diff.mGetDistance();
-				   }
-			   }
-		   }
-		   
-		   System.out.println("td="+totalDist);
-		   
-		   // Reduce temp so the graph eventually slows into place
-		   temp *= ((Math.abs(k - (totalDist / numNodes))) / k);
-		   
-		   System.out.println("temp="+temp);
+		   /**
+		    * Cool the temperature as the graph is taking
+		    * shape (ideally)
+		    */
+		   temp -= 0.5;
+	   }
+	      
+	   /**
+	    * Shift the entire graph back to the middle
+	    * of the screen by calculating the center of
+	    * the graph the dispersing each node back
+	    * toward the center of the screen.
+	    */
+	   for(int p = 0; p < numNodes; p++) {
+		   Node v = nodes.get(p);
+		   // Get the totals for calculating the center of the graph
+		   totalX += v.mGetCenterX();
+		   totalY += v.mGetCenterY();
 	   }
 	   
-	   // Draw the nodes
-	   for(int c = 0; c < numNodes; c++) {
-		   mDrawNode(g, nodes.get(c));
-	   }
-	   // Draw the edges
-	   for(int d = 0; d < numNodes; d++) {
-		   mDrawEdge(g, edges.get(d));
+	   // Make the total values = the average values
+	   totalX /= numNodes;
+	   totalY /= numNodes;
+	   
+	   // Make the total values = the amount to displace all nodes
+	   totalX -= centerScreenX;
+	   totalY -= centerScreenY;
+	   
+	   // Change each node's position
+	   for(int q = 0; q < numNodes; q++) {
+		   Node v = nodes.get(q);
+		   v.mSetCenterLocation(v.mGetCenterX() - totalX, v.mGetCenterY() - totalY);
 	   }
    }
    
@@ -334,8 +322,7 @@ public class GraphHelper {
     * @param   graph    The Graph to be drawn
     * @see     Graph
     */
-   public static void mDrawGraph(Graph graph, Graphics g, JPanel panel) {
-      // TODO: Implement options for which graph drawing algorithm to use. (currently only uses circle algorithm).
+   public static void mDrawGraph(Graph graph, Graphics g, GraphPanel panel) {
       // TODO: This is a lot slower than it needs to be.. You should use a hash map with the node ID
       // TODO: have user dynamically set width/height rather than hard coding it here. 
 	   //      (Or dynamically calculate height/width based on label size)
@@ -345,11 +332,8 @@ public class GraphHelper {
 	   // Set background color of graphics object to white
 	   g.setColor(Color.WHITE);
 	   
-	   mDrawGraphInCircle(graph, g, panel);
+	   mDrawGraphInCircle(panel);
 	   
-	   // KMW NOTE: the current implementation of mDrawEdge will draw a straight line from startNode to endNode.
-	   //           Somewhere (either in the node placement algorithm or in the edge drawing algorithm) we will
-	   //           need to make sure that edges will not cross if we don't want them to.
 	   // Draw edges
 	   ArrayList<Edge> edges = graph.mGetEdgeList();
 	   for (Edge edge : edges) {
@@ -414,6 +398,122 @@ public class GraphHelper {
     * @see     Graph
     */
    public static void mExportGraphToXML(Graph graph, String filePath) {
+      // Get Node and Edge list and the number of nodes and edges
+      ArrayList<Node> nodes = graph.mGetNodeList();
+      ArrayList<Edge> edges = graph.mGetEdgeList();
+      int numNodes = nodes.size();
+      int numEdges = edges.size();
+
+      try {
+         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+         // Create and add root element to document
+         Document doc = docBuilder.newDocument();
+         Element rootElement = doc.createElement("Autograph");
+         doc.appendChild(rootElement);
+         rootElement.setAttribute("title", graph.mGetTitle());
+    
+         // Nodes element
+         Element nodesElement = doc.createElement("Nodes");
+         // Append Nodes element to root
+         rootElement.appendChild(nodesElement);
+         // Edges element
+         Element edgesElement = doc.createElement("Edges");
+         // Append Edges element to root
+         rootElement.appendChild(edgesElement);
+
+         // Loop through each node, add it as a child element to the Nodes Element
+         // The grab each attribute for it and write the attribute to that element
+         for (int i = 0; i < numNodes; i++) {
+            Node node = nodes.get(i);
+            // Create new node element
+            Element nodeElement = doc.createElement("Node");
+            // Append node element to Parent (Nodes)
+            nodesElement.appendChild(nodeElement);
+            for (nodeAttributes na : nodeAttributes.values() ) {
+               // Get String Value of Attribute
+               String value = mGetNodeAttributeValue(node, na);
+               // Add attribute and associated value
+               switch (na) {
+                  case LABEL: // The label element can be empty, we want to ignore it if this is the case
+                     if (value != "") 
+                        nodeElement.setAttribute(na.name().toLowerCase(), value);
+                     break;
+                  case FILLCOLOR: //Because XML is case sensitive
+                     nodeElement.setAttribute("fillColor", value);
+                     break;
+                  case BORDERCOLOR: //Because XML is case sensitive
+                     nodeElement.setAttribute("borderColor", value);
+                     break;
+                  case LABELCOLOR: //Because XML is case sensitive
+                     nodeElement.setAttribute("labelColor", value);
+                     break;
+                  case WIDTH: // Width can be empty (defaults to 0), we want to ignore it if this is the case
+                     if (!value.equals("0")) {
+                        nodeElement.setAttribute(na.name().toLowerCase(), value);
+                     }
+                     break;
+                  case HEIGHT: // Height can be empty (defaults to 0), we want to ignore it if this is the case
+                     if (!value.equals("0")) {
+                        nodeElement.setAttribute(na.name().toLowerCase(), value);
+                     }
+                     break;
+                  default: // Add attribute to current edge
+                     nodeElement.setAttribute(na.name().toLowerCase(), value);
+                     break;
+               }
+            }
+         }
+         // Loop through each edge, add it as a child element to the Edges Element
+         // The grab each attribute for it and write the attribute to that element
+         for (int i = 0; i < numEdges; i++) {
+            // Get next edge
+            Edge edge = edges.get(i);
+            // Create new edge element
+            Element edgeElement = doc.createElement("Edge");
+            // Append edge element to Parrent (Edges)
+            edgesElement.appendChild(edgeElement);
+            for (edgeAttributes ea : edgeAttributes.values() ) {
+               // Get string value of associated attribute
+               String value = mGetEdgeAttributeValue(edge, ea);
+               // Add attribute ans associated value
+               switch (ea) {
+                  case LABEL: // The label element can be empty, we want to ignore it if this is the case
+                     if (value != "")
+                        edgeElement.setAttribute(ea.name().toLowerCase(), value);
+                     break;
+                  case STARTNODE: //Because XML is case sensitive
+                     edgeElement.setAttribute("startNode", value);
+                     break;
+                  case ENDNODE: //Because XML is case sensitive
+                     edgeElement.setAttribute("endNode", value);
+                     break;
+                  case EDGECOLOR: //Because XML is case sensitive
+                     edgeElement.setAttribute("edgeColor", value);
+                     break;
+                  case LABELCOLOR: //Because XML is case sensitive
+                     edgeElement.setAttribute("labelColor", value);
+                     break;
+                  default: // Add attribute to current edge
+                     edgeElement.setAttribute(ea.name().toLowerCase(), value);
+                     break;
+               }
+            }
+         }
+         // write the content into xml file
+         TransformerFactory transformerFactory = TransformerFactory.newInstance();
+         Transformer transformer = transformerFactory.newTransformer();
+         DOMSource source = new DOMSource(doc);
+         StreamResult result = new StreamResult(new File(filePath));
+         transformer.transform(source, result);
+
+      } catch (ParserConfigurationException pce) {
+         pce.printStackTrace();
+     } catch (TransformerException tfe) {
+         tfe.printStackTrace();
+     }
+
    }
    
    /**
@@ -444,8 +544,7 @@ public class GraphHelper {
             for(int i = 0; i < nl.getLength(); i++) {
                Element el = (Element)nl.item(i);
                try {
-                  Node node = getNodeElement(el);
-                  System.out.println(node.mGetId() + " added ("+ i +")");
+                  Node node = mGetNodeElement(el);
                   graph.mAddNode(node);
                } catch (InvalidXMLException e) {
                   e.getMessage();
@@ -465,8 +564,7 @@ public class GraphHelper {
             for(int i = 0; i < nl.getLength(); i++) {
                Element el = (Element)nl.item(i);
                try {
-                  Edge edge = getEdgeElement(el, graph);
-                  System.out.println(edge.mGetId() + " added ("+ i +")");
+                  Edge edge = mGetEdgeElement(el, graph);
                   graph.mAddEdge(edge);
                } catch (InvalidXMLException e) {
                   e.getMessage();
@@ -496,7 +594,23 @@ public class GraphHelper {
     * @param   fileLoc     The location to save the agl file to
     * @see     Graph
     */
-   public static void mExportGraphToGML(Graph graph, String fileName, String fileLoc) {
+   public static void mExportGraphToGML(Graph graph, String fileName, String fileLoc) throws IOException{
+      StringBuilder gml = new StringBuilder();
+      GMLBuilder gmlBuilder = new GMLBuilder(gml);
+      
+      //create the gml string
+      gmlBuilder.mBuildGML(graph);
+      
+      String filePath = fileName;
+      if(fileLoc != null && !fileLoc.isEmpty()){
+         filePath = fileLoc + fileName;
+      }
+      
+      FileWriter file = new FileWriter(filePath);
+      BufferedWriter out = new BufferedWriter(file);
+      
+      out.write(gmlBuilder.mGetGML().toString());
+      out.close();
    }
    
 
@@ -572,14 +686,128 @@ public class GraphHelper {
       }
       return graph;
    }
-   
+   /**
+    * Returns string value of requested attribute given a node object
+    * 
+    * @param   node        The node object
+    * @param   attribute   The nodeAttribute
+    * @return              The value of the attribute as a string
+    */
+   private static String mGetNodeAttributeValue(Node node, nodeAttributes attribute) {
+      String value = "";
+      try {
+         switch (attribute) {
+            case ID:
+               value = node.mGetId();
+               break;
+            case LABEL:
+               value = node.mGetLabel();
+               break;
+            case SHAPE:
+               value = node.mGetShape().name();
+               break;
+            case STYLE:
+               value = node.mGetStyle().name();
+               break;
+            case FILLCOLOR:;
+               // get hax value of color as a string
+               value = Integer.toHexString(node.mGetFillColor().getRGB());
+               // Remove ff from begining of value, add a # symbol and make all caps
+               value = "#" + value.substring(2, value.length()).toUpperCase();
+               break;
+            case BORDERCOLOR:
+               // get hax value of color as a string
+               value = Integer.toHexString(node.mGetBorderColor().getRGB());
+               // Remove ff from begining of value, add a # symbol and make all caps
+               value = "#" + value.substring(2, value.length()).toUpperCase();
+               break;
+            case LABELCOLOR:
+               // get hax value of color as a string
+               value = Integer.toHexString(node.mGetLabelColor().getRGB());
+               // Remove ff from begining of value, add a # symbol and make all caps
+               value = "#" + value.substring(2, value.length()).toUpperCase();
+               break;
+            case FONT:
+               Font f = node.mGetFont();
+               value = f.getFontName() + " " + f.getStyle() + " " + f.getSize();
+               break;
+            case WIDTH:
+               value = String.valueOf(node.mGetWidth());
+               break;
+            case HEIGHT:
+               value = String.valueOf(node.mGetHeight());
+               break;
+            default: break;
+         }
+      } catch (IllegalArgumentException e) {
+         // TODO: Print out warning (log) for invalid attribute
+         // This function is only ever called by code, and the associated enums
+         // are from an existing graph object and therefore should never happen.
+      }
+      return value;
+   }
+
+   /**
+    * Returns string value of requested attribute given an edge object
+    * 
+    * @param   edge        The edge object
+    * @param   attribute   The edgeAttribute
+    * @return              The value of the attribute as a string
+    */
+   private static String mGetEdgeAttributeValue(Edge edge, edgeAttributes attribute) {
+      String value = "";
+      try {
+         switch (attribute) {
+            case ID:
+               value = edge.mGetId();
+               break;
+            case LABEL:
+               value = edge.mGetLabel();
+               break;
+            case STARTNODE:
+               value = edge.mGetStartNode().mGetId();
+               break;
+            case ENDNODE:
+               value = edge.mGetEndNode().mGetId();
+               break;
+            case DIRECTION:
+               value = edge.mGetDirection().name();
+               break;
+            case STYLE:
+               value = edge.mGetEdgeStyle().name();
+               break;
+            case EDGECOLOR:;
+               // get hax value of color as a string
+               value = Integer.toHexString(edge.mGetEdgeColor().getRGB());
+               // Remove ff from begining of value, add a # symbol and make all caps
+               value = "#" + value.substring(2, value.length()).toUpperCase();
+               break;
+            case LABELCOLOR:
+               // get hax value of color as a string
+               value = Integer.toHexString(edge.mGetLabelColor().getRGB());
+               // Remove ff from begining of value, add a # symbol and make all caps
+               value = "#" + value.substring(2, value.length()).toUpperCase();
+               break;
+            case FONT:
+               Font f = edge.mGetFont();
+               value = f.getFontName() + " " + f.getStyle() + " " + f.getSize();
+               break;
+            default: break;
+         }
+      } catch (IllegalArgumentException e) {
+         // TODO: Print out warning (log) for invalid attribute
+         // This function is only ever called by code, and the associated enums
+         // are from an existing graph object and therefore should never happen.
+      }
+      return value;
+   }
    /**
     * Creates Node object from xml element
     * 
     * @param   el          The xml node element
     * @return              The Node object
     */
-   private static Node getNodeElement(Element el) throws InvalidXMLException {
+   private static Node mGetNodeElement(Element el) throws InvalidXMLException {
       // TODO: Get additional elements from XML
       
       // Create Node Object
@@ -652,7 +880,7 @@ public class GraphHelper {
     * @param   graph       The current graph with the nodes 
     * @return              The edge object
     */
-   private static Edge getEdgeElement(Element el, Graph graph) throws InvalidXMLException {
+   private static Edge mGetEdgeElement(Element el, Graph graph) throws InvalidXMLException {
       // TODO: Get additional elements from XML
       Edge edge = null;
       String id = el.getAttribute("id");
@@ -714,7 +942,7 @@ public class GraphHelper {
     * @param   n        The node object to draw on g
     * @see     Node
     */
-   private static void mDrawNode(Graphics g, Node n){
+   public static void mDrawNode(Graphics g, Node n){
       // make the assumption that no object's width should be 0
       if(n.mGetWidth() != 0){
          int upperLeftX = n.mGetUpperLeftX();
@@ -814,7 +1042,7 @@ public class GraphHelper {
     * @param   e        The edge object to draw on g
     * @see     Edge
     */
-   private static void mDrawEdge(Graphics g, Edge e) {
+   public static void mDrawEdge(Graphics g, Edge e) {
       //TODO: implement for non-straight edges
       //TODO: implement for different edge styles/directions.
       //TODO: implement label placement.
@@ -839,6 +1067,7 @@ public class GraphHelper {
       int endNodeCenterX = endNode.mGetCenterX();
       int endNodeCenterY = endNode.mGetCenterY();
       
+      //first thing we do is calculate which of the 4 points we will draw the edge from on each node
       if(startNodeCenterX - endNodeCenterX > 0){
          //we will either use the left, top, or bottom point
          differenceX = startNodeCenterX - endNodeCenterX;
@@ -923,47 +1152,226 @@ public class GraphHelper {
             }
          }
       }
+      
+      int labelX = (startX + endX)/2 + 5;
+      int labelY = (startY +endY)/2 - 5;
+      
       switch (e.mGetEdgeStyle()){
-      case DOTTED:
-        BasicStroke dotted =  new BasicStroke(
-               1f, 
-               BasicStroke.CAP_ROUND, 
-               BasicStroke.JOIN_ROUND, 
-               1f, 
-               new float[] {2f}, 
-               0f);
-        Graphics2D g2 = (Graphics2D)g;
-        g2.setStroke(dotted);
-        g2.drawLine(startX, startY, endX, endY);
-        break;
-      case DASHED:
-         float dash1[] = {10.0f};
+         case DOTTED:
+           BasicStroke dotted =  new BasicStroke(
+                  1f, 
+                  BasicStroke.CAP_ROUND, 
+                  BasicStroke.JOIN_ROUND, 
+                  1f, 
+                  new float[] {2f}, 
+                  0f);
+           Graphics2D g2 = (Graphics2D)g;
+           g2.setStroke(dotted);
+           g2.drawLine(startX, startY, endX, endY);
+           break;
+         case DASHED:
+            float dash1[] = {10.0f};
+            BasicStroke dashed =
+                new BasicStroke(1.0f,
+                                BasicStroke.CAP_BUTT,
+                                BasicStroke.JOIN_MITER,
+                                10.0f, dash1, 0.0f);
+            Graphics2D gr2 = (Graphics2D)g;
+            gr2.setStroke(dashed);
+            gr2.drawLine(startX, startY, endX, endY);
+            break;
+         case SOLID:
+         default:
+            g.drawLine(startX, startY, endX, endY);
+            break;
+      }
+      
+      mDrawEdgeLabel(g, e, startX, startY, endX, endY);
+      
+      //KMW Note: for now we will only support one style of arrow. (a filled in triangle)
+      //          at some point we will need to support the other types.
+      switch(e.mGetDirection()){
+         case NODIRECTION:
+            //we are done. It will work
+            break;
+         case STARTDIRECTION:
+            //KMW Note: I'm having difficulty coming up with good code to do this.
+            //          I know we can use sin/cos/tan to calculate points to draw a
+            //          triangle, but every way I think of to do this we would need to
+            //          break it into 4 cases for each combination of node placements in
+            //          relation to each other, and this seems unnecessary to me.
+            /*int x[] = new int[3];
+            int y[] = new int[3];
+            x[0] = startX;
+            y[0] = startY;
+            
+            x[1] = ;
+            y[1] = ;
+            
+            x[3] = ;
+            y[3] = ;
+            g.drawPolygon(x, y, 3);*/
+            break;
+         case ENDDIRECTION:
+            
+            break;
+         case DOUBLEDIRECTION:
+            
+            break;
+      }
+         
+   }
+
+   /**
+    * Calculates the edge label position and draws it to the panel.
+    * @param g - the graphics object doing the drawing.
+    * @param e - the Edge to calculate the label position for.
+    * @param startX - the start point of the edge's x coordinate
+    * @param startY - the start point of the edge's y coordinate
+    * @param endX - the end point of the edge's x coordinate
+    * @param endY - the end point of the edge's y coordinate
+    */
+   public static void mDrawEdgeLabel(Graphics g, Edge e, int startX, int startY, int endX, int endY){
+      g.setColor(e.mGetLabelColor());
+      
+      //calculate the label position.
+      //KMW Note: this is not working correctly yet. Somtimes the edge lables are going throught the middle
+      //          of the edge.
+      int labelX;
+      int labelY;
+      
+      if(startX < endX){
+         labelX = (startX + endX)/2 + 5;
+         if(startY > endY){
+            labelY = (startY + endY)/2 + 5;
+         }
+         else{
+            labelY = (startY + endY)/2 - 5;
+         }
+      }
+      else{
+         labelX = (startX + endX)/2 - 5;
+         if(startY > endY){
+            labelY = (startY + endY)/2 + 5;
+         }
+         else{
+            labelY = (startY + endY)/2 - 5;
+         }
+      }
+      g.drawString(e.mGetLabel(), labelX, labelY);
+   }
+   
+   /**
+    * mDrawSelectedNode - Draws a Cyan Bounding Box arround a node object
+    *                     to indicate that the object is selected
+    *
+    * @param   g        The Graphics object the selection is drawn on
+    * @param   e        The node object to draw the selection arround
+    * @see     Node
+    * @see     SelectedItems
+    */
+   public static void mDrawSelectedNode(Graphics g, Node n) {
+      Graphics2D g2d = (Graphics2D)g;
+      float dash1[] = {10.0f};
          BasicStroke dashed =
              new BasicStroke(1.0f,
                              BasicStroke.CAP_BUTT,
                              BasicStroke.JOIN_MITER,
                              10.0f, dash1, 0.0f);
-         Graphics2D gr2 = (Graphics2D)g;
-         gr2.setStroke(dashed);
-         gr2.drawLine(startX, startY, endX, endY);
-         break;
-      case SOLID:
-      default:
-         g.drawLine(startX, startY, endX, endY);
-         break;
-      }
-      g.drawLine(startX, startY, endX, endY);
-      
-      switch(e.mGetDirection()){
-      case NODIRECTION:
-         break;
-      case STARTDIRECTION:
-         break;
-      case ENDDIRECTION:
-         break;
-      case DOUBLEDIRECTION:
-         break;
-      }
-         
+      g2d.setStroke(dashed);
+      g2d.setColor(Color.cyan);
+      g2d.drawRect(n.mGetUpperLeftX()-5, n.mGetUpperLeftY()-5, n.mGetWidth()+10, n.mGetHeight()+10);
+   }
+   
+   /**
+    * savePNG - Save a graph as a .png file
+    * 
+    * @param panel - the object holding the graph drawing
+    * 
+    */
+   public static void mSavePNG(GraphPanel panel) {
+	   Dimension size = panel.getSize();  //panel == JPanel
+       BufferedImage myImage = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
+       Graphics2D g2 = myImage.createGraphics();
+       panel.paint(g2);
+	   g2.dispose();
+	   try
+	   {
+		// This file location only works for Jeff's Mac laptop...we can make a filechooser later
+		   ImageIO.write(myImage, "png", new File("/Users/Markues/Desktop/MyGraph.png"));
+	   }
+	   catch (IOException e)
+	   {
+		   e.printStackTrace();
+	   }
+   }
+   
+   /**
+    * saveJPG - Save a graph as a .jpg file
+    * 
+    * @param panel - the object holding the graph drawing
+    * 
+    */
+   public static void mSaveJPG(GraphPanel panel) {
+	   Dimension size = panel.getSize();  //panel == JPanel
+       BufferedImage myImage = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
+       Graphics2D g2 = myImage.createGraphics();
+       panel.paint(g2);
+	   g2.dispose();
+	   try
+	   {
+		   // This file location only works for Jeff's Mac laptop...we can make a filechooser later
+		   ImageIO.write(myImage, "jpg", new File("/Users/Markues/Desktop/MyGraph.jpg"));
+	   }
+	   catch (IOException e)
+	   {
+		   e.printStackTrace();
+	   }
+   }
+   
+   /**
+    * saveBMP - Save a graph as a .bmp file
+    * 
+    * @param panel - the object holding the graph drawing
+    * 
+    */
+   public static void mSaveBMP(GraphPanel panel) {
+	   Dimension size = panel.getSize();  //panel == JPanel
+       BufferedImage myImage = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
+       Graphics2D g2 = myImage.createGraphics();
+       panel.paint(g2);
+	   g2.dispose();
+	   try
+	   {
+		   // This file location only works for Jeff's Mac laptop...we can make a filechooser later
+		   ImageIO.write(myImage, "bmp", new File("/Users/Markues/Desktop/MyGraph.bmp"));
+	   }
+	   catch (IOException e)
+	   {
+		   e.printStackTrace();
+	   }
+   }
+   
+   /**
+    * saveGIF - save a graph as a .gif file
+    * 
+    * @param panel - the object holding the graph drawing
+    * 
+    */
+   public static void mSaveGIF(GraphPanel panel) {
+	   Dimension size = panel.getSize();  //panel == JPanel
+       BufferedImage myImage = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
+       Graphics2D g2 = myImage.createGraphics();
+       panel.paint(g2);
+	   g2.dispose();
+	   try
+	   {
+		   // This file location only works for Jeff's Mac laptop...we can make a filechooser later
+		   ImageIO.write(myImage, "gif", new File("/Users/Markues/Desktop/MyGraph.gif"));
+	   }
+	   catch (IOException e)
+	   {
+		   e.printStackTrace();
+	   }
    }
 }

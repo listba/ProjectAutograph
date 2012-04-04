@@ -1,6 +1,8 @@
 package autograph;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.io.Serializable;
 import autograph.exception.*;
 /**
@@ -42,6 +44,7 @@ public class Edge implements Serializable {
    private int vEndY;
    private Color vEdgeColor;
    private Color vLabelColor;
+   private Font vFont;
    
    private void mValidateEdge(String id, Node startNode, Node endNode) throws CannotAddEdgeException{
       if(id == null || id.isEmpty()){
@@ -97,6 +100,8 @@ public class Edge implements Serializable {
          }
          
          vEdgeColor = Color.black;
+         vLabelColor = Color.black;
+         vFont = new Font("Monospaced", 0, 10);
       }
       catch (CannotAddEdgeException e){
          //TODO: This may need changed to an error file, etc
@@ -283,5 +288,21 @@ public class Edge implements Serializable {
     */
    public void mSetLabelColor(Color color){
       vLabelColor = color;
+   }
+
+   /**
+    * GetFont - Gets the font for the label's text
+    * @return - the font for the label's text
+    */
+   public Font mGetFont(){
+      return vFont;
+   }
+   
+   /**
+    * SetFont - Sets the font for the label's text
+    * @param font - the font to set for the label's text
+    */
+   public void mSetFont(Font font){
+      vFont = font;
    }
 }
