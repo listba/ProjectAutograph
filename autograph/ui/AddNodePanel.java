@@ -23,23 +23,23 @@ public class AddNodePanel extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane5 = new javax.swing.JScrollPane();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
-        jLabel5 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jButton6 = new javax.swing.JButton();
-        jComboBox3 = new javax.swing.JComboBox();
-        jButton7 = new javax.swing.JButton();
-        jSeparator2 = new javax.swing.JSeparator();
+        AddNodePanel = new javax.swing.JPanel();
+        AddNodeTitleLabel = new javax.swing.JLabel();
+        LabelSubtitleLabel = new javax.swing.JLabel();
+        LabelTextLabel = new javax.swing.JLabel();
+        LabelTextField = new javax.swing.JTextField();
+        LabelFontLabel = new javax.swing.JLabel();
+        LabelFontComboBox = new javax.swing.JComboBox();
+        LabelColorLabel = new javax.swing.JLabel();
+        LabelColorBtn = new javax.swing.JButton();
+        NodeSubtitleLabel = new javax.swing.JLabel();
+        NodeShapeLabel = new javax.swing.JLabel();
+        BorderColorLabel = new javax.swing.JLabel();
+        FillColorLabel = new javax.swing.JLabel();
+        FillColorBtn = new javax.swing.JButton();
+        NodeShapeComboBox = new javax.swing.JComboBox();
+        BorderColorBtn = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
         jButton1 = new javax.swing.JButton();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 32767));
 
@@ -50,127 +50,127 @@ public class AddNodePanel extends javax.swing.JPanel {
         jScrollPane5.setBorder(null);
         jScrollPane5.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        AddNodePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Add Node");
+        AddNodeTitleLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        AddNodeTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        AddNodeTitleLabel.setText("Add Node");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel2.setText("Label");
+        LabelSubtitleLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        LabelSubtitleLabel.setText("Label");
 
-        jLabel3.setText("Label Text");
+        LabelTextLabel.setText("Label Text");
 
-        jLabel4.setText("Label Font");
+        LabelFontLabel.setText("Label Font");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Times New Roman", "Ariel", "Some other font", "More fonts", "Wingdings" }));
+        LabelFontComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Times New Roman", "Ariel", "Some other font", "More fonts", "Wingdings" }));
 
-        jLabel5.setText("Label Color");
+        LabelColorLabel.setText("Label Color");
 
-        jButton4.setText("[  ]");
-        jButton4.setMargin(new java.awt.Insets(2, 5, 2, 5));
+        LabelColorBtn.setText("[  ]");
+        LabelColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
 
-        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel6.setText("Node");
+        NodeSubtitleLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        NodeSubtitleLabel.setText("Node");
 
-        jLabel7.setText("Node Shape");
+        NodeShapeLabel.setText("Node Shape");
 
-        jLabel8.setText("Border Color");
+        BorderColorLabel.setText("Border Color");
 
-        jLabel9.setText("Fill Color");
+        FillColorLabel.setText("Fill Color");
 
-        jButton6.setText("[  ]");
-        jButton6.setMargin(new java.awt.Insets(2, 5, 2, 5));
+        FillColorBtn.setText("[  ]");
+        FillColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "AA", "BB", "CC", "DD", "EE", "FF" }));
+        NodeShapeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "AA", "BB", "CC", "DD", "EE", "FF" }));
 
-        jButton7.setText("[  ]");
-        jButton7.setMargin(new java.awt.Insets(2, 5, 2, 5));
+        BorderColorBtn.setText("[  ]");
+        BorderColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
 
         jButton1.setText("Add Node");
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel6))
+        javax.swing.GroupLayout AddNodePanelLayout = new javax.swing.GroupLayout(AddNodePanel);
+        AddNodePanel.setLayout(AddNodePanelLayout);
+        AddNodePanelLayout.setHorizontalGroup(
+            AddNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AddNodePanelLayout.createSequentialGroup()
+                .addGroup(AddNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(LabelSubtitleLabel)
+                    .addComponent(NodeSubtitleLabel))
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(jPanel4Layout.createSequentialGroup()
+            .addGroup(AddNodePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField1)
-                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel8)
-                                    .addComponent(jLabel9))
+                .addGroup(AddNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(AddNodeTitleLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(LabelTextField)
+                    .addComponent(LabelFontComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(AddNodePanelLayout.createSequentialGroup()
+                        .addGroup(AddNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(AddNodePanelLayout.createSequentialGroup()
+                                .addGroup(AddNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(LabelTextLabel)
+                                    .addComponent(LabelFontLabel)
+                                    .addComponent(BorderColorLabel)
+                                    .addComponent(FillColorLabel))
                                 .addGap(24, 24, 24)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButton6)
-                                    .addComponent(jButton7)))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jLabel5))
+                                .addGroup(AddNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(FillColorBtn)
+                                    .addComponent(BorderColorBtn)))
+                            .addGroup(AddNodePanelLayout.createSequentialGroup()
+                                .addGroup(AddNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(NodeShapeLabel)
+                                    .addComponent(LabelColorLabel))
                                 .addGap(26, 26, 26)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButton4)
-                                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(AddNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(LabelColorBtn)
+                                    .addComponent(NodeShapeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(0, 45, Short.MAX_VALUE))
-                    .addComponent(jSeparator2)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                    .addComponent(jSeparator1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AddNodePanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButton1)))
                 .addContainerGap())
         );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jLabel1)
+        AddNodePanelLayout.setVerticalGroup(
+            AddNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(AddNodePanelLayout.createSequentialGroup()
+                .addComponent(AddNodeTitleLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2)
+                .addComponent(LabelSubtitleLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3)
+                .addComponent(LabelTextLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(LabelTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel4)
+                .addComponent(LabelFontLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(LabelFontComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jButton4))
+                .addGroup(AddNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LabelColorLabel)
+                    .addComponent(LabelColorBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(3, 3, 3)
-                .addComponent(jLabel6)
+                .addComponent(NodeSubtitleLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(AddNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(NodeShapeLabel)
+                    .addComponent(NodeShapeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(jButton7))
+                .addGroup(AddNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(BorderColorLabel)
+                    .addComponent(BorderColorBtn))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(jButton6))
+                .addGroup(AddNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(FillColorLabel)
+                    .addComponent(FillColorBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addContainerGap())
         );
 
-        jScrollPane5.setViewportView(jPanel4);
+        jScrollPane5.setViewportView(AddNodePanel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -193,25 +193,25 @@ public class AddNodePanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel AddNodePanel;
+    private javax.swing.JLabel AddNodeTitleLabel;
+    private javax.swing.JButton BorderColorBtn;
+    private javax.swing.JLabel BorderColorLabel;
+    private javax.swing.JButton FillColorBtn;
+    private javax.swing.JLabel FillColorLabel;
+    private javax.swing.JButton LabelColorBtn;
+    private javax.swing.JLabel LabelColorLabel;
+    private javax.swing.JComboBox LabelFontComboBox;
+    private javax.swing.JLabel LabelFontLabel;
+    private javax.swing.JLabel LabelSubtitleLabel;
+    private javax.swing.JTextField LabelTextField;
+    private javax.swing.JLabel LabelTextLabel;
+    private javax.swing.JComboBox NodeShapeComboBox;
+    private javax.swing.JLabel NodeShapeLabel;
+    private javax.swing.JLabel NodeSubtitleLabel;
     private javax.swing.Box.Filler filler1;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox3;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
 }

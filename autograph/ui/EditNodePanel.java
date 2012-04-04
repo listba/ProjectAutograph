@@ -23,18 +23,18 @@ public class EditNodePanel extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
-        jLabel4 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
+        NodeOptionsPanel = new javax.swing.JPanel();
+        NodeOptionsTitleLabel = new javax.swing.JLabel();
+        LabelTextLabel = new javax.swing.JLabel();
+        LabelTextField = new javax.swing.JTextField();
+        NodeShapeLabel = new javax.swing.JLabel();
+        NodeShapeComboBox = new javax.swing.JComboBox();
+        BorderColorLabel = new javax.swing.JLabel();
+        BorderColorBtn = new javax.swing.JButton();
+        FillColorLabel = new javax.swing.JLabel();
+        FillColorBtn = new javax.swing.JButton();
+        TextColorLabel = new javax.swing.JLabel();
+        TextColorBtn = new javax.swing.JButton();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 32767));
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -44,97 +44,97 @@ public class EditNodePanel extends javax.swing.JPanel {
         jScrollPane1.setBorder(null);
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        jPanel4.setPreferredSize(new java.awt.Dimension(200, 457));
+        NodeOptionsPanel.setPreferredSize(new java.awt.Dimension(200, 457));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Node Options");
-        jLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        jLabel1.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        NodeOptionsTitleLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        NodeOptionsTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        NodeOptionsTitleLabel.setText("Node Options");
+        NodeOptionsTitleLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        NodeOptionsTitleLabel.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
 
-        jLabel2.setText("Label Text");
+        LabelTextLabel.setText("Label Text");
 
-        jLabel3.setText("Node Shape");
+        NodeShapeLabel.setText("Node Shape");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "AA", "BB", "CC", "DD", "EE", "FF" }));
+        NodeShapeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "AA", "BB", "CC", "DD", "EE", "FF" }));
 
-        jLabel4.setText("Border Color");
+        BorderColorLabel.setText("Border Color");
 
-        jButton3.setText("[  ]");
-        jButton3.setMargin(new java.awt.Insets(2, 5, 2, 5));
+        BorderColorBtn.setText("[  ]");
+        BorderColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
 
-        jLabel5.setText("Fill Color");
+        FillColorLabel.setText("Fill Color");
 
-        jButton2.setText("[  ]");
-        jButton2.setMargin(new java.awt.Insets(2, 5, 2, 5));
+        FillColorBtn.setText("[  ]");
+        FillColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
 
-        jLabel6.setText("Text Color");
+        TextColorLabel.setText("Text Color");
 
-        jButton4.setText("[  ]");
-        jButton4.setMargin(new java.awt.Insets(2, 5, 2, 5));
+        TextColorBtn.setText("[  ]");
+        TextColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+        javax.swing.GroupLayout NodeOptionsPanelLayout = new javax.swing.GroupLayout(NodeOptionsPanel);
+        NodeOptionsPanel.setLayout(NodeOptionsPanelLayout);
+        NodeOptionsPanelLayout.setHorizontalGroup(
+            NodeOptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(NodeOptionsTitleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
+            .addGroup(NodeOptionsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField1)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5))
+                .addGroup(NodeOptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(LabelTextField)
+                    .addGroup(NodeOptionsPanelLayout.createSequentialGroup()
+                        .addGroup(NodeOptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(LabelTextLabel)
+                            .addGroup(NodeOptionsPanelLayout.createSequentialGroup()
+                                .addGroup(NodeOptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(TextColorLabel)
+                                    .addComponent(NodeShapeLabel)
+                                    .addComponent(BorderColorLabel)
+                                    .addComponent(FillColorLabel))
                                 .addGap(18, 18, 18)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jButton4))
-                                    .addGroup(jPanel4Layout.createSequentialGroup()
-                                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jButton2)
-                                            .addComponent(jButton3))
+                                .addGroup(NodeOptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, NodeOptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(NodeShapeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(TextColorBtn))
+                                    .addGroup(NodeOptionsPanelLayout.createSequentialGroup()
+                                        .addGroup(NodeOptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(FillColorBtn)
+                                            .addComponent(BorderColorBtn))
                                         .addGap(10, 10, 10)))))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jLabel1)
+        NodeOptionsPanelLayout.setVerticalGroup(
+            NodeOptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(NodeOptionsPanelLayout.createSequentialGroup()
+                .addComponent(NodeOptionsTitleLabel)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel2)
+                .addComponent(LabelTextLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(LabelTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(14, 14, 14)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(jButton4))
+                .addGroup(NodeOptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(NodeOptionsPanelLayout.createSequentialGroup()
+                        .addGroup(NodeOptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(TextColorLabel)
+                            .addComponent(TextColorBtn))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(NodeOptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(NodeShapeLabel)
+                            .addComponent(NodeShapeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(jButton3)))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(NodeOptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(BorderColorLabel)
+                            .addComponent(BorderColorBtn)))
+                    .addGroup(NodeOptionsPanelLayout.createSequentialGroup()
                         .addGap(120, 120, 120)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton2)
-                            .addComponent(jLabel5))))
-                .addContainerGap(228, Short.MAX_VALUE))
+                        .addGroup(NodeOptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(FillColorBtn)
+                            .addComponent(FillColorLabel))))
+                .addContainerGap(212, Short.MAX_VALUE))
         );
 
-        jScrollPane1.setViewportView(jPanel4);
+        jScrollPane1.setViewportView(NodeOptionsPanel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -160,19 +160,19 @@ public class EditNodePanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BorderColorBtn;
+    private javax.swing.JLabel BorderColorLabel;
+    private javax.swing.JButton FillColorBtn;
+    private javax.swing.JLabel FillColorLabel;
+    private javax.swing.JTextField LabelTextField;
+    private javax.swing.JLabel LabelTextLabel;
+    private javax.swing.JPanel NodeOptionsPanel;
+    private javax.swing.JLabel NodeOptionsTitleLabel;
+    private javax.swing.JComboBox NodeShapeComboBox;
+    private javax.swing.JLabel NodeShapeLabel;
+    private javax.swing.JButton TextColorBtn;
+    private javax.swing.JLabel TextColorLabel;
     private javax.swing.Box.Filler filler1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

@@ -22,143 +22,138 @@ public class mainWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jToolBar1 = new javax.swing.JToolBar();
-        jButton1 = new javax.swing.JButton();
+        MainWindowToolBar = new javax.swing.JToolBar();
+        AddNodeBtn = new javax.swing.JButton();
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(25, 0));
-        jButton2 = new javax.swing.JButton();
+        AddEdgeBtn = new javax.swing.JButton();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(100, 0));
-        jToggleButton1 = new javax.swing.JToggleButton();
+        AutoLabelNodesTog = new javax.swing.JToggleButton();
         filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(25, 0));
-        jToggleButton2 = new javax.swing.JToggleButton();
+        AutoLabelEdgesTog = new javax.swing.JToggleButton();
         filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(25, 0));
-        jToggleButton3 = new javax.swing.JToggleButton();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        AutoConnectNodesTog = new javax.swing.JToggleButton();
+        MainWindowTabbedPane = new javax.swing.JTabbedPane();
         jScrollPane3 = new javax.swing.JScrollPane();
         jPanel3 = new javax.swing.JPanel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        jPanel5 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jPanel1 = new javax.swing.JPanel();
+        GraphPanel = new javax.swing.JPanel();
+        TabAreaScrollPane = new javax.swing.JScrollPane();
+        GraphTabPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 32767));
         jScrollPane5 = new javax.swing.JScrollPane();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
-        jLabel5 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
-        jSeparator2 = new javax.swing.JSeparator();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox();
-        jLabel8 = new javax.swing.JLabel();
-        jButton7 = new javax.swing.JButton();
-        jLabel9 = new javax.swing.JLabel();
-        jButton6 = new javax.swing.JButton();
+        EditPanel = new javax.swing.JPanel();
+        EditTitleLabel = new javax.swing.JLabel();
+        LabelSubtitleLabel = new javax.swing.JLabel();
+        LabelTextLabel = new javax.swing.JLabel();
+        LabelTextField = new javax.swing.JTextField();
+        LabelFontLabel = new javax.swing.JLabel();
+        LabelFontComboBox = new javax.swing.JComboBox();
+        LabelColorLabel = new javax.swing.JLabel();
+        LabelColorBtn = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox();
-        jLabel12 = new javax.swing.JLabel();
-        jComboBox4 = new javax.swing.JComboBox();
+        NodeSubtitleLabel = new javax.swing.JLabel();
+        NodeShapeLabel = new javax.swing.JLabel();
+        NodeShapeComboBox = new javax.swing.JComboBox();
+        BorderColorLabel = new javax.swing.JLabel();
+        BorderColorBtn = new javax.swing.JButton();
+        FillColorLabel = new javax.swing.JLabel();
+        FillColorBtn = new javax.swing.JButton();
+        jSeparator2 = new javax.swing.JSeparator();
+        EdgeSubtitleLabel = new javax.swing.JLabel();
+        EdgeDesignLabel = new javax.swing.JLabel();
+        EdgeDesignComboBox = new javax.swing.JComboBox();
+        EndShapeLabel = new javax.swing.JLabel();
+        EndShapeComboBox = new javax.swing.JComboBox();
         jLabel13 = new javax.swing.JLabel();
         jButton8 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem17 = new javax.swing.JMenuItem();
-        jMenuItem18 = new javax.swing.JMenuItem();
-        jMenuItem15 = new javax.swing.JMenuItem();
-        jMenuItem16 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
-        jMenuItem7 = new javax.swing.JMenuItem();
-        jMenuItem8 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
-        jMenuItem9 = new javax.swing.JMenuItem();
-        jMenuItem10 = new javax.swing.JMenuItem();
-        jMenuItem11 = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
-        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
-        jCheckBoxMenuItem3 = new javax.swing.JCheckBoxMenuItem();
-        jCheckBoxMenuItem2 = new javax.swing.JCheckBoxMenuItem();
-        jMenuItem12 = new javax.swing.JMenuItem();
-        jMenu5 = new javax.swing.JMenu();
-        jMenuItem13 = new javax.swing.JMenuItem();
-        jMenuItem14 = new javax.swing.JMenuItem();
+        MainWindowMenuBar = new javax.swing.JMenuBar();
+        FileDropdownMenu = new javax.swing.JMenu();
+        NewGraphMenuItem = new javax.swing.JMenuItem();
+        OpenMenuItem = new javax.swing.JMenuItem();
+        SaveMenuItem = new javax.swing.JMenuItem();
+        SaveAsMenuItem = new javax.swing.JMenuItem();
+        PrintMenuItem = new javax.swing.JMenuItem();
+        PrintPreviewMenuItem = new javax.swing.JMenuItem();
+        CloseGraphMenuItem = new javax.swing.JMenuItem();
+        ExitMenuItem = new javax.swing.JMenuItem();
+        EditDropdownMenu = new javax.swing.JMenu();
+        SelectAllMenuItem = new javax.swing.JMenuItem();
+        SelectAllNodesMenuItem = new javax.swing.JMenuItem();
+        SelectAllEdgesMenuItem = new javax.swing.JMenuItem();
+        DeselectMenuItem = new javax.swing.JMenuItem();
+        ViewDropdownMenu = new javax.swing.JMenu();
+        CloseTabMenuItem = new javax.swing.JMenuItem();
+        CloseAllOtherTabsMenuItem = new javax.swing.JMenuItem();
+        OpenAdvancedCodeViewMenuItem = new javax.swing.JMenuItem();
+        ToolsDropdownMenu = new javax.swing.JMenu();
+        AutoLabelNodesMenuItem = new javax.swing.JCheckBoxMenuItem();
+        AutoLabelEdgesMenuItem = new javax.swing.JCheckBoxMenuItem();
+        AutoConnectNodesMenuItem = new javax.swing.JCheckBoxMenuItem();
+        ChangeBgColorMenuItem = new javax.swing.JMenuItem();
+        HelpDropdownMenu = new javax.swing.JMenu();
+        ViewUserGuideMenuItem = new javax.swing.JMenuItem();
+        AboutAutographMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(500, 400));
 
-        jToolBar1.setFloatable(false);
-        jToolBar1.setRollover(true);
+        MainWindowToolBar.setFloatable(false);
+        MainWindowToolBar.setRollover(true);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("resources/AddNode.png"))); // NOI18N
-        jButton1.setText("Add Node");
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setMargin(new java.awt.Insets(5, 5, 2, 5));
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+        AddNodeBtn.setText("Add Node");
+        AddNodeBtn.setFocusable(false);
+        AddNodeBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        AddNodeBtn.setMargin(new java.awt.Insets(5, 5, 2, 5));
+        AddNodeBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        AddNodeBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                AddNodeBtnActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton1);
-        jToolBar1.add(filler3);
+        MainWindowToolBar.add(AddNodeBtn);
+        MainWindowToolBar.add(filler3);
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("resources/AddEdge.png"))); // NOI18N
-        jButton2.setText("Add Edge");
-        jButton2.setFocusable(false);
-        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton2.setMargin(new java.awt.Insets(5, 5, 2, 5));
-        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton2);
-        jToolBar1.add(filler2);
+        AddEdgeBtn.setText("Add Edge");
+        AddEdgeBtn.setFocusable(false);
+        AddEdgeBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        AddEdgeBtn.setMargin(new java.awt.Insets(5, 5, 2, 5));
+        AddEdgeBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        MainWindowToolBar.add(AddEdgeBtn);
+        MainWindowToolBar.add(filler2);
 
-        jToggleButton1.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("resources/ToggleOn.png"))); // NOI18N
-        jToggleButton1.setSelected(true);
-        jToggleButton1.setText("Auto-Label Nodes");
-        jToggleButton1.setFocusable(false);
-        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+        AutoLabelNodesTog.setSelected(true);
+        AutoLabelNodesTog.setText("Auto-Label Nodes");
+        AutoLabelNodesTog.setFocusable(false);
+        AutoLabelNodesTog.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton1ActionPerformed(evt);
+                AutoLabelNodesTogActionPerformed(evt);
             }
         });
-        jToolBar1.add(jToggleButton1);
-        jToolBar1.add(filler4);
+        MainWindowToolBar.add(AutoLabelNodesTog);
+        MainWindowToolBar.add(filler4);
 
-        jToggleButton2.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("resources/ToggleOff.png"))); // NOI18N
-        jToggleButton2.setText("Auto-Label Edges");
-        jToggleButton2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jToggleButton2.setFocusable(false);
-        jToggleButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToggleButton2.addActionListener(new java.awt.event.ActionListener() {
+        AutoLabelEdgesTog.setText("Auto-Label Edges");
+        AutoLabelEdgesTog.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        AutoLabelEdgesTog.setFocusable(false);
+        AutoLabelEdgesTog.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        AutoLabelEdgesTog.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton2ActionPerformed(evt);
+                AutoLabelEdgesTogActionPerformed(evt);
             }
         });
-        jToolBar1.add(jToggleButton2);
-        jToolBar1.add(filler5);
+        MainWindowToolBar.add(AutoLabelEdgesTog);
+        MainWindowToolBar.add(filler5);
 
-        jToggleButton3.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("resources/ToggleOff.png"))); // NOI18N
-        jToggleButton3.setText("Auto-Connect Nodes");
-        jToggleButton3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jToggleButton3.setFocusable(false);
-        jToggleButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jToggleButton3);
+        AutoConnectNodesTog.setText("Auto-Connect Nodes");
+        AutoConnectNodesTog.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        AutoConnectNodesTog.setFocusable(false);
+        AutoConnectNodesTog.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        MainWindowToolBar.add(AutoConnectNodesTog);
 
-        jTabbedPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-        jTabbedPane1.setMinimumSize(new java.awt.Dimension(114, 95));
+        MainWindowTabbedPane.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        MainWindowTabbedPane.setMinimumSize(new java.awt.Dimension(114, 95));
 
         jScrollPane3.setBorder(null);
 
@@ -173,228 +168,224 @@ public class mainWindow extends javax.swing.JFrame {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 494, Short.MAX_VALUE)
+            .addGap(0, 476, Short.MAX_VALUE)
         );
 
         jScrollPane3.setViewportView(jPanel3);
 
-        jTabbedPane1.addTab("New Graph.ag", jScrollPane3);
-
-        jScrollPane4.setBorder(null);
-
-        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 912, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 502, Short.MAX_VALUE)
-        );
-
-        jScrollPane4.setViewportView(jPanel5);
-
-        jTabbedPane1.addTab("GraphExample.ag", jScrollPane4);
+        MainWindowTabbedPane.addTab("New Graph.ag", jScrollPane3);
 
         jScrollPane2.setBorder(null);
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setPreferredSize(new java.awt.Dimension(600, 400));
+        GraphPanel.setBackground(new java.awt.Color(255, 255, 255));
+        GraphPanel.setPreferredSize(new java.awt.Dimension(600, 400));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout GraphPanelLayout = new javax.swing.GroupLayout(GraphPanel);
+        GraphPanel.setLayout(GraphPanelLayout);
+        GraphPanelLayout.setHorizontalGroup(
+            GraphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 912, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 494, Short.MAX_VALUE)
+        GraphPanelLayout.setVerticalGroup(
+            GraphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 476, Short.MAX_VALUE)
         );
 
-        jScrollPane2.setViewportView(jPanel1);
+        jScrollPane2.setViewportView(GraphPanel);
 
-        jTabbedPane1.addTab("New Graph [1].ag", jScrollPane2);
+        MainWindowTabbedPane.addTab("New Graph [1].ag", jScrollPane2);
+
+        TabAreaScrollPane.setBorder(null);
+
+        GraphTabPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout GraphTabPanel1Layout = new javax.swing.GroupLayout(GraphTabPanel1);
+        GraphTabPanel1.setLayout(GraphTabPanel1Layout);
+        GraphTabPanel1Layout.setHorizontalGroup(
+            GraphTabPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 912, Short.MAX_VALUE)
+        );
+        GraphTabPanel1Layout.setVerticalGroup(
+            GraphTabPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 502, Short.MAX_VALUE)
+        );
+
+        TabAreaScrollPane.setViewportView(GraphTabPanel1);
+
+        MainWindowTabbedPane.addTab("GraphExample.ag", TabAreaScrollPane);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         jScrollPane5.setBorder(null);
         jScrollPane5.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        jPanel4.setPreferredSize(new java.awt.Dimension(200, 512));
+        EditPanel.setPreferredSize(new java.awt.Dimension(200, 512));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Edit Nodes/Edges");
+        EditTitleLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        EditTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        EditTitleLabel.setText("Edit Nodes/Edges");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel2.setText("Label");
+        LabelSubtitleLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        LabelSubtitleLabel.setText("Label");
 
-        jLabel3.setText("Label Text");
+        LabelTextLabel.setText("Label Text");
 
-        jLabel4.setText("Label Font");
+        LabelFontLabel.setText("Label Font");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Times New Roman", "Ariel", "Some other font", "More fonts", "Wingdings" }));
+        LabelFontComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Times New Roman", "Ariel", "Some other font", "More fonts", "Wingdings" }));
 
-        jLabel5.setText("Label Color");
+        LabelColorLabel.setText("Label Color");
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("resources/ColorBlack.png"))); // NOI18N
-        jButton4.setMargin(new java.awt.Insets(2, 5, 2, 5));
+        LabelColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
 
-        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel6.setText("Node");
+        NodeSubtitleLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        NodeSubtitleLabel.setText("Node");
 
-        jLabel7.setText("Node Shape");
+        NodeShapeLabel.setText("Node Shape");
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "AA", "BB", "CC", "DD", "EE", "FF" }));
+        NodeShapeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "AA", "BB", "CC", "DD", "EE", "FF" }));
 
-        jLabel8.setText("Border Color");
+        BorderColorLabel.setText("Border Color");
 
-        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("resources/ColorBlack.png"))); // NOI18N
-        jButton7.setMargin(new java.awt.Insets(2, 5, 2, 5));
+        BorderColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
 
-        jLabel9.setText("Fill Color");
+        FillColorLabel.setText("Fill Color");
 
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("resources/ColorWhite.png"))); // NOI18N
-        jButton6.setMargin(new java.awt.Insets(2, 5, 2, 5));
+        FillColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel10.setText("Edge");
-        jLabel10.setEnabled(false);
+        EdgeSubtitleLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        EdgeSubtitleLabel.setText("Edge");
+        EdgeSubtitleLabel.setEnabled(false);
 
-        jLabel11.setText("Edge Design");
-        jLabel11.setEnabled(false);
+        EdgeDesignLabel.setText("Edge Design");
+        EdgeDesignLabel.setEnabled(false);
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "- - - -", "......", "===", " " }));
-        jComboBox2.setEnabled(false);
+        EdgeDesignComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "- - - -", "......", "===", " " }));
+        EdgeDesignComboBox.setEnabled(false);
 
-        jLabel12.setText("End Shape");
-        jLabel12.setEnabled(false);
+        EndShapeLabel.setText("End Shape");
+        EndShapeLabel.setEnabled(false);
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A-A", "A-B", "A-C", "B-B", "B-C", "C-C" }));
-        jComboBox4.setEnabled(false);
+        EndShapeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A-A", "A-B", "A-C", "B-B", "B-C", "C-C" }));
+        EndShapeComboBox.setEnabled(false);
 
         jLabel13.setText("Edge Color");
         jLabel13.setEnabled(false);
 
-        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getClassLoader().getResource("resources/ColorBlue.png"))); // NOI18N
         jButton8.setEnabled(false);
         jButton8.setMargin(new java.awt.Insets(2, 5, 2, 5));
 
         jButton9.setLabel("Save Changes");
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel10))
+        javax.swing.GroupLayout EditPanelLayout = new javax.swing.GroupLayout(EditPanel);
+        EditPanel.setLayout(EditPanelLayout);
+        EditPanelLayout.setHorizontalGroup(
+            EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(EditPanelLayout.createSequentialGroup()
+                .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(LabelSubtitleLabel)
+                    .addComponent(NodeSubtitleLabel)
+                    .addComponent(EdgeSubtitleLabel))
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(jPanel4Layout.createSequentialGroup()
+            .addGroup(EditPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField1)
-                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jLabel5))
+                .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(EditTitleLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(LabelTextField)
+                    .addComponent(LabelFontComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(EditPanelLayout.createSequentialGroup()
+                        .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(EditPanelLayout.createSequentialGroup()
+                                .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(NodeShapeLabel)
+                                    .addComponent(LabelColorLabel))
                                 .addGap(26, 26, 26)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButton4)
-                                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel8)
-                                    .addComponent(jLabel9))
+                                .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(LabelColorBtn)
+                                    .addComponent(NodeShapeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(EditPanelLayout.createSequentialGroup()
+                                .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(LabelTextLabel)
+                                    .addComponent(LabelFontLabel)
+                                    .addComponent(BorderColorLabel)
+                                    .addComponent(FillColorLabel))
                                 .addGap(24, 24, 24)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButton6)
-                                    .addComponent(jButton7)))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel11)
-                                    .addComponent(jLabel12)
+                                .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(FillColorBtn)
+                                    .addComponent(BorderColorBtn)))
+                            .addGroup(EditPanelLayout.createSequentialGroup()
+                                .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(EdgeDesignLabel)
+                                    .addComponent(EndShapeLabel)
                                     .addComponent(jLabel13))
                                 .addGap(25, 25, 25)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jButton8)
-                                    .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 56, Short.MAX_VALUE))
-                    .addComponent(jSeparator2)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                                    .addComponent(EndShapeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(EdgeDesignComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jSeparator1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, EditPanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButton9)))
                 .addContainerGap())
         );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jLabel1)
+        EditPanelLayout.setVerticalGroup(
+            EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(EditPanelLayout.createSequentialGroup()
+                .addComponent(EditTitleLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2)
+                .addComponent(LabelSubtitleLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3)
+                .addComponent(LabelTextLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(LabelTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel4)
+                .addComponent(LabelFontLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(LabelFontComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jButton4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(3, 3, 3)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(jButton7))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(jButton6))
+                .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LabelColorLabel)
+                    .addComponent(LabelColorBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(11, 11, 11)
-                .addComponent(jLabel10)
+                .addGap(3, 3, 3)
+                .addComponent(NodeSubtitleLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(NodeShapeLabel)
+                    .addComponent(NodeShapeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel12)
-                    .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(BorderColorLabel)
+                    .addComponent(BorderColorBtn))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(FillColorLabel)
+                    .addComponent(FillColorBtn))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(11, 11, 11)
+                .addComponent(EdgeSubtitleLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(EdgeDesignLabel)
+                    .addComponent(EdgeDesignComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(EndShapeLabel)
+                    .addComponent(EndShapeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
                     .addComponent(jButton8))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton9))
         );
 
-        jScrollPane5.setViewportView(jPanel4);
+        jScrollPane5.setViewportView(EditPanel);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -415,128 +406,128 @@ public class mainWindow extends javax.swing.JFrame {
                 .addGap(0, 0, 0))
         );
 
-        jMenu1.setText("File");
+        FileDropdownMenu.setText("File");
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem1.setText("New Graph...");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        NewGraphMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        NewGraphMenuItem.setText("New Graph...");
+        NewGraphMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                NewGraphMenuItemActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        FileDropdownMenu.add(NewGraphMenuItem);
 
-        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem2.setText("Open...");
-        jMenu1.add(jMenuItem2);
+        OpenMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        OpenMenuItem.setText("Open...");
+        FileDropdownMenu.add(OpenMenuItem);
 
-        jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem3.setText("Save");
-        jMenu1.add(jMenuItem3);
+        SaveMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        SaveMenuItem.setText("Save");
+        FileDropdownMenu.add(SaveMenuItem);
 
-        jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem4.setText("Save As...");
-        jMenu1.add(jMenuItem4);
+        SaveAsMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
+        SaveAsMenuItem.setText("Save As...");
+        FileDropdownMenu.add(SaveAsMenuItem);
 
-        jMenuItem17.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem17.setText("Print...");
-        jMenu1.add(jMenuItem17);
+        PrintMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
+        PrintMenuItem.setText("Print...");
+        FileDropdownMenu.add(PrintMenuItem);
 
-        jMenuItem18.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem18.setText("Print Preview");
-        jMenu1.add(jMenuItem18);
+        PrintPreviewMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
+        PrintPreviewMenuItem.setText("Print Preview");
+        FileDropdownMenu.add(PrintPreviewMenuItem);
 
-        jMenuItem15.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem15.setText("Close Graph");
-        jMenu1.add(jMenuItem15);
+        CloseGraphMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
+        CloseGraphMenuItem.setText("Close Graph");
+        FileDropdownMenu.add(CloseGraphMenuItem);
 
-        jMenuItem16.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem16.setText("Exit");
-        jMenu1.add(jMenuItem16);
+        ExitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
+        ExitMenuItem.setText("Exit");
+        FileDropdownMenu.add(ExitMenuItem);
 
-        jMenuBar1.add(jMenu1);
+        MainWindowMenuBar.add(FileDropdownMenu);
 
-        jMenu2.setText("Edit");
+        EditDropdownMenu.setText("Edit");
 
-        jMenuItem5.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem5.setText("Select All");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+        SelectAllMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
+        SelectAllMenuItem.setText("Select All");
+        SelectAllMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
+                SelectAllMenuItemActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem5);
+        EditDropdownMenu.add(SelectAllMenuItem);
 
-        jMenuItem6.setText("Select All Nodes");
-        jMenu2.add(jMenuItem6);
+        SelectAllNodesMenuItem.setText("Select All Nodes");
+        EditDropdownMenu.add(SelectAllNodesMenuItem);
 
-        jMenuItem7.setText("Select All Edges");
-        jMenu2.add(jMenuItem7);
+        SelectAllEdgesMenuItem.setText("Select All Edges");
+        EditDropdownMenu.add(SelectAllEdgesMenuItem);
 
-        jMenuItem8.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
-        jMenuItem8.setText("Deselect");
-        jMenu2.add(jMenuItem8);
+        DeselectMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
+        DeselectMenuItem.setText("Deselect");
+        EditDropdownMenu.add(DeselectMenuItem);
 
-        jMenuBar1.add(jMenu2);
+        MainWindowMenuBar.add(EditDropdownMenu);
 
-        jMenu3.setText("View");
+        ViewDropdownMenu.setText("View");
 
-        jMenuItem9.setText("Close Tab");
-        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+        CloseTabMenuItem.setText("Close Tab");
+        CloseTabMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem9ActionPerformed(evt);
+                CloseTabMenuItemActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem9);
+        ViewDropdownMenu.add(CloseTabMenuItem);
 
-        jMenuItem10.setText("Close All Other Tabs");
-        jMenu3.add(jMenuItem10);
+        CloseAllOtherTabsMenuItem.setText("Close All Other Tabs");
+        ViewDropdownMenu.add(CloseAllOtherTabsMenuItem);
 
-        jMenuItem11.setText("Open Advanced Code View");
-        jMenu3.add(jMenuItem11);
+        OpenAdvancedCodeViewMenuItem.setText("Open Advanced Code View");
+        ViewDropdownMenu.add(OpenAdvancedCodeViewMenuItem);
 
-        jMenuBar1.add(jMenu3);
+        MainWindowMenuBar.add(ViewDropdownMenu);
 
-        jMenu4.setText("Tools");
+        ToolsDropdownMenu.setText("Tools");
 
-        jCheckBoxMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        jCheckBoxMenuItem1.setSelected(true);
-        jCheckBoxMenuItem1.setText("Auto-Label Nodes");
-        jCheckBoxMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        AutoLabelNodesMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        AutoLabelNodesMenuItem.setSelected(true);
+        AutoLabelNodesMenuItem.setText("Auto-Label Nodes");
+        AutoLabelNodesMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBoxMenuItem1ActionPerformed(evt);
+                AutoLabelNodesMenuItemActionPerformed(evt);
             }
         });
-        jMenu4.add(jCheckBoxMenuItem1);
+        ToolsDropdownMenu.add(AutoLabelNodesMenuItem);
 
-        jCheckBoxMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        jCheckBoxMenuItem3.setText("Auto-Label Edges");
-        jMenu4.add(jCheckBoxMenuItem3);
+        AutoLabelEdgesMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        AutoLabelEdgesMenuItem.setText("Auto-Label Edges");
+        ToolsDropdownMenu.add(AutoLabelEdgesMenuItem);
 
-        jCheckBoxMenuItem2.setText("Auto-Connect Nodes");
-        jCheckBoxMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        AutoConnectNodesMenuItem.setText("Auto-Connect Nodes");
+        AutoConnectNodesMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBoxMenuItem2ActionPerformed(evt);
+                AutoConnectNodesMenuItemActionPerformed(evt);
             }
         });
-        jMenu4.add(jCheckBoxMenuItem2);
+        ToolsDropdownMenu.add(AutoConnectNodesMenuItem);
 
-        jMenuItem12.setText("Change Background Color");
-        jMenu4.add(jMenuItem12);
+        ChangeBgColorMenuItem.setText("Change Background Color");
+        ToolsDropdownMenu.add(ChangeBgColorMenuItem);
 
-        jMenuBar1.add(jMenu4);
+        MainWindowMenuBar.add(ToolsDropdownMenu);
 
-        jMenu5.setText("Help");
+        HelpDropdownMenu.setText("Help");
 
-        jMenuItem13.setText("View User Guide");
-        jMenu5.add(jMenuItem13);
+        ViewUserGuideMenuItem.setText("View User Guide");
+        HelpDropdownMenu.add(ViewUserGuideMenuItem);
 
-        jMenuItem14.setText("About Autograph...");
-        jMenu5.add(jMenuItem14);
+        AboutAutographMenuItem.setText("About Autograph...");
+        HelpDropdownMenu.add(AboutAutographMenuItem);
 
-        jMenuBar1.add(jMenu5);
+        MainWindowMenuBar.add(HelpDropdownMenu);
 
-        setJMenuBar(jMenuBar1);
+        setJMenuBar(MainWindowMenuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -548,55 +539,55 @@ public class mainWindow extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jToolBar1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(MainWindowTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(MainWindowToolBar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(MainWindowToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(MainWindowTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void AutoLabelNodesTogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AutoLabelNodesTogActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_AutoLabelNodesTogActionPerformed
 
-    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+    private void AutoLabelEdgesTogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AutoLabelEdgesTogActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jToggleButton1ActionPerformed
+    }//GEN-LAST:event_AutoLabelEdgesTogActionPerformed
 
-    private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
+    private void NewGraphMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewGraphMenuItemActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jToggleButton2ActionPerformed
+    }//GEN-LAST:event_NewGraphMenuItemActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void SelectAllMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectAllMenuItemActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_SelectAllMenuItemActionPerformed
 
-    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+    private void CloseTabMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloseTabMenuItemActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
+    }//GEN-LAST:event_CloseTabMenuItemActionPerformed
 
-    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+    private void AutoLabelNodesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AutoLabelNodesMenuItemActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem9ActionPerformed
+    }//GEN-LAST:event_AutoLabelNodesMenuItemActionPerformed
 
-    private void jCheckBoxMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem1ActionPerformed
+    private void AutoConnectNodesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AutoConnectNodesMenuItemActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBoxMenuItem1ActionPerformed
+    }//GEN-LAST:event_AutoConnectNodesMenuItemActionPerformed
 
-    private void jCheckBoxMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem2ActionPerformed
+    private void AddNodeBtnActionPerformed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AddNodeBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBoxMenuItem2ActionPerformed
+    }//GEN-LAST:event_AddNodeBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -640,78 +631,78 @@ public class mainWindow extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem AboutAutographMenuItem;
+    private javax.swing.JButton AddEdgeBtn;
+    private javax.swing.JButton AddNodeBtn;
+    private javax.swing.JCheckBoxMenuItem AutoConnectNodesMenuItem;
+    private javax.swing.JToggleButton AutoConnectNodesTog;
+    private javax.swing.JCheckBoxMenuItem AutoLabelEdgesMenuItem;
+    private javax.swing.JToggleButton AutoLabelEdgesTog;
+    private javax.swing.JCheckBoxMenuItem AutoLabelNodesMenuItem;
+    private javax.swing.JToggleButton AutoLabelNodesTog;
+    private javax.swing.JButton BorderColorBtn;
+    private javax.swing.JLabel BorderColorLabel;
+    private javax.swing.JMenuItem ChangeBgColorMenuItem;
+    private javax.swing.JMenuItem CloseAllOtherTabsMenuItem;
+    private javax.swing.JMenuItem CloseGraphMenuItem;
+    private javax.swing.JMenuItem CloseTabMenuItem;
+    private javax.swing.JMenuItem DeselectMenuItem;
+    private javax.swing.JComboBox EdgeDesignComboBox;
+    private javax.swing.JLabel EdgeDesignLabel;
+    private javax.swing.JLabel EdgeSubtitleLabel;
+    private javax.swing.JMenu EditDropdownMenu;
+    private javax.swing.JPanel EditPanel;
+    private javax.swing.JLabel EditTitleLabel;
+    private javax.swing.JComboBox EndShapeComboBox;
+    private javax.swing.JLabel EndShapeLabel;
+    private javax.swing.JMenuItem ExitMenuItem;
+    private javax.swing.JMenu FileDropdownMenu;
+    private javax.swing.JButton FillColorBtn;
+    private javax.swing.JLabel FillColorLabel;
+    private javax.swing.JPanel GraphPanel;
+    private javax.swing.JPanel GraphTabPanel1;
+    private javax.swing.JMenu HelpDropdownMenu;
+    private javax.swing.JButton LabelColorBtn;
+    private javax.swing.JLabel LabelColorLabel;
+    private javax.swing.JComboBox LabelFontComboBox;
+    private javax.swing.JLabel LabelFontLabel;
+    private javax.swing.JLabel LabelSubtitleLabel;
+    private javax.swing.JTextField LabelTextField;
+    private javax.swing.JLabel LabelTextLabel;
+    private javax.swing.JMenuBar MainWindowMenuBar;
+    private javax.swing.JTabbedPane MainWindowTabbedPane;
+    private javax.swing.JToolBar MainWindowToolBar;
+    private javax.swing.JMenuItem NewGraphMenuItem;
+    private javax.swing.JComboBox NodeShapeComboBox;
+    private javax.swing.JLabel NodeShapeLabel;
+    private javax.swing.JLabel NodeSubtitleLabel;
+    private javax.swing.JMenuItem OpenAdvancedCodeViewMenuItem;
+    private javax.swing.JMenuItem OpenMenuItem;
+    private javax.swing.JMenuItem PrintMenuItem;
+    private javax.swing.JMenuItem PrintPreviewMenuItem;
+    private javax.swing.JMenuItem SaveAsMenuItem;
+    private javax.swing.JMenuItem SaveMenuItem;
+    private javax.swing.JMenuItem SelectAllEdgesMenuItem;
+    private javax.swing.JMenuItem SelectAllMenuItem;
+    private javax.swing.JMenuItem SelectAllNodesMenuItem;
+    private javax.swing.JScrollPane TabAreaScrollPane;
+    private javax.swing.JMenu ToolsDropdownMenu;
+    private javax.swing.JMenu ViewDropdownMenu;
+    private javax.swing.JMenuItem ViewUserGuideMenuItem;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
     private javax.swing.Box.Filler filler4;
     private javax.swing.Box.Filler filler5;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
-    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
-    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem2;
-    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem3;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox2;
-    private javax.swing.JComboBox jComboBox3;
-    private javax.swing.JComboBox jComboBox4;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu5;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem10;
-    private javax.swing.JMenuItem jMenuItem11;
-    private javax.swing.JMenuItem jMenuItem12;
-    private javax.swing.JMenuItem jMenuItem13;
-    private javax.swing.JMenuItem jMenuItem14;
-    private javax.swing.JMenuItem jMenuItem15;
-    private javax.swing.JMenuItem jMenuItem16;
-    private javax.swing.JMenuItem jMenuItem17;
-    private javax.swing.JMenuItem jMenuItem18;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
-    private javax.swing.JMenuItem jMenuItem8;
-    private javax.swing.JMenuItem jMenuItem9;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JToggleButton jToggleButton1;
-    private javax.swing.JToggleButton jToggleButton2;
-    private javax.swing.JToggleButton jToggleButton3;
-    private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
 }

@@ -24,30 +24,30 @@ public class EditNodeEdgePanel extends javax.swing.JPanel {
 
         jScrollPane8 = new javax.swing.JScrollPane();
         jPanel7 = new javax.swing.JPanel();
-        jLabel40 = new javax.swing.JLabel();
-        jLabel41 = new javax.swing.JLabel();
-        jLabel42 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jLabel43 = new javax.swing.JLabel();
-        jComboBox13 = new javax.swing.JComboBox();
-        jLabel44 = new javax.swing.JLabel();
-        jButton18 = new javax.swing.JButton();
-        jSeparator7 = new javax.swing.JSeparator();
-        jLabel45 = new javax.swing.JLabel();
-        jLabel46 = new javax.swing.JLabel();
-        jComboBox14 = new javax.swing.JComboBox();
-        jLabel47 = new javax.swing.JLabel();
-        jButton19 = new javax.swing.JButton();
-        jLabel48 = new javax.swing.JLabel();
-        jButton20 = new javax.swing.JButton();
-        jSeparator8 = new javax.swing.JSeparator();
-        jLabel49 = new javax.swing.JLabel();
-        jLabel50 = new javax.swing.JLabel();
-        jComboBox15 = new javax.swing.JComboBox();
-        jLabel51 = new javax.swing.JLabel();
-        jComboBox16 = new javax.swing.JComboBox();
-        jLabel52 = new javax.swing.JLabel();
-        jButton21 = new javax.swing.JButton();
+        EditTitleLabel = new javax.swing.JLabel();
+        LabelSubtitleLabel = new javax.swing.JLabel();
+        LabelTextLabel = new javax.swing.JLabel();
+        LabelTextField = new javax.swing.JTextField();
+        LabelFontLabel = new javax.swing.JLabel();
+        LabelFontComboBox = new javax.swing.JComboBox();
+        LabelColorLabel = new javax.swing.JLabel();
+        LabelColorBtn = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
+        NodeSubtitleLabel = new javax.swing.JLabel();
+        NodeShapeLabel = new javax.swing.JLabel();
+        NodeShapeComboBox = new javax.swing.JComboBox();
+        BorderColorLabel = new javax.swing.JLabel();
+        BorderColorBtn = new javax.swing.JButton();
+        FillColorLabel = new javax.swing.JLabel();
+        FillColorBtn = new javax.swing.JButton();
+        jSeparator2 = new javax.swing.JSeparator();
+        EdgeSubtitleLabel = new javax.swing.JLabel();
+        EdgeDesignLabel = new javax.swing.JLabel();
+        EdgeDesignComboBox = new javax.swing.JComboBox();
+        EndShapeLabel = new javax.swing.JLabel();
+        EndShapeComboBox = new javax.swing.JComboBox();
+        EdgeColorLabel = new javax.swing.JLabel();
+        EdgeColorBtn = new javax.swing.JButton();
         jButton22 = new javax.swing.JButton();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 32767));
 
@@ -59,56 +59,56 @@ public class EditNodeEdgePanel extends javax.swing.JPanel {
 
         jPanel7.setPreferredSize(new java.awt.Dimension(200, 512));
 
-        jLabel40.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel40.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel40.setText("Edit Nodes/Edges");
+        EditTitleLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        EditTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        EditTitleLabel.setText("Edit Nodes/Edges");
 
-        jLabel41.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel41.setText("Label");
+        LabelSubtitleLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        LabelSubtitleLabel.setText("Label");
 
-        jLabel42.setText("Label Text");
+        LabelTextLabel.setText("Label Text");
 
-        jLabel43.setText("Label Font");
+        LabelFontLabel.setText("Label Font");
 
-        jComboBox13.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Times New Roman", "Ariel", "Some other font", "More fonts", "Wingdings" }));
+        LabelFontComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Times New Roman", "Ariel", "Some other font", "More fonts", "Wingdings" }));
 
-        jLabel44.setText("Label Color");
+        LabelColorLabel.setText("Label Color");
 
-        jButton18.setText("[  ]");
-        jButton18.setMargin(new java.awt.Insets(2, 5, 2, 5));
+        LabelColorBtn.setText("[  ]");
+        LabelColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
 
-        jLabel45.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel45.setText("Node");
+        NodeSubtitleLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        NodeSubtitleLabel.setText("Node");
 
-        jLabel46.setText("Node Shape");
+        NodeShapeLabel.setText("Node Shape");
 
-        jComboBox14.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "AA", "BB", "CC", "DD", "EE", "FF" }));
+        NodeShapeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "AA", "BB", "CC", "DD", "EE", "FF" }));
 
-        jLabel47.setText("Border Color");
+        BorderColorLabel.setText("Border Color");
 
-        jButton19.setText("[  ]");
-        jButton19.setMargin(new java.awt.Insets(2, 5, 2, 5));
+        BorderColorBtn.setText("[  ]");
+        BorderColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
 
-        jLabel48.setText("Fill Color");
+        FillColorLabel.setText("Fill Color");
 
-        jButton20.setText("[  ]");
-        jButton20.setMargin(new java.awt.Insets(2, 5, 2, 5));
+        FillColorBtn.setText("[  ]");
+        FillColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
 
-        jLabel49.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel49.setText("Edge");
+        EdgeSubtitleLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        EdgeSubtitleLabel.setText("Edge");
 
-        jLabel50.setText("Edge Design");
+        EdgeDesignLabel.setText("Edge Design");
 
-        jComboBox15.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "____", "_ _ _", "- - - -", "......", "===", " " }));
+        EdgeDesignComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "____", "_ _ _", "- - - -", "......", "===", " " }));
 
-        jLabel51.setText("End Shape");
+        EndShapeLabel.setText("End Shape");
 
-        jComboBox16.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A-A", "A-B", "A-C", "B-B", "B-C", "C-C" }));
+        EndShapeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A-A", "A-B", "A-C", "B-B", "B-C", "C-C" }));
 
-        jLabel52.setText("Edge Color");
+        EdgeColorLabel.setText("Edge Color");
 
-        jButton21.setText("[  ]");
-        jButton21.setMargin(new java.awt.Insets(2, 5, 2, 5));
+        EdgeColorBtn.setText("[  ]");
+        EdgeColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
 
         jButton22.setLabel("Save Changes");
 
@@ -118,49 +118,49 @@ public class EditNodeEdgePanel extends javax.swing.JPanel {
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel41)
-                    .addComponent(jLabel45)
-                    .addComponent(jLabel49))
+                    .addComponent(LabelSubtitleLabel)
+                    .addComponent(NodeSubtitleLabel)
+                    .addComponent(EdgeSubtitleLabel))
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator8, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel40, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField4)
-                    .addComponent(jComboBox13, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(EditTitleLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(LabelTextField)
+                    .addComponent(LabelFontComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel7Layout.createSequentialGroup()
                                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel46)
-                                    .addComponent(jLabel44))
+                                    .addComponent(NodeShapeLabel)
+                                    .addComponent(LabelColorLabel))
                                 .addGap(26, 26, 26)
                                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButton18)
-                                    .addComponent(jComboBox14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(LabelColorBtn)
+                                    .addComponent(NodeShapeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel7Layout.createSequentialGroup()
                                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel42)
-                                    .addComponent(jLabel43)
-                                    .addComponent(jLabel47)
-                                    .addComponent(jLabel48))
+                                    .addComponent(LabelTextLabel)
+                                    .addComponent(LabelFontLabel)
+                                    .addComponent(BorderColorLabel)
+                                    .addComponent(FillColorLabel))
                                 .addGap(24, 24, 24)
                                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButton20)
-                                    .addComponent(jButton19)))
+                                    .addComponent(FillColorBtn)
+                                    .addComponent(BorderColorBtn)))
                             .addGroup(jPanel7Layout.createSequentialGroup()
                                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel50)
-                                    .addComponent(jLabel51)
-                                    .addComponent(jLabel52))
+                                    .addComponent(EdgeDesignLabel)
+                                    .addComponent(EndShapeLabel)
+                                    .addComponent(EdgeColorLabel))
                                 .addGap(25, 25, 25)
                                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButton21)
-                                    .addComponent(jComboBox16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jComboBox15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 46, Short.MAX_VALUE))
-                    .addComponent(jSeparator7)
+                                    .addComponent(EdgeColorBtn)
+                                    .addComponent(EndShapeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(EdgeDesignComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jSeparator1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButton22)))
@@ -169,54 +169,54 @@ public class EditNodeEdgePanel extends javax.swing.JPanel {
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addComponent(jLabel40)
+                .addComponent(EditTitleLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel41)
+                .addComponent(LabelSubtitleLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel42)
+                .addComponent(LabelTextLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(LabelTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel43)
+                .addComponent(LabelFontLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(LabelFontComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel44)
-                    .addComponent(jButton18))
+                    .addComponent(LabelColorLabel)
+                    .addComponent(LabelColorBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(3, 3, 3)
-                .addComponent(jLabel45)
+                .addComponent(NodeSubtitleLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel46)
-                    .addComponent(jComboBox14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(NodeShapeLabel)
+                    .addComponent(NodeShapeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel47)
-                    .addComponent(jButton19))
+                    .addComponent(BorderColorLabel)
+                    .addComponent(BorderColorBtn))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel48)
-                    .addComponent(jButton20))
+                    .addComponent(FillColorLabel)
+                    .addComponent(FillColorBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSeparator8, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(11, 11, 11)
-                .addComponent(jLabel49)
+                .addComponent(EdgeSubtitleLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel50)
-                    .addComponent(jComboBox15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(EdgeDesignLabel)
+                    .addComponent(EdgeDesignComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel51)
-                    .addComponent(jComboBox16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(EndShapeLabel)
+                    .addComponent(EndShapeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel52)
-                    .addComponent(jButton21))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                    .addComponent(EdgeColorLabel)
+                    .addComponent(EdgeColorBtn))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton22))
         );
 
@@ -242,87 +242,33 @@ public class EditNodeEdgePanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BorderColorBtn;
+    private javax.swing.JLabel BorderColorLabel;
+    private javax.swing.JButton EdgeColorBtn;
+    private javax.swing.JLabel EdgeColorLabel;
+    private javax.swing.JComboBox EdgeDesignComboBox;
+    private javax.swing.JLabel EdgeDesignLabel;
+    private javax.swing.JLabel EdgeSubtitleLabel;
+    private javax.swing.JLabel EditTitleLabel;
+    private javax.swing.JComboBox EndShapeComboBox;
+    private javax.swing.JLabel EndShapeLabel;
+    private javax.swing.JButton FillColorBtn;
+    private javax.swing.JLabel FillColorLabel;
+    private javax.swing.JButton LabelColorBtn;
+    private javax.swing.JLabel LabelColorLabel;
+    private javax.swing.JComboBox LabelFontComboBox;
+    private javax.swing.JLabel LabelFontLabel;
+    private javax.swing.JLabel LabelSubtitleLabel;
+    private javax.swing.JTextField LabelTextField;
+    private javax.swing.JLabel LabelTextLabel;
+    private javax.swing.JComboBox NodeShapeComboBox;
+    private javax.swing.JLabel NodeShapeLabel;
+    private javax.swing.JLabel NodeSubtitleLabel;
     private javax.swing.Box.Filler filler1;
-    private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton12;
-    private javax.swing.JButton jButton13;
-    private javax.swing.JButton jButton18;
-    private javax.swing.JButton jButton19;
-    private javax.swing.JButton jButton20;
-    private javax.swing.JButton jButton21;
     private javax.swing.JButton jButton22;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox13;
-    private javax.swing.JComboBox jComboBox14;
-    private javax.swing.JComboBox jComboBox15;
-    private javax.swing.JComboBox jComboBox16;
-    private javax.swing.JComboBox jComboBox2;
-    private javax.swing.JComboBox jComboBox3;
-    private javax.swing.JComboBox jComboBox4;
-    private javax.swing.JComboBox jComboBox5;
-    private javax.swing.JComboBox jComboBox6;
-    private javax.swing.JComboBox jComboBox7;
-    private javax.swing.JComboBox jComboBox8;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel40;
-    private javax.swing.JLabel jLabel41;
-    private javax.swing.JLabel jLabel42;
-    private javax.swing.JLabel jLabel43;
-    private javax.swing.JLabel jLabel44;
-    private javax.swing.JLabel jLabel45;
-    private javax.swing.JLabel jLabel46;
-    private javax.swing.JLabel jLabel47;
-    private javax.swing.JLabel jLabel48;
-    private javax.swing.JLabel jLabel49;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel50;
-    private javax.swing.JLabel jLabel51;
-    private javax.swing.JLabel jLabel52;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel7;
-    private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JSeparator jSeparator4;
-    private javax.swing.JSeparator jSeparator7;
-    private javax.swing.JSeparator jSeparator8;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField4;
     // End of variables declaration//GEN-END:variables
 }

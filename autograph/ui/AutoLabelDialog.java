@@ -23,49 +23,49 @@ public class AutoLabelDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jRadioButton3 = new javax.swing.JRadioButton();
-        jLabel3 = new javax.swing.JLabel();
+        AutoLabelOptionsTitle = new javax.swing.JLabel();
+        LabelTextLabel = new javax.swing.JLabel();
+        LabelTextField = new javax.swing.JTextField();
+        PrependRadioBtn = new javax.swing.JRadioButton();
+        AppendRadioBtn = new javax.swing.JRadioButton();
+        NoNumberRadioBtn = new javax.swing.JRadioButton();
+        NumberingLabel = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
-        jLabel4 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        AutoLabelTextPane = new javax.swing.JTextPane();
+        StartingNumberLabel = new javax.swing.JLabel();
+        AutoNumberSpinner = new javax.swing.JSpinner();
+        CancelBtn = new javax.swing.JButton();
+        OkBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Auto-Label Options");
+        AutoLabelOptionsTitle.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        AutoLabelOptionsTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        AutoLabelOptionsTitle.setText("Auto-Label Options");
 
-        jLabel2.setText("Label Text");
+        LabelTextLabel.setText("Label Text");
 
-        jRadioButton1.setText("Prepend Node/Edge Number");
+        PrependRadioBtn.setText("Prepend Node/Edge Number");
 
-        jRadioButton2.setText("Append Node/Edge Number");
+        AppendRadioBtn.setText("Append Node/Edge Number");
 
-        jRadioButton3.setText("Do Not Include Node/Edge Number");
+        NoNumberRadioBtn.setText("Do Not Include Node/Edge Number");
 
-        jLabel3.setText("Numbering");
+        NumberingLabel.setText("Numbering");
 
-        jTextPane1.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
-        jTextPane1.setBorder(null);
-        jTextPane1.setEditable(false);
-        jTextPane1.setText("Auto-Labeling can be used to automatically label nodes or edges as they are added to your graph.\n\nThe label will be the same for every node/edge but can include a number that will increment with each node/edge added.");
-        jTextPane1.setAutoscrolls(false);
-        jTextPane1.setOpaque(false);
-        jScrollPane2.setViewportView(jTextPane1);
+        AutoLabelTextPane.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
+        AutoLabelTextPane.setBorder(null);
+        AutoLabelTextPane.setEditable(false);
+        AutoLabelTextPane.setText("Auto-Labeling can be used to automatically label nodes or edges as they are added to your graph.\n\nThe label will be the same for every node/edge but can include a number that will increment with each node/edge added.");
+        AutoLabelTextPane.setAutoscrolls(false);
+        AutoLabelTextPane.setOpaque(false);
+        jScrollPane2.setViewportView(AutoLabelTextPane);
 
-        jLabel4.setText("Starting Number");
+        StartingNumberLabel.setText("Starting Number");
 
-        jButton1.setText("Cancel");
+        CancelBtn.setText("Cancel");
 
-        jButton2.setText("Ok");
+        OkBtn.setText("Ok");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -75,28 +75,28 @@ public class AutoLabelDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
+                        .addComponent(NumberingLabel)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
+                                .addComponent(LabelTextLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField1))
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(LabelTextField))
+                            .addComponent(AutoLabelOptionsTitle, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel4)
+                                .addComponent(StartingNumberLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(AutoNumberSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(OkBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1))
+                                .addComponent(CancelBtn))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jRadioButton2)
-                                    .addComponent(jRadioButton1)
-                                    .addComponent(jRadioButton3))
+                                    .addComponent(AppendRadioBtn)
+                                    .addComponent(PrependRadioBtn)
+                                    .addComponent(NoNumberRadioBtn))
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 592, Short.MAX_VALUE))
                         .addContainerGap())))
@@ -105,32 +105,31 @@ public class AutoLabelDialog extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addComponent(AutoLabelOptionsTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(LabelTextLabel)
+                    .addComponent(LabelTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel3)
+                .addComponent(NumberingLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jRadioButton1)
+                .addComponent(PrependRadioBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jRadioButton2)
+                .addComponent(AppendRadioBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jRadioButton3)
-                .addGap(18, 18, 18)
+                .addComponent(NoNumberRadioBtn)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 50, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1)
-                            .addComponent(jButton2)))
+                            .addComponent(CancelBtn)
+                            .addComponent(OkBtn)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(StartingNumberLabel)
+                            .addComponent(AutoNumberSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -188,18 +187,18 @@ public class AutoLabelDialog extends javax.swing.JDialog {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JRadioButton jRadioButton3;
+    private javax.swing.JRadioButton AppendRadioBtn;
+    private javax.swing.JLabel AutoLabelOptionsTitle;
+    private javax.swing.JTextPane AutoLabelTextPane;
+    private javax.swing.JSpinner AutoNumberSpinner;
+    private javax.swing.JButton CancelBtn;
+    private javax.swing.JTextField LabelTextField;
+    private javax.swing.JLabel LabelTextLabel;
+    private javax.swing.JRadioButton NoNumberRadioBtn;
+    private javax.swing.JLabel NumberingLabel;
+    private javax.swing.JButton OkBtn;
+    private javax.swing.JRadioButton PrependRadioBtn;
+    private javax.swing.JLabel StartingNumberLabel;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextPane jTextPane1;
     // End of variables declaration//GEN-END:variables
 }
