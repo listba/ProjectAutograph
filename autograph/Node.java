@@ -119,8 +119,8 @@ public class Node implements Serializable {
          //but we may want to define it here eventually (especially if the user ever gets control of location or width data).
          vCenterX = 0;
          vCenterY = 0;
-         vWidth = 0;
-         vHeight = 0;
+         vWidth = 50;
+         vHeight = 50;
          vDispX = 0.0;
          vDispY = 0.0;
          

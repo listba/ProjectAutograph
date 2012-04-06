@@ -4,6 +4,20 @@
  */
 package autograph.ui;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+
+import javax.swing.JPanel;
+
+import autograph.Edge;
+import autograph.Graph;
+import autograph.GraphHelper;
+import autograph.Node;
+import autograph.GraphPanel;
+
 public class mainWindow extends javax.swing.JFrame {
 
     /**
@@ -21,6 +35,8 @@ public class mainWindow extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+       String filePath = "Graph.txt";
+       Graph graph = GraphHelper.mImportGraphFromGML(filePath, null);
 
         MainWindowToolBar = new javax.swing.JToolBar();
         AddNodeBtn = new javax.swing.JButton();
@@ -34,11 +50,11 @@ public class mainWindow extends javax.swing.JFrame {
         AutoConnectNodesTog = new javax.swing.JToggleButton();
         MainWindowTabbedPane = new javax.swing.JTabbedPane();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jPanel3 = new javax.swing.JPanel();
+        jPanel3 = new GraphPanel(graph);
         jScrollPane2 = new javax.swing.JScrollPane();
-        GraphPanel = new javax.swing.JPanel();
+        GraphPanel = new GraphPanel(graph);
         TabAreaScrollPane = new javax.swing.JScrollPane();
-        GraphTabPanel1 = new javax.swing.JPanel();
+        GraphTabPanel1 = new GraphPanel(graph);
         jPanel2 = new javax.swing.JPanel();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 32767));
         jScrollPane5 = new javax.swing.JScrollPane();
@@ -659,8 +675,8 @@ public class mainWindow extends javax.swing.JFrame {
     private javax.swing.JMenu FileDropdownMenu;
     private javax.swing.JButton FillColorBtn;
     private javax.swing.JLabel FillColorLabel;
-    private javax.swing.JPanel GraphPanel;
-    private javax.swing.JPanel GraphTabPanel1;
+    public GraphPanel GraphPanel;
+    public GraphPanel GraphTabPanel1;
     private javax.swing.JMenu HelpDropdownMenu;
     private javax.swing.JButton LabelColorBtn;
     private javax.swing.JLabel LabelColorLabel;
@@ -698,7 +714,7 @@ public class mainWindow extends javax.swing.JFrame {
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
+    public GraphPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane5;
@@ -706,3 +722,5 @@ public class mainWindow extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator2;
     // End of variables declaration//GEN-END:variables
 }
+
+

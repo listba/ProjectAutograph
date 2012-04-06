@@ -1,5 +1,6 @@
 package autograph;
 import java.awt.*;
+import autograph.GraphPanel;
 import java.awt.image.*;
 import java.io.*;
 
