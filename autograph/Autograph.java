@@ -26,24 +26,16 @@ public class Autograph extends mainWindow {
 		String writeTo = "NewGraph.xml";
 		GraphHelper.mExportGraphToXML(graph, writeTo);
 		*/
-		// Approximate size of Graph
-		int imageWidth = GraphHelper.mGetPreferredImageWidth(jPanel3.graph);
-		//this.setPreferredSize(new Dimension(imageWidth, imageWidth));
-		jPanel3.setPreferredSize(new Dimension(imageWidth, imageWidth));
-		//this.setTitle(title + " - " + panel.graph.mGetTitle());
-		//panel.repaint();
-		
-		
-		
-		//this.add(panel);
-
-		//this.setPreferredSize(new Dimension(800, 600));
-		//this.pack();
-		//this.setLocationRelativeTo(null);
-
-		// Draw Initial Graph
-		GraphHelper.mDrawForceDirectedGraph(jPanel3);
-		jPanel3.repaint();
+		// Draw each tab we have.
+		for(int i = 0; i < vTabs.size(); i++){
+			GraphPanel graphPanel = (GraphPanel)vTabs.get(i).getViewport().getView();
+			int imageWidth = GraphHelper.mGetPreferredImageWidth(graphPanel.mGetGraph());
+	
+			graphPanel.setPreferredSize(new Dimension(imageWidth, imageWidth));
+	
+			// Draw Initial Graph
+			GraphHelper.mDrawForceDirectedGraph(graphPanel);
+		}
 		
 		
 		//GraphHelper.mSavePNG(panel);

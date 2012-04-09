@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 public class GraphPanel extends JPanel implements MouseListener {
-   public Graph graph;
+   private Graph graph;
    public GraphPanel (Graph g) {
       this.graph = g;
       this.addMouseListener(this);
@@ -18,6 +18,10 @@ public class GraphPanel extends JPanel implements MouseListener {
    
    public void mSetGraph(Graph g){
       graph = g;
+   }
+   
+   public Graph mGetGraph(){
+	   return graph;
    }
    /**
     * paint - overides the default paint method for panels

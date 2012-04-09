@@ -5,12 +5,14 @@
 package autograph.ui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import autograph.Edge;
 import autograph.Graph;
@@ -35,9 +37,7 @@ public class mainWindow extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-       String filePath = "Graph.txt";
-       Graph graph = GraphHelper.mImportGraphFromGML(filePath, null);
-
+       
         MainWindowToolBar = new javax.swing.JToolBar();
         AddNodeBtn = new javax.swing.JButton();
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(25, 0));
@@ -49,12 +49,8 @@ public class mainWindow extends javax.swing.JFrame {
         filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(25, 0));
         AutoConnectNodesTog = new javax.swing.JToggleButton();
         MainWindowTabbedPane = new javax.swing.JTabbedPane();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jPanel3 = new GraphPanel(graph);
-        jScrollPane2 = new javax.swing.JScrollPane();
-        GraphPanel = new GraphPanel(graph);
-        TabAreaScrollPane = new javax.swing.JScrollPane();
-        GraphTabPanel1 = new GraphPanel(graph);
+        
+
         jPanel2 = new javax.swing.JPanel();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 32767));
         jScrollPane5 = new javax.swing.JScrollPane();
@@ -111,6 +107,7 @@ public class mainWindow extends javax.swing.JFrame {
         HelpDropdownMenu = new javax.swing.JMenu();
         ViewUserGuideMenuItem = new javax.swing.JMenuItem();
         AboutAutographMenuItem = new javax.swing.JMenuItem();
+        
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(500, 400));
@@ -171,64 +168,40 @@ public class mainWindow extends javax.swing.JFrame {
         MainWindowTabbedPane.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         MainWindowTabbedPane.setMinimumSize(new java.awt.Dimension(114, 95));
 
-        jScrollPane3.setBorder(null);
-
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel3.setPreferredSize(new java.awt.Dimension(600, 400));
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 912, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 476, Short.MAX_VALUE)
-        );
-
-        jScrollPane3.setViewportView(jPanel3);
-
-        MainWindowTabbedPane.addTab("New Graph.ag", jScrollPane3);
-
-        jScrollPane2.setBorder(null);
-
-        GraphPanel.setBackground(new java.awt.Color(255, 255, 255));
-        GraphPanel.setPreferredSize(new java.awt.Dimension(600, 400));
-
-        javax.swing.GroupLayout GraphPanelLayout = new javax.swing.GroupLayout(GraphPanel);
-        GraphPanel.setLayout(GraphPanelLayout);
-        GraphPanelLayout.setHorizontalGroup(
-            GraphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 912, Short.MAX_VALUE)
-        );
-        GraphPanelLayout.setVerticalGroup(
-            GraphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 476, Short.MAX_VALUE)
-        );
-
-        jScrollPane2.setViewportView(GraphPanel);
-
-        MainWindowTabbedPane.addTab("New Graph [1].ag", jScrollPane2);
-
-        TabAreaScrollPane.setBorder(null);
-
-        GraphTabPanel1.setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout GraphTabPanel1Layout = new javax.swing.GroupLayout(GraphTabPanel1);
-        GraphTabPanel1.setLayout(GraphTabPanel1Layout);
-        GraphTabPanel1Layout.setHorizontalGroup(
-            GraphTabPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 912, Short.MAX_VALUE)
-        );
-        GraphTabPanel1Layout.setVerticalGroup(
-            GraphTabPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 502, Short.MAX_VALUE)
-        );
-
-        TabAreaScrollPane.setViewportView(GraphTabPanel1);
-
-        MainWindowTabbedPane.addTab("GraphExample.ag", TabAreaScrollPane);
+        
+        if(vTabs == null){
+        	vTabs = new ArrayList<JScrollPane>();
+        }
+        if(vTabs.isEmpty()){
+        	String filePath = "Graph.txt";
+            Graph graph = GraphHelper.mImportGraphFromGML(filePath, null);
+	        GraphTabPane = new javax.swing.JScrollPane();
+	        GraphTabSubPane = new GraphPanel(graph);
+	        GraphTabPane.setBorder(null);
+	
+	        GraphTabSubPane.setBackground(new java.awt.Color(255, 255, 255));
+	        GraphTabSubPane.setPreferredSize(new java.awt.Dimension(600, 400));
+	
+	        javax.swing.GroupLayout GraphTabSubPaneLayout = new javax.swing.GroupLayout(GraphTabSubPane);
+	        GraphTabSubPane.setLayout(GraphTabSubPaneLayout);
+	        GraphTabSubPaneLayout.setHorizontalGroup(
+	            GraphTabSubPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+	            .addGap(0, 912, Short.MAX_VALUE)
+	        );
+	        GraphTabSubPaneLayout.setVerticalGroup(
+	            GraphTabSubPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+	            .addGap(0, 476, Short.MAX_VALUE)
+	        );
+	
+	        GraphTabPane.setViewportView(GraphTabSubPane);
+	
+	        MainWindowTabbedPane.addTab("New Graph", GraphTabPane);
+	
+	        //KMW Note: This is going to be our way of keeping track of tabs. We will initialize with
+	        //          one blank tab on startup.
+	        vTabs.add(GraphTabPane);
+        }
+        
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
@@ -581,8 +554,61 @@ public class mainWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_AutoLabelEdgesTogActionPerformed
 
+    /**
+     * Opens a new tab on the main window with an empty graph.
+     * @param evt
+     */
     private void NewGraphMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewGraphMenuItemActionPerformed
-        // TODO add your handling code here:
+    	//first get a unique title for the new tab
+    	String newTitle = "New Graph";
+    	Boolean uniqueTitle = false;
+    	int currentNum = 1;
+    	while(!uniqueTitle){
+    		//loop through each tab and check the titles.
+    		for(int i = 0; i < vTabs.size(); i++){
+    			GraphPanel panel = (GraphPanel)vTabs.get(i).getViewport().getView();
+    			//check the current tab has the same name as the new title we are creating
+    			if(panel.mGetGraph().mGetTitle().compareTo(newTitle) == 0){
+    				//if it does reset newTitle to be of the form "New Graph[1]"
+    				newTitle = "New Graph[" + currentNum + "]";
+    				currentNum++;
+    				break;
+    			}
+    			if(i == vTabs.size() - 1){
+    				//if we get here then we have gone through the whole list and not found
+    				//a duplicate title, so we will break out of the while loop.
+    				uniqueTitle = true;
+    			}
+    		}
+    	}
+    	//KMW Note: We are simply creating a new blank tab right now. We do not need to worry
+    	//          about drawing any graphs in this function.
+    	Graph newGraph = new Graph(newTitle);
+    	GraphHelper.mImportGraphFromXML("Graph.xml");
+    	JScrollPane newPane = new javax.swing.JScrollPane();
+        GraphPanel newGraphPanel = new GraphPanel(newGraph);
+        newPane.setBorder(null);
+
+        newGraphPanel.setBackground(new java.awt.Color(255, 255, 255));
+        newGraphPanel.setPreferredSize(new java.awt.Dimension(600, 400));
+
+        newPane.setViewportView(newGraphPanel);
+        
+        javax.swing.GroupLayout newGraphPanelLayout = new javax.swing.GroupLayout(newGraphPanel);
+        newGraphPanel.setLayout(newGraphPanelLayout);
+        newGraphPanelLayout.setHorizontalGroup(
+            newGraphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 912, Short.MAX_VALUE)
+        );
+        newGraphPanelLayout.setVerticalGroup(
+            newGraphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 476, Short.MAX_VALUE)
+        );
+        MainWindowTabbedPane.addTab(newTitle, newPane);
+
+        //KMW Note: This is going to be our way of keeping track of tabs. We will initialize with
+        //          one blank tab on startup.
+        vTabs.add(newPane);
     }//GEN-LAST:event_NewGraphMenuItemActionPerformed
 
     private void SelectAllMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectAllMenuItemActionPerformed
@@ -590,7 +616,7 @@ public class mainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_SelectAllMenuItemActionPerformed
 
     private void CloseTabMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloseTabMenuItemActionPerformed
-        // TODO add your handling code here:
+        //
     }//GEN-LAST:event_CloseTabMenuItemActionPerformed
 
     private void AutoLabelNodesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AutoLabelNodesMenuItemActionPerformed
@@ -605,47 +631,7 @@ public class mainWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_AddNodeBtnActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /*
-         * Set the Nimbus look and feel
-         */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /*
-         * If Nimbus (introduced in Java SE 6) is not available, stay with the
-         * default look and feel. For details see
-         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(mainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(mainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(mainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(mainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /*
-         * Create and display the form
-         */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                new mainWindow().setVisible(true);
-            }
-        });
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem AboutAutographMenuItem;
     private javax.swing.JButton AddEdgeBtn;
@@ -675,8 +661,6 @@ public class mainWindow extends javax.swing.JFrame {
     private javax.swing.JMenu FileDropdownMenu;
     private javax.swing.JButton FillColorBtn;
     private javax.swing.JLabel FillColorLabel;
-    public GraphPanel GraphPanel;
-    public GraphPanel GraphTabPanel1;
     private javax.swing.JMenu HelpDropdownMenu;
     private javax.swing.JButton LabelColorBtn;
     private javax.swing.JLabel LabelColorLabel;
@@ -701,7 +685,7 @@ public class mainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem SelectAllEdgesMenuItem;
     private javax.swing.JMenuItem SelectAllMenuItem;
     private javax.swing.JMenuItem SelectAllNodesMenuItem;
-    private javax.swing.JScrollPane TabAreaScrollPane;
+    //private javax.swing.JScrollPane TabAreaScrollPane;
     private javax.swing.JMenu ToolsDropdownMenu;
     private javax.swing.JMenu ViewDropdownMenu;
     private javax.swing.JMenuItem ViewUserGuideMenuItem;
@@ -714,12 +698,14 @@ public class mainWindow extends javax.swing.JFrame {
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JPanel jPanel2;
-    public GraphPanel jPanel3;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
+    public GraphPanel GraphTabSubPane;
+    //private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane GraphTabPane;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    
+    public ArrayList<JScrollPane> vTabs;
     // End of variables declaration//GEN-END:variables
 }
 

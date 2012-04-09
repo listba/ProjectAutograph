@@ -104,7 +104,7 @@ public class GraphHelper {
     * @param panel - the panel to draw on
     */
    public static void mDrawGraphInCircle(GraphPanel panel){
-      Graph graph = panel.graph;
+      Graph graph = panel.mGetGraph();
       ArrayList<Node> nodes = graph.mGetNodeList();
       int numNodes = nodes.size();
       double currentAngle = 0;
@@ -153,7 +153,7 @@ public class GraphHelper {
     * 
     */
    public static void mDrawForceDirectedGraph(GraphPanel panel) {
-     Graph graph = panel.graph;
+     Graph graph = panel.mGetGraph();
 	   ArrayList<Node> nodes = graph.mGetNodeList();
 	   ArrayList<Edge> edges = graph.mGetEdgeList();
 	   
