@@ -11,6 +11,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -115,6 +117,8 @@ public class mainWindow extends javax.swing.JFrame {
         MainWindowToolBar.setFloatable(false);
         MainWindowToolBar.setRollover(true);
 
+        Icon addIcon = new ImageIcon("resources/AddNode.png");
+        AddNodeBtn.setIcon(addIcon);
         AddNodeBtn.setText("Add Node");
         AddNodeBtn.setFocusable(false);
         AddNodeBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -128,6 +132,8 @@ public class mainWindow extends javax.swing.JFrame {
         MainWindowToolBar.add(AddNodeBtn);
         MainWindowToolBar.add(filler3);
 
+        Icon edgeIcon = new ImageIcon("resources/AddEdge.png");
+        AddEdgeBtn.setIcon(edgeIcon);
         AddEdgeBtn.setText("Add Edge");
         AddEdgeBtn.setFocusable(false);
         AddEdgeBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -136,6 +142,8 @@ public class mainWindow extends javax.swing.JFrame {
         MainWindowToolBar.add(AddEdgeBtn);
         MainWindowToolBar.add(filler2);
 
+        Icon ALNTIcon = new ImageIcon("resources/ToggleOn.png");
+        AutoLabelNodesTog.setIcon(ALNTIcon);
         AutoLabelNodesTog.setSelected(true);
         AutoLabelNodesTog.setText("Auto-Label Nodes");
         AutoLabelNodesTog.setFocusable(false);
@@ -147,6 +155,8 @@ public class mainWindow extends javax.swing.JFrame {
         MainWindowToolBar.add(AutoLabelNodesTog);
         MainWindowToolBar.add(filler4);
 
+        Icon ALETIcon = new ImageIcon("resources/ToggleOff.png");
+        AutoLabelEdgesTog.setIcon(ALETIcon);
         AutoLabelEdgesTog.setText("Auto-Label Edges");
         AutoLabelEdgesTog.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         AutoLabelEdgesTog.setFocusable(false);
@@ -159,6 +169,8 @@ public class mainWindow extends javax.swing.JFrame {
         MainWindowToolBar.add(AutoLabelEdgesTog);
         MainWindowToolBar.add(filler5);
 
+        Icon ACNTIcon = new ImageIcon("resources/ToggleOff.png");
+        AutoConnectNodesTog.setIcon(ACNTIcon);
         AutoConnectNodesTog.setText("Auto-Connect Nodes");
         AutoConnectNodesTog.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         AutoConnectNodesTog.setFocusable(false);
@@ -225,6 +237,8 @@ public class mainWindow extends javax.swing.JFrame {
 
         LabelColorLabel.setText("Label Color");
 
+        Icon LCBIcon = new ImageIcon("resources/ColorBlack.png");
+        LabelColorBtn.setIcon(LCBIcon);
         LabelColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
 
         NodeSubtitleLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -236,10 +250,14 @@ public class mainWindow extends javax.swing.JFrame {
 
         BorderColorLabel.setText("Border Color");
 
+        Icon BCBIcon = new ImageIcon("resources/ColorBlack.png");
+        BorderColorBtn.setIcon(BCBIcon);
         BorderColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
 
         FillColorLabel.setText("Fill Color");
 
+        Icon FCBIcon = new ImageIcon("resources/ColorWhite.png");
+        FillColorBtn.setIcon(FCBIcon);
         FillColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
 
         EdgeSubtitleLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -261,6 +279,8 @@ public class mainWindow extends javax.swing.JFrame {
         jLabel13.setText("Edge Color");
         jLabel13.setEnabled(false);
 
+        Icon jB8Icon = new ImageIcon("resources/ColorBlue.png");
+        jButton8.setIcon(jB8Icon);
         jButton8.setEnabled(false);
         jButton8.setMargin(new java.awt.Insets(2, 5, 2, 5));
 
