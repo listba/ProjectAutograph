@@ -7,12 +7,17 @@ package autograph.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 
+import javax.swing.GroupLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -186,7 +191,8 @@ public class mainWindow extends javax.swing.JFrame {
         }
         if(vTabs.isEmpty()){
         	String filePath = "Graph.txt";
-            Graph graph = GraphHelper.mImportGraphFromGML(filePath, null);
+        	//Graph graph = new Graph("Original Tab");
+           Graph graph = GraphHelper.mImportGraphFromGML(filePath, null);
 	        GraphTabPane = new javax.swing.JScrollPane();
 	        GraphTabSubPane = new GraphPanel(graph);
 	        GraphTabPane.setBorder(null);
@@ -207,7 +213,7 @@ public class mainWindow extends javax.swing.JFrame {
 	
 	        GraphTabPane.setViewportView(GraphTabSubPane);
 	
-	        MainWindowTabbedPane.addTab("New Graph", GraphTabPane);
+	        MainWindowTabbedPane.addTab("Original Tab", GraphTabPane);
 	
 	        //KMW Note: This is going to be our way of keeping track of tabs. We will initialize with
 	        //          one blank tab on startup.
@@ -428,6 +434,11 @@ public class mainWindow extends javax.swing.JFrame {
 
         OpenMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         OpenMenuItem.setText("Open...");
+        OpenMenuItem.addActionListener(new java.awt.event.ActionListener(){
+           public void actionPerformed(java.awt.event.ActionEvent evt){
+              OpenMenuItemActionPerformed(evt);
+           }
+        });
         FileDropdownMenu.add(OpenMenuItem);
 
         SaveMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
@@ -448,6 +459,11 @@ public class mainWindow extends javax.swing.JFrame {
 
         CloseGraphMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
         CloseGraphMenuItem.setText("Close Graph");
+        CloseGraphMenuItem.addActionListener(new java.awt.event.ActionListener() {
+           public void actionPerformed(java.awt.event.ActionEvent evt) {
+               CloseGraphMenuItemActionPerformed(evt);
+           }
+       });
         FileDropdownMenu.add(CloseGraphMenuItem);
 
         ExitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
@@ -490,6 +506,11 @@ public class mainWindow extends javax.swing.JFrame {
         ViewDropdownMenu.add(CloseTabMenuItem);
 
         CloseAllOtherTabsMenuItem.setText("Close All Other Tabs");
+        CloseAllOtherTabsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+           public void actionPerformed(java.awt.event.ActionEvent evt){
+              CloseAllOtherTabsMenuItemActionPerformed(evt);
+           }
+        });
         ViewDropdownMenu.add(CloseAllOtherTabsMenuItem);
 
         OpenAdvancedCodeViewMenuItem.setText("Open Advanced Code View");
@@ -581,30 +602,32 @@ public class mainWindow extends javax.swing.JFrame {
     private void NewGraphMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewGraphMenuItemActionPerformed
     	//first get a unique title for the new tab
     	String newTitle = "New Graph";
-    	Boolean uniqueTitle = false;
-    	int currentNum = 1;
-    	while(!uniqueTitle){
-    		//loop through each tab and check the titles.
-    		for(int i = 0; i < vTabs.size(); i++){
-    			GraphPanel panel = (GraphPanel)vTabs.get(i).getViewport().getView();
-    			//check the current tab has the same name as the new title we are creating
-    			if(panel.mGetGraph().mGetTitle().compareTo(newTitle) == 0){
-    				//if it does reset newTitle to be of the form "New Graph[1]"
-    				newTitle = "New Graph[" + currentNum + "]";
-    				currentNum++;
-    				break;
-    			}
-    			if(i == vTabs.size() - 1){
-    				//if we get here then we have gone through the whole list and not found
-    				//a duplicate title, so we will break out of the while loop.
-    				uniqueTitle = true;
-    			}
-    		}
+    	if(vTabs.size() > 0){
+       	Boolean uniqueTitle = false;
+         int currentNum = 1;
+       	while(!uniqueTitle){
+       		//loop through each tab and check the titles.
+       		for(int i = 0; i < vTabs.size(); i++){
+       			GraphPanel panel = (GraphPanel)vTabs.get(i).getViewport().getView();
+       			//check the current tab has the same name as the new title we are creating
+       			if(panel.mGetGraph().mGetTitle().compareTo(newTitle) == 0){
+       				//if it does reset newTitle to be of the form "New Graph[1]"
+       				newTitle = "New Graph[" + currentNum + "]";
+       				currentNum++;
+       				break;
+       			}
+       			if(i == vTabs.size() - 1){
+       				//if we get here then we have gone through the whole list and not found
+       				//a duplicate title, so we will break out of the while loop.
+       				uniqueTitle = true;
+       			}
+       		}
+       	}
     	}
     	//KMW Note: We are simply creating a new blank tab right now. We do not need to worry
     	//          about drawing any graphs in this function.
     	Graph newGraph = new Graph(newTitle);
-    	GraphHelper.mImportGraphFromXML("Graph.xml");
+    	//GraphHelper.mImportGraphFromXML("Graph.xml");
     	JScrollPane newPane = new javax.swing.JScrollPane();
         GraphPanel newGraphPanel = new GraphPanel(newGraph);
         newPane.setBorder(null);
@@ -636,9 +659,115 @@ public class mainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_SelectAllMenuItemActionPerformed
 
     private void CloseTabMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloseTabMenuItemActionPerformed
-        //
+        int selectedTab = MainWindowTabbedPane.getSelectedIndex();
+        MainWindowTabbedPane.remove(selectedTab);
+        
+        vTabs.remove(selectedTab);
     }//GEN-LAST:event_CloseTabMenuItemActionPerformed
+    
+    private void CloseGraphMenuItemActionPerformed(java.awt.event.ActionEvent evt){
+       int selectedTab = MainWindowTabbedPane.getSelectedIndex();
+       MainWindowTabbedPane.remove(selectedTab);
+       
+       vTabs.remove(selectedTab);
+    }
 
+    private void CloseAllOtherTabsMenuItemActionPerformed(java.awt.event.ActionEvent evt){
+       int selectedTab = MainWindowTabbedPane.getSelectedIndex();
+       int initialCount = MainWindowTabbedPane.getTabCount();
+       //we are removing from the end of the list because the count and index of the last item
+       //will constantly shift if we remove from the front of the list, giving inaccurate results.
+       for(int i = initialCount -1; i >= 0; i--){
+          if(i != selectedTab){
+             MainWindowTabbedPane.remove(i);
+             vTabs.remove(i);
+          }
+       }
+    }
+    
+    private void OpenMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+       //TODO: move some of this code over to FilePickerDialog
+       //instantiate a new file chooser object
+       JFileChooser chooser = new JFileChooser();
+       //TODO: implement a subclass of the FileFilter class to filter out invalid file types from the open dialog.
+       int returnVal = chooser.showOpenDialog(this);
+       if(returnVal == JFileChooser.APPROVE_OPTION){
+          //the user has selected a file.
+          String fileName = chooser.getSelectedFile().getName();
+          if(!(fileName.endsWith(".ag") || fileName.endsWith(".xml")|| fileName.endsWith(".txt"))){
+             //TODO: Implement error dialog for this scenario.
+             System.out.println(chooser.getSelectedFile().getName() + " is not a valid file type.");
+          }
+          else
+          {
+             //we know we have a valid file type, so we are going to create a new graph object, and load it
+             //into a new tab
+             Graph loadedGraph;
+             File selectedFile = chooser.getSelectedFile();
+             if(fileName.endsWith(".ag")){
+                //load from save file
+                loadedGraph = GraphHelper.mLoadGraphObject(selectedFile.getPath());
+             }
+             else if(fileName.endsWith(".xml")){
+                //load from xml
+                loadedGraph = GraphHelper.mImportGraphFromXML(selectedFile.getPath());
+             }
+             else
+             {
+                //load from gml
+                loadedGraph = GraphHelper.mImportGraphFromGML(selectedFile.getPath(), null);
+             }
+             
+             JScrollPane newPane = new javax.swing.JScrollPane();
+             GraphPanel newGraphPanel = new GraphPanel(loadedGraph);
+             newPane.setBorder(null);
+
+             newGraphPanel.setBackground(new java.awt.Color(255, 255, 255));
+             newGraphPanel.setPreferredSize(new java.awt.Dimension(600, 400));
+
+             newPane.setViewportView(newGraphPanel);
+             
+             /*newGraphPanel.setVerticalGroup(
+                   layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                   .addGroup(layout.createSequentialGroup()
+                       .addComponent(MainWindowToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                       .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                       .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                           .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                           .addComponent(MainWindowTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                       .addContainerGap())
+               );*/
+             javax.swing.GroupLayout newGraphPanelLayout = new javax.swing.GroupLayout(newGraphPanel);
+             newGraphPanel.setLayout(newGraphPanelLayout);
+             newGraphPanelLayout.setHorizontalGroup(
+                 newGraphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                 .addGap(0, 912, Short.MAX_VALUE)
+             );
+             newGraphPanelLayout.setVerticalGroup(
+                 newGraphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                 .addGap(0, 476, Short.MAX_VALUE)
+             );
+             
+             //KMW Note: The graph is being loaded properly, but I cannot figure out how to get it to display properly.
+             //          Right now when we call setPreferredSize the size of the pane is not updated, so the size stays
+             //          0x0 on the panel. This causes everything to be drawn in the upper left corner of the pane.
+             //          It has something to do with the layout not being updated properly (I think) but I don't know how to 
+             //          update the layout properly, so for now I am leaving it as is. It would be great if someone else could
+             //          look at this.
+             int imageWidth = GraphHelper.mGetPreferredImageWidth(newGraphPanel.mGetGraph());
+             newGraphPanel.setPreferredSize(new Dimension(imageWidth, imageWidth));
+             GraphHelper.mDrawForceDirectedGraph(newGraphPanel);
+             MainWindowTabbedPane.addTab(loadedGraph.mGetTitle(), newPane);
+             MainWindowTabbedPane.getLayout().addLayoutComponent("newComponent", newGraphPanel);
+             MainWindowTabbedPane.setSelectedIndex(MainWindowTabbedPane.getTabCount()-1);
+
+             //KMW Note: This is going to be our way of keeping track of tabs. We will initialize with
+             //          one blank tab on startup.
+             vTabs.add(newPane);
+          }
+       }
+    }
+    
     private void AutoLabelNodesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AutoLabelNodesMenuItemActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_AutoLabelNodesMenuItemActionPerformed

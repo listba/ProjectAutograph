@@ -34,7 +34,9 @@ public class Autograph extends mainWindow {
 			graphPanel.setPreferredSize(new Dimension(imageWidth, imageWidth));
 	
 			// Draw Initial Graph
-			GraphHelper.mDrawForceDirectedGraph(graphPanel);
+			if(graphPanel.mGetGraph().mGetNodeList().size() > 0){
+			   GraphHelper.mDrawForceDirectedGraph(graphPanel);
+			}
 		}
 		
 		
