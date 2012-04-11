@@ -447,6 +447,11 @@ public class mainWindow extends javax.swing.JFrame {
 
         SaveAsMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
         SaveAsMenuItem.setText("Save As...");
+        SaveAsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+           public void actionPerformed(java.awt.event.ActionEvent evt) {
+               SaveAsMenuItemActionPerformed(evt);
+           }
+       });
         FileDropdownMenu.add(SaveAsMenuItem);
 
         PrintMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
@@ -661,7 +666,6 @@ public class mainWindow extends javax.swing.JFrame {
     private void CloseTabMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloseTabMenuItemActionPerformed
         int selectedTab = MainWindowTabbedPane.getSelectedIndex();
         MainWindowTabbedPane.remove(selectedTab);
-        
         vTabs.remove(selectedTab);
     }//GEN-LAST:event_CloseTabMenuItemActionPerformed
     
@@ -685,87 +689,18 @@ public class mainWindow extends javax.swing.JFrame {
        }
     }
     
+    private void SaveAsMenuItemActionPerformed(java.awt.event.ActionEvent evt){
+       FilePickerDialog saveDialog = new FilePickerDialog(this, true);
+       saveDialog.mOpenSaveDialog();
+    }
+    
+    /**
+     * Open the file picker dialog.
+     * @param evt
+     */
     private void OpenMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-       //TODO: move some of this code over to FilePickerDialog
-       //instantiate a new file chooser object
-       JFileChooser chooser = new JFileChooser();
-       //TODO: implement a subclass of the FileFilter class to filter out invalid file types from the open dialog.
-       int returnVal = chooser.showOpenDialog(this);
-       if(returnVal == JFileChooser.APPROVE_OPTION){
-          //the user has selected a file.
-          String fileName = chooser.getSelectedFile().getName();
-          if(!(fileName.endsWith(".ag") || fileName.endsWith(".xml")|| fileName.endsWith(".txt"))){
-             //TODO: Implement error dialog for this scenario.
-             System.out.println(chooser.getSelectedFile().getName() + " is not a valid file type.");
-          }
-          else
-          {
-             //we know we have a valid file type, so we are going to create a new graph object, and load it
-             //into a new tab
-             Graph loadedGraph;
-             File selectedFile = chooser.getSelectedFile();
-             if(fileName.endsWith(".ag")){
-                //load from save file
-                loadedGraph = GraphHelper.mLoadGraphObject(selectedFile.getPath());
-             }
-             else if(fileName.endsWith(".xml")){
-                //load from xml
-                loadedGraph = GraphHelper.mImportGraphFromXML(selectedFile.getPath());
-             }
-             else
-             {
-                //load from gml
-                loadedGraph = GraphHelper.mImportGraphFromGML(selectedFile.getPath(), null);
-             }
-             
-             JScrollPane newPane = new javax.swing.JScrollPane();
-             GraphPanel newGraphPanel = new GraphPanel(loadedGraph);
-             newPane.setBorder(null);
-
-             newGraphPanel.setBackground(new java.awt.Color(255, 255, 255));
-             newGraphPanel.setPreferredSize(new java.awt.Dimension(600, 400));
-
-             newPane.setViewportView(newGraphPanel);
-             
-             /*newGraphPanel.setVerticalGroup(
-                   layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                   .addGroup(layout.createSequentialGroup()
-                       .addComponent(MainWindowToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                       .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                       .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                           .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                           .addComponent(MainWindowTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                       .addContainerGap())
-               );*/
-             javax.swing.GroupLayout newGraphPanelLayout = new javax.swing.GroupLayout(newGraphPanel);
-             newGraphPanel.setLayout(newGraphPanelLayout);
-             newGraphPanelLayout.setHorizontalGroup(
-                 newGraphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                 .addGap(0, 912, Short.MAX_VALUE)
-             );
-             newGraphPanelLayout.setVerticalGroup(
-                 newGraphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                 .addGap(0, 476, Short.MAX_VALUE)
-             );
-             
-             //KMW Note: The graph is being loaded properly, but I cannot figure out how to get it to display properly.
-             //          Right now when we call setPreferredSize the size of the pane is not updated, so the size stays
-             //          0x0 on the panel. This causes everything to be drawn in the upper left corner of the pane.
-             //          It has something to do with the layout not being updated properly (I think) but I don't know how to 
-             //          update the layout properly, so for now I am leaving it as is. It would be great if someone else could
-             //          look at this.
-             int imageWidth = GraphHelper.mGetPreferredImageWidth(newGraphPanel.mGetGraph());
-             newGraphPanel.setPreferredSize(new Dimension(imageWidth, imageWidth));
-             GraphHelper.mDrawForceDirectedGraph(newGraphPanel);
-             MainWindowTabbedPane.addTab(loadedGraph.mGetTitle(), newPane);
-             MainWindowTabbedPane.getLayout().addLayoutComponent("newComponent", newGraphPanel);
-             MainWindowTabbedPane.setSelectedIndex(MainWindowTabbedPane.getTabCount()-1);
-
-             //KMW Note: This is going to be our way of keeping track of tabs. We will initialize with
-             //          one blank tab on startup.
-             vTabs.add(newPane);
-          }
-       }
+       FilePickerDialog dialog = new FilePickerDialog(this, true);
+       dialog.mOpenFilePickerDialog(vTabs, MainWindowTabbedPane);
     }
     
     private void AutoLabelNodesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AutoLabelNodesMenuItemActionPerformed
@@ -854,6 +789,9 @@ public class mainWindow extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     
+    //KMW Note: This variable is for being able to directly access the GraphPanels in the tab. It is inconvenient, and horrible and a hack, but
+    //          for some reason when I attempted to get the GraphPanel out of MainWindowTabbed pane it would give me null results, so I am keeping 
+    //          track of the tabs in this separate variable. The way I tried to get the GraphPanel before this hack was MainwindowTabbedPane.getSelected
     public ArrayList<JScrollPane> vTabs;
     // End of variables declaration//GEN-END:variables
 }

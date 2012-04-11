@@ -4,6 +4,20 @@
  */
 package autograph.ui;
 
+import java.awt.Dimension;
+import java.io.File;
+import java.util.ArrayList;
+
+import javax.swing.JFileChooser;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.filechooser.FileFilter;
+
+import autograph.Graph;
+import autograph.GraphHelper;
+import autograph.GraphPanel;
+import autograph.Utils;
+
 public class FilePickerDialog extends javax.swing.JDialog {
 
     /**
@@ -24,7 +38,6 @@ public class FilePickerDialog extends javax.swing.JDialog {
     private void initComponents() {
 
         FilePicker = new javax.swing.JFileChooser();
-
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -46,55 +59,165 @@ public class FilePickerDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * @param args the command line arguments
+     * Opens the file picker dialog, and then validates the file chosen and opens a new tab containing the valid graph.
+     * @param vTabs - our tab tracker
+     * @param MainWindowTabbedPane - the tabbed pane to put the new tab into.
      */
-    public static void main(String args[]) {
-        /*
-         * Set the Nimbus look and feel
-         */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /*
-         * If Nimbus (introduced in Java SE 6) is not available, stay with the
-         * default look and feel. For details see
-         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FilePickerDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FilePickerDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FilePickerDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FilePickerDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    public void mOpenFilePickerDialog(ArrayList<JScrollPane> vTabs, JTabbedPane MainWindowTabbedPane){
 
-        /*
-         * Create and display the dialog
-         */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+       //TODO: implement a subclass of the FileFilter class to filter out invalid file types from the open dialog.
+       int returnVal = FilePicker.showOpenDialog(this.getParent());
+       if(returnVal == JFileChooser.APPROVE_OPTION){
+          //the user has selected a file.
+          String fileName = FilePicker.getSelectedFile().getName();
+          if(!(fileName.endsWith(".ag") || fileName.endsWith(".xml")|| fileName.endsWith(".txt"))){
+             //TODO: Implement error dialog for this scenario.
+             System.out.println(FilePicker.getSelectedFile().getName() + " is not a valid file type.");
+          }
+          else
+          {
+             //we know we have a valid file type, so we are going to create a new graph object, and load it
+             //into a new tab
+             Graph loadedGraph;
+             File selectedFile = FilePicker.getSelectedFile();
+             if(fileName.endsWith(".ag")){
+                //load from save file
+                loadedGraph = GraphHelper.mLoadGraphObject(selectedFile.getPath());
+             }
+             else if(fileName.endsWith(".xml")){
+                //load from xml
+                loadedGraph = GraphHelper.mImportGraphFromXML(selectedFile.getPath());
+             }
+             else
+             {
+                //load from gml
+                loadedGraph = GraphHelper.mImportGraphFromGML(selectedFile.getPath(), null);
+             }
+             
+             JScrollPane newPane = new javax.swing.JScrollPane();
+             GraphPanel newGraphPanel = new GraphPanel(loadedGraph);
+             newPane.setBorder(null);
 
-            public void run() {
-                FilePickerDialog dialog = new FilePickerDialog(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+             newGraphPanel.setBackground(new java.awt.Color(255, 255, 255));
+             newGraphPanel.setPreferredSize(new java.awt.Dimension(600, 400));
 
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
+             newPane.setViewportView(newGraphPanel);
+             
+             javax.swing.GroupLayout newGraphPanelLayout = new javax.swing.GroupLayout(newGraphPanel);
+             newGraphPanel.setLayout(newGraphPanelLayout);
+             newGraphPanelLayout.setHorizontalGroup(
+                 newGraphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                 .addGap(0, 912, Short.MAX_VALUE)
+             );
+             newGraphPanelLayout.setVerticalGroup(
+                 newGraphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                 .addGap(0, 476, Short.MAX_VALUE)
+             );
+             
+             //KMW Note: The graph is being loaded properly, but I cannot figure out how to get it to display properly.
+             //          Right now when we call setPreferredSize the size of the pane is not updated, so the size stays
+             //          0x0 on the panel. This causes everything to be drawn in the upper left corner of the pane.
+             //          It has something to do with the layout not being updated properly (I think) but I don't know how to 
+             //          update the layout properly, so for now I am leaving it as is. It would be great if someone else could
+             //          look at this.
+             int currentIndex = MainWindowTabbedPane.getSelectedIndex();   
+             GraphPanel currentPanel = (GraphPanel)vTabs.get(currentIndex).getViewport().getView();
+             vTabs.get(currentIndex).setPreferredSize(new Dimension(0,0));
+             currentPanel.setPreferredSize(new Dimension(0,0));
+             int imageWidth = GraphHelper.mGetPreferredImageWidth(newGraphPanel.mGetGraph());
+             newGraphPanel.setPreferredSize(new Dimension(imageWidth, imageWidth));  
+             GraphHelper.mDrawForceDirectedGraph(newGraphPanel);
+             MainWindowTabbedPane.addTab(loadedGraph.mGetTitle(), newPane);
+             MainWindowTabbedPane.getLayout().addLayoutComponent("newComponent", newGraphPanel);
+             MainWindowTabbedPane.setSelectedIndex(MainWindowTabbedPane.getTabCount()-1);
+
+             //KMW Note: This is going to be our way of keeping track of tabs. We will initialize with
+             //          one blank tab on startup.
+             vTabs.add(newPane);
+          }
+       }
     }
+    
+    public void mOpenSaveDialog(){
+       //FilePicker.setFileFilter(new FilePickerFilter());
+       int returnValue = FilePicker.showSaveDialog(this.getParent());
+       if(returnValue == JFileChooser.APPROVE_OPTION){
+          System.out.println("The save button was clicked.");
+       }
+       else if(returnValue == JFileChooser.ERROR_OPTION){
+          System.out.println("Error: invalid entry");
+       }
+       else{
+          System.out.println("Close the dialog?");
+       }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFileChooser FilePicker;
     // End of variables declaration//GEN-END:variables
 }
+
+class GifFilter extends FileFilter{
+   public boolean accept(File f){
+      if(f.isDirectory()){
+         return true;
+      }
+      String extension =  Utils.getExtension(f);
+      if(extension != null){
+         if(extension.equals(Utils.gif)){
+            return true;
+         }
+         else{
+            return false;
+         }
+      }
+      return false;
+   }
+   public String getDescription() {
+      return "gif";
+   }
+}
+
+class JpegFilter extends FileFilter{
+   public boolean accept(File f){
+      if(f.isDirectory()){
+         return true;
+      }
+      String extension =  Utils.getExtension(f);
+      if(extension != null){
+         if(extension.equals(Utils.jpeg)){
+            return true;
+         }
+         else{
+            return false;
+         }
+      }
+      return false;
+   }
+   public String getDescription() {
+      return "jpg, jpeg";
+   }
+}
+
+class PngFilter extends FileFilter{
+   public boolean accept(File f){
+      if(f.isDirectory()){
+         return true;
+      }
+      String extension =  Utils.getExtension(f);
+      if(extension != null){
+         if(extension.equals(Utils.png)){
+            return true;
+         }
+         else{
+            return false;
+         }
+      }
+      return false;
+   }
+   public String getDescription() {
+      return "png";
+   }
+}
+
+
