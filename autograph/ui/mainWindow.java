@@ -36,6 +36,12 @@ public class mainWindow extends javax.swing.JFrame {
         initComponents();
     }
 
+    public void exit() { 
+    	  setVisible(false); 
+    	  dispose(); 
+    	  System.exit(0); 
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -468,6 +474,11 @@ public class mainWindow extends javax.swing.JFrame {
 
         ExitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
         ExitMenuItem.setText("Exit");
+        ExitMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ExitMenuItemActionPerformed(evt);
+            }
+        });
         FileDropdownMenu.add(ExitMenuItem);
 
         MainWindowMenuBar.add(FileDropdownMenu);
@@ -664,6 +675,10 @@ public class mainWindow extends javax.swing.JFrame {
         
         vTabs.remove(selectedTab);
     }//GEN-LAST:event_CloseTabMenuItemActionPerformed
+    
+    private void ExitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+    	this.exit();
+    }
     
     private void CloseGraphMenuItemActionPerformed(java.awt.event.ActionEvent evt){
        int selectedTab = MainWindowTabbedPane.getSelectedIndex();
