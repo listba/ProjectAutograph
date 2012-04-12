@@ -25,27 +25,27 @@ public class Autograph extends mainWindow {
 		/*
 		String writeTo = "NewGraph.xml";
 		GraphHelper.mExportGraphToXML(graph, writeTo);
-		*/
+		 */
 		// Draw each tab we have.
 		for(int i = 0; i < vTabs.size(); i++){
 			GraphPanel graphPanel = (GraphPanel)vTabs.get(i).getViewport().getView();
 			int imageWidth = GraphHelper.mGetPreferredImageWidth(graphPanel.mGetGraph());
-	
+
 			graphPanel.setPreferredSize(new Dimension(imageWidth, imageWidth));
-	
+
 			// Draw Initial Graph
 			if(graphPanel.mGetGraph().mGetNodeList().size() > 0){
-			   GraphHelper.mDrawForceDirectedGraph(graphPanel);
+				GraphHelper.mDrawForceDirectedGraph(graphPanel);
 			}
 		}
-		
-		
+
+
 		//GraphHelper.mSavePNG(panel);
 		//try{
-		   //GraphHelper.mExportGraphToGML(graph, "graphGML.txt", null);
+		//GraphHelper.mExportGraphToGML(graph, "graphGML.txt", null);
 		//}
 		//catch(Exception e){
-		   
+
 		//}
 
 	}
