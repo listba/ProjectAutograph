@@ -706,7 +706,7 @@ public class mainWindow extends javax.swing.JFrame {
 
 	private void SaveAsMenuItemActionPerformed(java.awt.event.ActionEvent evt){
 		FilePickerDialog saveDialog = new FilePickerDialog(this, true);
-		saveDialog.mOpenSaveDialog();
+		saveDialog.mOpenSaveDialog(vTabs, MainWindowTabbedPane);
 	}
 
 	/**

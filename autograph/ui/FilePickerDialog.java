@@ -38,6 +38,10 @@ public class FilePickerDialog extends javax.swing.JDialog {
 	private void initComponents() {
 
 		FilePicker = new javax.swing.JFileChooser();
+		//set it so we can only save/open files of the following extensions. (add filters for image types in save dialog only)
+		FilePicker.addChoosableFileFilter(new XmlFilter());
+		FilePicker.addChoosableFileFilter(new TxtFilter());
+		FilePicker.addChoosableFileFilter(new AgFilter());
 		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -65,7 +69,6 @@ public class FilePickerDialog extends javax.swing.JDialog {
 	 */
 	public void mOpenFilePickerDialog(ArrayList<JScrollPane> vTabs, JTabbedPane MainWindowTabbedPane){
 
-		//TODO: implement a subclass of the FileFilter class to filter out invalid file types from the open dialog.
 		int returnVal = FilePicker.showOpenDialog(this.getParent());
 		if(returnVal == JFileChooser.APPROVE_OPTION){
 			//the user has selected a file.
@@ -138,14 +141,98 @@ public class FilePickerDialog extends javax.swing.JDialog {
 		}
 	}
 
-	public void mOpenSaveDialog(){
-		//FilePicker.setFileFilter(new FilePickerFilter());
+	public void mOpenSaveDialog(ArrayList<JScrollPane> vTabs, JTabbedPane MainWindowTabbedPane){
+		//allow saving of these image types.
+		FilePicker.addChoosableFileFilter(new BmpFilter());
+		FilePicker.addChoosableFileFilter(new GifFilter());
+		FilePicker.addChoosableFileFilter(new PngFilter());
+		FilePicker.addChoosableFileFilter(new JpgFilter());
+		//remove the all files option from the save dialog.
+		FilePicker.removeChoosableFileFilter(FilePicker.getChoosableFileFilters()[0]);
+		
+		//display the FilePicker dialog with the save option rather than the open option.
 		int returnValue = FilePicker.showSaveDialog(this.getParent());
 		if(returnValue == JFileChooser.APPROVE_OPTION){
-			System.out.println("The save button was clicked.");
+			//get the graph panel containing the graph we want to save.
+			int selectedIndex = MainWindowTabbedPane.getSelectedIndex();
+			GraphPanel currentPanel = (GraphPanel)vTabs.get(selectedIndex).getViewport().getView();
+			
+			//if the save button is clicked and a file name has been entered
+			//retrieve the file path to the file (will include file name in path)
+			String filePath = FilePicker.getSelectedFile().getPath();
+			if(filePath != null && !filePath.isEmpty()){
+				//make sure it is a valid save type
+				if(FilePicker.getFileFilter().getDescription() == "gif"){
+					//now we want to save using gif format
+					if(!filePath.endsWith(".gif")){
+						//make sure the file has the correct extension
+						filePath = filePath + ".gif";
+					}
+					GraphHelper.mSaveGIF(currentPanel, filePath);
+				}
+				else if(FilePicker.getFileFilter().getDescription() == "jpg"){
+					//we want to save using jpg format
+					if(!filePath.endsWith(".jpg")){
+						//make sure the file has the correct extension
+						filePath = filePath +".jpg";
+					}
+					GraphHelper.mSaveJPG(currentPanel, filePath);
+				}
+				else if(FilePicker.getFileFilter().getDescription() == "bmp"){
+					//we want to save using the bmp format
+					if(!filePath.endsWith(".bmp")){
+						//make sure the file has the correct extension
+						filePath = filePath + ".bmp";
+					}
+					GraphHelper.mSaveBMP(currentPanel, filePath);
+				}
+				else if(FilePicker.getFileFilter().getDescription() == "png"){
+					//we want to save using the png format
+					if(!filePath.endsWith(".png")){
+						//make sure the file has the correct extension
+						filePath = filePath + ".png";
+					}
+					GraphHelper.mSavePNG(currentPanel, filePath);
+				}
+				else if(FilePicker.getFileFilter().getDescription() == "xml"){
+					//we want to save the graph as xml
+					if(!filePath.endsWith(".xml")){
+						//make sure the file has the correct extension
+						filePath = filePath + ".xml";
+					}
+					GraphHelper.mExportGraphToXML(currentPanel.mGetGraph(), filePath);
+				}
+				else if(FilePicker.getFileFilter().getDescription() == "txt"){
+					//we want to save the graph using GML syntax in a txt file
+					if(!filePath.endsWith(".txt")){
+						//make sure the file has the correct extension
+						filePath = filePath + ".txt";
+					}
+					try{
+						GraphHelper.mExportGraphToGML(currentPanel.mGetGraph(), filePath);
+					}
+					catch (Exception e){
+						//TODO: implement error dialog for this case.
+					}
+				}
+				else if(FilePicker.getFileFilter().getDescription() == "ag"){
+					//we want to save a serialized version of the graph.
+					if(!filePath.endsWith(".ag")){
+						//make sure the file has the correct extension
+						filePath = filePath + ".ag";
+					}
+					GraphHelper.mSaveGraphObject(currentPanel.mGetGraph(), filePath);
+				}
+				else{
+					//TODO: implement error dialog for this scenario (should never happen, but can't hurt to be prepared).
+				}
+			}
+			else{
+				//TODO: implement error dialog for this scenario.
+			}
 		}
 		else if(returnValue == JFileChooser.ERROR_OPTION){
-			System.out.println("Error: invalid entry");
+			System.out.println("Error occurred.");
 		}
 		else{
 			System.out.println("Close the dialog?");
@@ -178,14 +265,14 @@ class GifFilter extends FileFilter{
 	}
 }
 
-class JpegFilter extends FileFilter{
+class JpgFilter extends FileFilter{
 	public boolean accept(File f){
 		if(f.isDirectory()){
 			return true;
 		}
 		String extension =  Utils.getExtension(f);
 		if(extension != null){
-			if(extension.equals(Utils.jpeg)){
+			if(extension.equals(Utils.jpg)){
 				return true;
 			}
 			else{
@@ -195,7 +282,7 @@ class JpegFilter extends FileFilter{
 		return false;
 	}
 	public String getDescription() {
-		return "jpg, jpeg";
+		return "jpg";
 	}
 }
 
@@ -217,6 +304,90 @@ class PngFilter extends FileFilter{
 	}
 	public String getDescription() {
 		return "png";
+	}
+}
+
+class BmpFilter extends FileFilter{
+	public boolean accept(File f){
+		if(f.isDirectory()){
+			return true;
+		}
+		String extension = Utils.getExtension(f);
+		if(extension != null){
+			if(extension.equals(Utils.bmp)){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		return false;
+	}
+	public String getDescription(){
+		return "bmp";
+	}
+}
+
+class XmlFilter extends FileFilter{
+	public boolean accept(File f){
+		if(f.isDirectory()){
+			return true;
+		}
+		String extension = Utils.getExtension(f);
+		if(extension != null){
+			if(extension.equals(Utils.xml)){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		return false;
+	}
+	public String getDescription(){
+		return "xml";
+	}
+}
+
+class TxtFilter extends FileFilter{
+	public boolean accept(File f){
+		if(f.isDirectory()){
+			return true;
+		}
+		String extension = Utils.getExtension(f);
+		if(extension != null){
+			if(extension.equals(Utils.txt)){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		return false;
+	}
+	public String getDescription(){
+		return "txt";
+	}
+}
+
+class AgFilter extends FileFilter{
+	public boolean accept(File f){
+		if(f.isDirectory()){
+			return true;
+		}
+		String extension = Utils.getExtension(f);
+		if(extension != null){
+			if(extension.equals(Utils.ag)){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		return false;
+	}
+	public String getDescription(){
+		return "ag";
 	}
 }
 

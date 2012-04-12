@@ -595,17 +595,12 @@ public class GraphHelper {
 	 * @param   fileLoc     The location to save the agl file to
 	 * @see     Graph
 	 */
-	public static void mExportGraphToGML(Graph graph, String fileName, String fileLoc) throws IOException{
+	public static void mExportGraphToGML(Graph graph, String filePath) throws IOException{
 		StringBuilder gml = new StringBuilder();
 		GMLBuilder gmlBuilder = new GMLBuilder(gml);
 
 		//create the gml string
 		gmlBuilder.mBuildGML(graph);
-
-		String filePath = fileName;
-		if(fileLoc != null && !fileLoc.isEmpty()){
-			filePath = fileLoc + fileName;
-		}
 
 		FileWriter file = new FileWriter(filePath);
 		BufferedWriter out = new BufferedWriter(file);
@@ -1288,9 +1283,9 @@ public class GraphHelper {
 	 * savePNG - Save a graph as a .png file
 	 * 
 	 * @param panel - the object holding the graph drawing
-	 * 
+	 * @param path - location to save the image
 	 */
-	public static void mSavePNG(GraphPanel panel) {
+	public static void mSavePNG(GraphPanel panel, String path) {
 		Dimension size = panel.getSize();  //panel == JPanel
 		BufferedImage myImage = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
 		Graphics2D g2 = myImage.createGraphics();
@@ -1298,8 +1293,7 @@ public class GraphHelper {
 		g2.dispose();
 		try
 		{
-			// This file location only works for Jeff's Mac laptop...we can make a filechooser later
-			ImageIO.write(myImage, "png", new File("/Users/Markues/Desktop/MyGraph.png"));
+			ImageIO.write(myImage, "png", new File(path));
 		}
 		catch (IOException e)
 		{
@@ -1311,9 +1305,9 @@ public class GraphHelper {
 	 * saveJPG - Save a graph as a .jpg file
 	 * 
 	 * @param panel - the object holding the graph drawing
-	 * 
+	 * @param path - location to save the image
 	 */
-	public static void mSaveJPG(GraphPanel panel) {
+	public static void mSaveJPG(GraphPanel panel, String path) {
 		Dimension size = panel.getSize();  //panel == JPanel
 		BufferedImage myImage = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
 		Graphics2D g2 = myImage.createGraphics();
@@ -1321,8 +1315,7 @@ public class GraphHelper {
 		g2.dispose();
 		try
 		{
-			// This file location only works for Jeff's Mac laptop...we can make a filechooser later
-			ImageIO.write(myImage, "jpg", new File("/Users/Markues/Desktop/MyGraph.jpg"));
+			ImageIO.write(myImage, "jpg", new File(path));
 		}
 		catch (IOException e)
 		{
@@ -1334,9 +1327,9 @@ public class GraphHelper {
 	 * saveBMP - Save a graph as a .bmp file
 	 * 
 	 * @param panel - the object holding the graph drawing
-	 * 
+	 * @param path - location to save the image
 	 */
-	public static void mSaveBMP(GraphPanel panel) {
+	public static void mSaveBMP(GraphPanel panel, String path) {
 		Dimension size = panel.getSize();  //panel == JPanel
 		BufferedImage myImage = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
 		Graphics2D g2 = myImage.createGraphics();
@@ -1345,7 +1338,7 @@ public class GraphHelper {
 		try
 		{
 			// This file location only works for Jeff's Mac laptop...we can make a filechooser later
-			ImageIO.write(myImage, "bmp", new File("/Users/Markues/Desktop/MyGraph.bmp"));
+			ImageIO.write(myImage, "bmp", new File(path));
 		}
 		catch (IOException e)
 		{
@@ -1357,9 +1350,9 @@ public class GraphHelper {
 	 * saveGIF - save a graph as a .gif file
 	 * 
 	 * @param panel - the object holding the graph drawing
-	 * 
+	 * @param path - location to save the image
 	 */
-	public static void mSaveGIF(GraphPanel panel) {
+	public static void mSaveGIF(GraphPanel panel, String path) {
 		Dimension size = panel.getSize();  //panel == JPanel
 		BufferedImage myImage = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
 		Graphics2D g2 = myImage.createGraphics();
@@ -1368,7 +1361,7 @@ public class GraphHelper {
 		try
 		{
 			// This file location only works for Jeff's Mac laptop...we can make a filechooser later
-			ImageIO.write(myImage, "gif", new File("/Users/Markues/Desktop/MyGraph.gif"));
+			ImageIO.write(myImage, "gif", new File(path));
 		}
 		catch (IOException e)
 		{
