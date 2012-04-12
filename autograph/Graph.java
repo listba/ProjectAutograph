@@ -1,5 +1,6 @@
 package autograph;
 import java.util.ArrayList;
+import java.util.Random;
 import java.io.Serializable;
 import autograph.exception.*;
 /**
@@ -225,17 +226,41 @@ public class Graph implements Serializable {
    }
 
    /**
-    * AddNode - adds a node to the edge list
+    * AddNode - adds a node to the node list - sets location as well
     *
     * @param node - node to add to the node list for the graph
+    * @param panel - the panel where the graph will be rendered
+    * @throws CannotAddNodeException
+    * @see Node
+    * 
+    */
+   public void mAddNode(GraphPanel panel, Node node) throws CannotAddNodeException {
+	   try {
+		   int width = panel.getWidth();
+		   int height = panel.getHeight();
+
+		   // Set each node at a random location
+		   // within the center 60% of the screen
+		   Random generator = new Random();
+		   double randX = generator.nextDouble() * (width - (width / 5)) + (width / 5);
+		   double randY = generator.nextDouble() * (height - (height / 5)) + (height / 5);
+		   node.mSetCenterLocation((int)randX, (int)randY);   
+		   vNodeList.add(node);
+	   }
+	   catch (Exception e) {
+		   throw new CannotAddNodeException("Error while adding node!", e);
+	   }
+   }
+   
+   /**
+    * AddNode - adds a node to the node list
+    * 
+    * @param node
+    * @throws CannotAddNodeException
     * @see Node
     * 
     */
    public void mAddNode(Node node) throws CannotAddNodeException {
-      //TODO: link this function to the Add Node button of the UI
-      //TODO: pass in or retrieve the graphics object in the JPanel,
-      //      clear the current image and call GraphHelper.mDrawGraph 
-      //      on the "this" object to rearrange the nodes with the new node.
 	   try {
 		   vNodeList.add(node);
 	   }

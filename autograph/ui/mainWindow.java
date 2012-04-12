@@ -26,6 +26,7 @@ import autograph.Graph;
 import autograph.GraphHelper;
 import autograph.Node;
 import autograph.GraphPanel;
+import autograph.exception.CannotAddNodeException;
 
 public class mainWindow extends javax.swing.JFrame {
 
@@ -674,11 +675,11 @@ public class mainWindow extends javax.swing.JFrame {
 		// TODO add your handling code here:
 	}//GEN-LAST:event_SelectAllMenuItemActionPerformed
 
-	private void CloseTabMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloseTabMenuItemActionPerformed
+	private void CloseTabMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		int selectedTab = MainWindowTabbedPane.getSelectedIndex();
 		MainWindowTabbedPane.remove(selectedTab);
 		vTabs.remove(selectedTab);
-	}//GEN-LAST:event_CloseTabMenuItemActionPerformed
+	}
 
 	private void ExitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		this.exit();
@@ -726,9 +727,26 @@ public class mainWindow extends javax.swing.JFrame {
 		// TODO add your handling code here:
 	}//GEN-LAST:event_AutoConnectNodesMenuItemActionPerformed
 
-	private void AddNodeBtnActionPerformed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AddNodeBtnActionPerformed
-		// TODO add your handling code here:
-	}//GEN-LAST:event_AddNodeBtnActionPerformed
+	private void AddNodeBtnActionPerformed(java.awt.event.MouseEvent evt) {
+		JScrollPane currentPane = (JScrollPane)MainWindowTabbedPane.getSelectedComponent();
+		GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
+		Graph currentGraph = currentPanel.mGetGraph();
+		
+		// Add the node
+		Node newNode = new Node("herp", "herp", null, null);
+		try {
+			currentGraph.mAddNode(currentPanel, newNode);
+		} catch (CannotAddNodeException e) {
+			e.printStackTrace();
+		}
+		
+		// Redraw the graph with the new node
+		GraphHelper.mDrawForceDirectedGraph(currentPanel);
+		currentPanel.repaint();
+		int newWidth = GraphHelper.mGetPreferredImageWidth(currentGraph);
+		currentPanel.setPreferredSize(new Dimension(newWidth, newWidth));
+		currentPane.revalidate();
+	}
 
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables

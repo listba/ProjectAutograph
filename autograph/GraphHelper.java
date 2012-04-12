@@ -164,6 +164,8 @@ public class GraphHelper {
 		int height = panel.getHeight();
 		int area = width * height;
 		System.out.println(width);
+		
+		/*
 		// Set each node at a random location
 		// within the center 60% of the screen
 		Random generator = new Random();
@@ -172,7 +174,7 @@ public class GraphHelper {
 			double randX = generator.nextDouble() * (width - (width / 5)) + (width / 5);
 			double randY = generator.nextDouble() * (height - (height / 5)) + (height / 5);
 			v.mSetCenterLocation((int)randX, (int)randY);   
-		} 
+		} */
 
 		// Value for the ideal distance between nodes
 		double k = Math.sqrt(area / numNodes);
@@ -284,7 +286,7 @@ public class GraphHelper {
 			 * Cool the temperature as the graph is taking
 			 * shape (ideally)
 			 */
-			temp -= 0.5;
+			temp -= 10;
 		}
 
 		/**

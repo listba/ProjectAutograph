@@ -123,10 +123,10 @@ public class FilePickerDialog extends javax.swing.JDialog {
 				//          It has something to do with the layout not being updated properly (I think) but I don't know how to 
 				//          update the layout properly, so for now I am leaving it as is. It would be great if someone else could
 				//          look at this.
-				int currentIndex = MainWindowTabbedPane.getSelectedIndex();   
-				GraphPanel currentPanel = (GraphPanel)vTabs.get(currentIndex).getViewport().getView();
-				vTabs.get(currentIndex).setPreferredSize(new Dimension(0,0));
-				currentPanel.setPreferredSize(new Dimension(0,0));
+				//int currentIndex = MainWindowTabbedPane.getSelectedIndex();   
+				//GraphPanel currentPanel = (GraphPanel)vTabs.get(currentIndex).getViewport().getView();
+				//vTabs.get(currentIndex).setPreferredSize(new Dimension(0,0));
+				//currentPanel.setPreferredSize(new Dimension(0,0));
 				int imageWidth = GraphHelper.mGetPreferredImageWidth(newGraphPanel.mGetGraph());
 				newGraphPanel.setPreferredSize(new Dimension(imageWidth, imageWidth));  
 				GraphHelper.mDrawForceDirectedGraph(newGraphPanel);
