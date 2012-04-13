@@ -81,7 +81,7 @@ public class GraphVector {
 	 * @return - the repulsive force for the nodes
 	 */
 	public double mCalcRepulsive(double k, double temp) {
-		return Math.pow(k, 2.0) /*temp */* k / mGetDistance();
+		return /*Math.pow(k, 2.0)*/ temp * k / mGetDistance();
 	}
 
 	/**

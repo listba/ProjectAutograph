@@ -177,7 +177,7 @@ public class GraphHelper {
 		} */
 
 		// Value for the ideal distance between nodes
-		double k = Math.sqrt(area / (numNodes + numEdges));
+		double k = Math.sqrt(area / numNodes);
 
 		// This value is used to make sure nodes don't move too much
 		// as well as makes sure the graph is slowly coming to rest.
@@ -286,7 +286,7 @@ public class GraphHelper {
 			 * Cool the temperature as the graph is taking
 			 * shape (ideally)
 			 */
-			temp -= 10;
+			temp -= 1;
 		}
 
 		/**
