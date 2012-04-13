@@ -160,8 +160,8 @@ public class GraphHelper {
 		int numNodes = nodes.size();
 		int numEdges = edges.size();
 
-		int width = panel.getWidth();
-		int height = panel.getHeight();
+		int width = GraphHelper.mGetPreferredImageWidth(panel.mGetGraph());
+		int height = GraphHelper.mGetPreferredImageWidth(panel.mGetGraph());
 		int area = width * height;
 		System.out.println(width);
 		

@@ -97,15 +97,12 @@ public class FilePickerDialog extends javax.swing.JDialog {
 					loadedGraph = GraphHelper.mImportGraphFromGML(selectedFile.getPath(), null);
 				}
 
-				JScrollPane newPane = new javax.swing.JScrollPane();
+				
 				GraphPanel newGraphPanel = new GraphPanel(loadedGraph);
+				JScrollPane newPane = new javax.swing.JScrollPane(newGraphPanel);
 				newPane.setBorder(null);
 
-				newGraphPanel.setBackground(new java.awt.Color(255, 255, 255));
-				newGraphPanel.setPreferredSize(new java.awt.Dimension(600, 400));
-
-				newPane.setViewportView(newGraphPanel);
-
+				/*
 				javax.swing.GroupLayout newGraphPanelLayout = new javax.swing.GroupLayout(newGraphPanel);
 				newGraphPanel.setLayout(newGraphPanelLayout);
 				newGraphPanelLayout.setHorizontalGroup(
@@ -116,6 +113,7 @@ public class FilePickerDialog extends javax.swing.JDialog {
 						newGraphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 						.addGap(0, 476, Short.MAX_VALUE)
 						);
+				*/
 
 				//KMW Note: The graph is being loaded properly, but I cannot figure out how to get it to display properly.
 				//          Right now when we call setPreferredSize the size of the pane is not updated, so the size stays
@@ -131,7 +129,6 @@ public class FilePickerDialog extends javax.swing.JDialog {
 				newGraphPanel.setPreferredSize(new Dimension(imageWidth, imageWidth));  
 				GraphHelper.mDrawForceDirectedGraph(newGraphPanel);
 				MainWindowTabbedPane.addTab(loadedGraph.mGetTitle(), newPane);
-				MainWindowTabbedPane.getLayout().addLayoutComponent("newComponent", newGraphPanel);
 				MainWindowTabbedPane.setSelectedIndex(MainWindowTabbedPane.getTabCount()-1);
 
 				//KMW Note: This is going to be our way of keeping track of tabs. We will initialize with
