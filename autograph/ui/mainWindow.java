@@ -193,10 +193,10 @@ public class mainWindow extends javax.swing.JFrame {
 		MainWindowTabbedPane.setMinimumSize(new java.awt.Dimension(114, 95));
 
 
-		if(vTabs == null){
-			vTabs = new ArrayList<JScrollPane>();
-		}
-		if(vTabs.isEmpty()){
+		//if(vTabs == null){
+		//	vTabs = new ArrayList<JScrollPane>();
+		//}
+		//if(vTabs.isEmpty()){
 			String filePath = "Graph.txt";
 			//Graph graph = new Graph("Original Tab");
 			Graph graph = GraphHelper.mImportGraphFromGML(filePath, null);
@@ -224,8 +224,8 @@ public class mainWindow extends javax.swing.JFrame {
 
 			//KMW Note: This is going to be our way of keeping track of tabs. We will initialize with
 			//          one blank tab on startup.
-			vTabs.add(GraphTabPane);
-		}
+			//vTabs.add(GraphTabPane);
+		//}
 
 
 		jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -619,13 +619,13 @@ public class mainWindow extends javax.swing.JFrame {
 	private void NewGraphMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewGraphMenuItemActionPerformed
 		//first get a unique title for the new tab
 		String newTitle = "New Graph";
-		if(vTabs.size() > 0){
+		if(/*vTabs.size()*/MainWindowTabbedPane.getTabCount() > 0){
 			Boolean uniqueTitle = false;
 			int currentNum = 1;
 			while(!uniqueTitle){
 				//loop through each tab and check the titles.
-				for(int i = 0; i < vTabs.size(); i++){
-					GraphPanel panel = (GraphPanel)vTabs.get(i).getViewport().getView();
+				for(int i = 0; i < MainWindowTabbedPane.getTabCount()/*vTabs.size()*/; i++){
+					GraphPanel panel = (GraphPanel)(/*vTabs.get(i)*/((JScrollPane)MainWindowTabbedPane.getComponentAt(i)).getViewport().getView());
 					//check the current tab has the same name as the new title we are creating
 					if(panel.mGetGraph().mGetTitle().compareTo(newTitle) == 0){
 						//if it does reset newTitle to be of the form "New Graph[1]"
@@ -633,7 +633,7 @@ public class mainWindow extends javax.swing.JFrame {
 						currentNum++;
 						break;
 					}
-					if(i == vTabs.size() - 1){
+					if(i == MainWindowTabbedPane.getTabCount() - 1 /*vTabs.size() - 1*/){
 						//if we get here then we have gone through the whole list and not found
 						//a duplicate title, so we will break out of the while loop.
 						uniqueTitle = true;
@@ -668,7 +668,7 @@ public class mainWindow extends javax.swing.JFrame {
 
 		//KMW Note: This is going to be our way of keeping track of tabs. We will initialize with
 		//          one blank tab on startup.
-		vTabs.add(newPane);
+		//vTabs.add(newPane);
 	}//GEN-LAST:event_NewGraphMenuItemActionPerformed
 
 	private void SelectAllMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectAllMenuItemActionPerformed
@@ -678,7 +678,7 @@ public class mainWindow extends javax.swing.JFrame {
 	private void CloseTabMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		int selectedTab = MainWindowTabbedPane.getSelectedIndex();
 		MainWindowTabbedPane.remove(selectedTab);
-		vTabs.remove(selectedTab);
+		//vTabs.remove(selectedTab);
 	}
 
 	private void ExitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
@@ -689,7 +689,7 @@ public class mainWindow extends javax.swing.JFrame {
 		int selectedTab = MainWindowTabbedPane.getSelectedIndex();
 		MainWindowTabbedPane.remove(selectedTab);
 
-		vTabs.remove(selectedTab);
+		//vTabs.remove(selectedTab);
 	}
 
 	private void CloseAllOtherTabsMenuItemActionPerformed(java.awt.event.ActionEvent evt){
@@ -700,14 +700,14 @@ public class mainWindow extends javax.swing.JFrame {
 		for(int i = initialCount -1; i >= 0; i--){
 			if(i != selectedTab){
 				MainWindowTabbedPane.remove(i);
-				vTabs.remove(i);
+				//vTabs.remove(i);
 			}
 		}
 	}
 
 	private void SaveAsMenuItemActionPerformed(java.awt.event.ActionEvent evt){
 		FilePickerDialog saveDialog = new FilePickerDialog(this, true);
-		saveDialog.mOpenSaveDialog(vTabs, MainWindowTabbedPane);
+		saveDialog.mOpenSaveDialog(/*vTabs,*/ MainWindowTabbedPane);
 	}
 
 	/**
@@ -716,7 +716,7 @@ public class mainWindow extends javax.swing.JFrame {
 	 */
 	private void OpenMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		FilePickerDialog dialog = new FilePickerDialog(this, true);
-		dialog.mOpenFilePickerDialog(vTabs, MainWindowTabbedPane);
+		dialog.mOpenFilePickerDialog(/*vTabs,*/ MainWindowTabbedPane);
 	}
 
 	private void AutoLabelNodesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AutoLabelNodesMenuItemActionPerformed
@@ -787,7 +787,7 @@ public class mainWindow extends javax.swing.JFrame {
 	private javax.swing.JTextField LabelTextField;
 	private javax.swing.JLabel LabelTextLabel;
 	private javax.swing.JMenuBar MainWindowMenuBar;
-	private javax.swing.JTabbedPane MainWindowTabbedPane;
+	protected javax.swing.JTabbedPane MainWindowTabbedPane;
 	private javax.swing.JToolBar MainWindowToolBar;
 	private javax.swing.JMenuItem NewGraphMenuItem;
 	private javax.swing.JComboBox NodeShapeComboBox;
@@ -825,7 +825,7 @@ public class mainWindow extends javax.swing.JFrame {
 	//KMW Note: This variable is for being able to directly access the GraphPanels in the tab. It is inconvenient, and horrible and a hack, but
 	//          for some reason when I attempted to get the GraphPanel out of MainWindowTabbed pane it would give me null results, so I am keeping 
 	//          track of the tabs in this separate variable. The way I tried to get the GraphPanel before this hack was MainwindowTabbedPane.getSelected
-	public ArrayList<JScrollPane> vTabs;
+	//public ArrayList<JScrollPane> vTabs;
 	// End of variables declaration//GEN-END:variables
 }
 

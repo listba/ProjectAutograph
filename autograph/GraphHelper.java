@@ -177,7 +177,7 @@ public class GraphHelper {
 		} */
 
 		// Value for the ideal distance between nodes
-		double k = Math.sqrt(area / numNodes);
+		double k = Math.sqrt(area / (numNodes + numEdges));
 
 		// This value is used to make sure nodes don't move too much
 		// as well as makes sure the graph is slowly coming to rest.

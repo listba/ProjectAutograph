@@ -7,6 +7,7 @@ import java.awt.event.*;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import java.util.ArrayList;
@@ -27,8 +28,8 @@ public class Autograph extends mainWindow {
 		GraphHelper.mExportGraphToXML(graph, writeTo);
 		 */
 		// Draw each tab we have.
-		for(int i = 0; i < vTabs.size(); i++){
-			GraphPanel graphPanel = (GraphPanel)vTabs.get(i).getViewport().getView();
+		for(int i = 0; i < MainWindowTabbedPane.getTabCount()/*vTabs.size()*/; i++){
+			GraphPanel graphPanel = (GraphPanel)(/*vTabs.get(i)*/((JScrollPane)MainWindowTabbedPane.getComponentAt(i)).getViewport().getView());
 			int imageWidth = GraphHelper.mGetPreferredImageWidth(graphPanel.mGetGraph());
 
 			graphPanel.setPreferredSize(new Dimension(imageWidth, imageWidth));

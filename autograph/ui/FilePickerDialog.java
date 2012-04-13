@@ -67,7 +67,7 @@ public class FilePickerDialog extends javax.swing.JDialog {
 	 * @param vTabs - our tab tracker
 	 * @param MainWindowTabbedPane - the tabbed pane to put the new tab into.
 	 */
-	public void mOpenFilePickerDialog(ArrayList<JScrollPane> vTabs, JTabbedPane MainWindowTabbedPane){
+	public void mOpenFilePickerDialog(/*ArrayList<JScrollPane> vTabs,*/ JTabbedPane MainWindowTabbedPane){
 
 		int returnVal = FilePicker.showOpenDialog(this.getParent());
 		if(returnVal == JFileChooser.APPROVE_OPTION){
@@ -136,12 +136,12 @@ public class FilePickerDialog extends javax.swing.JDialog {
 
 				//KMW Note: This is going to be our way of keeping track of tabs. We will initialize with
 				//          one blank tab on startup.
-				vTabs.add(newPane);
+				//vTabs.add(newPane);
 			}
 		}
 	}
 
-	public void mOpenSaveDialog(ArrayList<JScrollPane> vTabs, JTabbedPane MainWindowTabbedPane){
+	public void mOpenSaveDialog(/*ArrayList<JScrollPane> vTabs,*/ JTabbedPane MainWindowTabbedPane){
 		//allow saving of these image types.
 		FilePicker.addChoosableFileFilter(new BmpFilter());
 		FilePicker.addChoosableFileFilter(new GifFilter());
@@ -155,7 +155,7 @@ public class FilePickerDialog extends javax.swing.JDialog {
 		if(returnValue == JFileChooser.APPROVE_OPTION){
 			//get the graph panel containing the graph we want to save.
 			int selectedIndex = MainWindowTabbedPane.getSelectedIndex();
-			GraphPanel currentPanel = (GraphPanel)vTabs.get(selectedIndex).getViewport().getView();
+			GraphPanel currentPanel = (GraphPanel)(/*vTabs.get(selectedIndex)*/((JScrollPane)MainWindowTabbedPane.getComponentAt(selectedIndex)).getViewport().getView());
 			
 			//if the save button is clicked and a file name has been entered
 			//retrieve the file path to the file (will include file name in path)
