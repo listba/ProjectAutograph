@@ -37,6 +37,7 @@ public class GraphPanel extends JPanel implements MouseListener {
       ArrayList<Node> nodes = graph.mGetNodeList();
       ArrayList<Edge> edges = graph.mGetEdgeList();
       ArrayList<Node> sNodes = graph.vSelectedItems.mGetSelectedNodes();
+      ArrayList<Edge> sEdges = graph.vSelectedItems.mGetSelectedEdges();
       try{
          //GraphHelper.mDrawForceDirectedGraph(graph, g, this);
          // Draw the nodes
@@ -49,6 +50,9 @@ public class GraphPanel extends JPanel implements MouseListener {
          }
          for(int i = 0; i < sNodes.size(); i++) {
             GraphHelper.mDrawSelectedNode(g, sNodes.get(i));
+         }
+         for(int i = 0; i < sEdges.size(); i++) {
+            GraphHelper.mDrawSelectedEdge(g, sEdges.get(i));
          }
       }
       catch(Exception e) {
@@ -66,6 +70,7 @@ public class GraphPanel extends JPanel implements MouseListener {
       System.out.println("Mouse Clicked");
       System.out.println("x:"+e.getX()+",y:"+e.getY());
       ArrayList<Node> nodes = graph.mGetNodeList();
+      ArrayList<Edge> edges = graph.mGetEdgeList();
       boolean itemSelected = false;
       for (int i = 0; i < nodes.size(); i++){
          if (nodes.get(i).mContains(e.getX(), e.getY()))
@@ -75,10 +80,26 @@ public class GraphPanel extends JPanel implements MouseListener {
             } else if (e.isShiftDown()) {
                graph.vSelectedItems.mSelectAllNodes(nodes);
             } else {
+               graph.vSelectedItems.mClearSelectedItems();
                graph.vSelectedItems.mSelectNode(nodes.get(i));
             }
             itemSelected = true;
             System.out.println("NODE #"+i);
+            break;
+         }
+      }
+      for (int i = 0; i < edges.size(); i++){
+         if (edges.get(i).mContains(e.getX(), e.getY())) {
+            if (e.isControlDown()) {
+               graph.vSelectedItems.mAppendEdge(edges.get(i));
+            } else if (e.isShiftDown()) {
+               graph.vSelectedItems.mSelectAllEdges(edges);
+            } else {
+               graph.vSelectedItems.mClearSelectedItems();
+               graph.vSelectedItems.mSelectEdge(edges.get(i));
+            }
+            itemSelected = true;
+            System.out.println("Edge #"+i);
             break;
          }
       }

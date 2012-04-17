@@ -31,7 +31,8 @@ public class Edge implements Serializable {
       DOTTED,
       DASHED
    };
-
+   // This stores the allowed ditance frome dge to be considered a valid selection click
+   private final static double CLICK_BUFFER_DISTANCE = 5.0;
    private String vId;
    private String vLabel;
    private Node vStartNode;
@@ -304,5 +305,48 @@ public class Edge implements Serializable {
     */
    public void mSetFont(Font font){
       vFont = font;
+   }
+
+   /**
+    * mContains - calculates the shortest distance between the input coordinates and
+    *             any segment along the line, if this distance is within the "Click Buffer Range"
+    *             return true.
+    * @param x - the x coordinate to check
+    * @param y - the y coordinate to check
+    * 
+    */
+   public boolean mContains(int x, int y)
+   {
+      boolean contains = false;
+      int x1 = this.vStartX;
+      int y1 = this.vStartY;
+      int x2 = this.vEndX;
+      int y2 = this.vEndY;
+
+      double px = x2-x1;
+      double py = y2-y1;
+
+      double dot = (px*px) + (py*py);
+
+      double u =  ((x - x1) * px + (y - y1) * py) / dot;
+
+      if (u > 1){
+         u = 1;
+      } else if(u < 0) {
+         u = 0;
+      }
+
+      double newX = x1 + u * px;
+      double newY = y1 + u * py;
+
+      double dx = newX - x;
+      double dy = newY - y;
+
+      double dist = Math.sqrt(dx*dx + dy*dy);
+      System.out.println("DISTANCE:"+dist);
+      if (dist <= CLICK_BUFFER_DISTANCE ) {
+         contains = true;
+      }
+      return contains;
    }
 }

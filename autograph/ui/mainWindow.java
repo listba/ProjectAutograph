@@ -206,9 +206,9 @@ public class mainWindow extends JFrame {
 		MainWindowTabbedPane.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 		MainWindowTabbedPane.setMinimumSize(new java.awt.Dimension(114, 95));
 
-		String filePath = "Graph.txt";
+		String filePath = "Graph.xml";
 		//Graph graph = new Graph("Original Tab");
-		Graph graph = GraphHelper.mImportGraphFromGML(filePath, null);
+		Graph graph = GraphHelper.mImportGraphFromXML(filePath);
 		GraphTabPane = new JScrollPane();
 		GraphTabSubPane = new GraphPanel(graph);
 		GraphTabPane.setBorder(null);
@@ -684,6 +684,7 @@ public class mainWindow extends JFrame {
 
 	private void SelectAllMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		// TODO add your handling code here:
+		//MainWindowTabbedPane.selectedTab.graph.vSelectedItems.mSelectAllNodes();
 	}
 
 	private void CloseTabMenuItemActionPerformed(java.awt.event.ActionEvent evt) {

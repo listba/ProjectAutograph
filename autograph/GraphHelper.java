@@ -1150,7 +1150,8 @@ public class GraphHelper {
 				}
 			}
 		}
-
+		e.mSetStartCoordinates(startX, startY);
+		e.mSetEndCoordinates(endX, endY);
 		int labelX = (startX + endX)/2 + 5;
 		int labelY = (startY +endY)/2 - 5;
 
@@ -1281,6 +1282,28 @@ public class GraphHelper {
 		g2d.drawRect(n.mGetUpperLeftX()-5, n.mGetUpperLeftY()-5, n.mGetWidth()+10, n.mGetHeight()+10);
 	}
 
+	public static void mDrawSelectedEdge(Graphics g, Edge e) {
+		int startX = e.mGetStartX();
+		int startY = e.mGetStartY();
+		int endX = e.mGetEndX();
+		int endY = e.mGetEndY();
+		Graphics2D g2d = (Graphics2D)g;
+			float dash1[] = {10.0f};
+			BasicStroke dashed = 
+				new BasicStroke(1.0f,
+						BasicStroke.CAP_BUTT,
+						BasicStroke.JOIN_MITER,
+						10.0f, dash1, 0.0f);
+			g2d.setStroke(dashed);
+			g2d.setColor(Color.cyan);
+			int herp = 5;
+
+			g2d.drawLine(startX, startY+herp, endX, endY+herp);
+			g2d.drawLine(startX, startY-herp, endX, endY-herp);
+
+			g2d.drawLine(startX, startY+herp, startX, startY-herp);
+			g2d.drawLine(endX, endY+herp, endX, endY-herp);
+	}
 	/**
 	 * savePNG - Save a graph as a .png file
 	 * 
