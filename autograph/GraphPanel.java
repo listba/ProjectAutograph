@@ -88,7 +88,7 @@ public class GraphPanel extends JPanel implements MouseListener {
             break;
          }
       }
-      for (int i = 0; i < edges.size(); i++){
+      for (int i = 0; i < edges.size(); i++) {
          if (edges.get(i).mContains(e.getX(), e.getY())) {
             if (e.isControlDown()) {
                graph.vSelectedItems.mAppendEdge(edges.get(i));

@@ -7,6 +7,7 @@
       <Node id="NodeC" label="Node C" />
       <Node id="NodeD" label="Node D" />
       <Node id="NodeE" label="Node E" />
+      <Node id="NodeG" label="Node G" />
    </Nodes>
    <Edges>
       <Edge id="EdgeA" startNode="NodeA" endNode="NodeB" edgeColor="#FF0000" />
