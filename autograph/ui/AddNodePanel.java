@@ -5,6 +5,8 @@
 package autograph.ui;
 
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GraphicsEnvironment;
 
 import javax.swing.*;
 
@@ -52,7 +54,11 @@ public class AddNodePanel extends JPanel {
 		jSeparator1 = new JSeparator();
 		jButton1 = new JButton();
 		filler1 = new Box.Filler(new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 32767));
-
+		
+		GraphicsEnvironment ge;
+		ge = GraphicsEnvironment.getLocalGraphicsEnvironment(); 
+		String[] fontNames = ge.getAvailableFontFamilyNames();
+		
 		setBackground(new java.awt.Color(255, 255, 255));
 		setMinimumSize(new java.awt.Dimension(208, 400));
 		setPreferredSize(new java.awt.Dimension(208, 512));
@@ -73,7 +79,8 @@ public class AddNodePanel extends JPanel {
 
 		LabelFontLabel.setText("Label Font");
 
-		LabelFontComboBox.setModel(new DefaultComboBoxModel(new String[] { "Times New Roman", "Ariel", "Some other font", "More fonts", "Wingdings" }));
+		LabelFontComboBox.setModel(new DefaultComboBoxModel(fontNames));
+		LabelFontComboBox.setSelectedItem("Tahoma");
 
 		LabelColorLabel.setText("Label Color");
 
@@ -92,7 +99,7 @@ public class AddNodePanel extends JPanel {
 		FillColorBtn.setText("[  ]");
 		FillColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
 
-		NodeShapeComboBox.setModel(new DefaultComboBoxModel(new String[] { "AA", "BB", "CC", "DD", "EE", "FF" }));
+		NodeShapeComboBox.setModel(new DefaultComboBoxModel(new String[] { "Circle", "Oval", "Square", "Rectangle", "Triangle" }));
 
 		BorderColorBtn.setText("[  ]");
 		BorderColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
@@ -213,9 +220,22 @@ public class AddNodePanel extends JPanel {
 		JScrollPane currentPane = (JScrollPane)mainWindowTabbedPane.getSelectedComponent();
 		GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
 		Graph currentGraph = currentPanel.mGetGraph();
+		int numNodes = currentGraph.mGetNodeList().size();
 		
-		// Add the node - This is going to be in the add node pane
-		Node newNode = new Node("herp", "herp", null, null);
+		String nodeLabel;
+		
+		// Retrieve the node label
+		if(LabelTextField.getText().isEmpty()) {
+			nodeLabel = "Node" + Integer.toString(numNodes + 1);
+		}
+		else {
+			nodeLabel = LabelTextField.getText();
+		}
+		
+		// (Try to) Add the node
+		Node newNode = new Node(Integer.toString(numNodes + 1), nodeLabel, (String)NodeShapeComboBox.getSelectedItem(), null);
+		// Set the font
+		newNode.mSetFont(Font.decode((String)LabelFontComboBox.getSelectedItem()));
 		try {
 			currentGraph.mAddNode(currentPanel, newNode);
 		} catch (CannotAddNodeException e) {
@@ -228,6 +248,7 @@ public class AddNodePanel extends JPanel {
 		int newWidth = GraphHelper.mGetPreferredImageWidth(currentGraph);
 		currentPanel.setPreferredSize(new Dimension(newWidth, newWidth));
 		currentPane.revalidate();
+		mainWindow.resetSidePane();
 	}
 	// Variables declaration - do not modify
 	private JPanel AddNodePanel;

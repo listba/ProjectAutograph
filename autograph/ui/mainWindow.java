@@ -23,6 +23,13 @@ import autograph.Node;
 import autograph.GraphPanel;
 import autograph.exception.CannotAddNodeException;
 
+/*
+ * JMF - NOTE - I COMMENTED OUT ALL THE EDIT PANEL STUFF BECAUSE IT SERVES NO FUNCTION!
+ * 			  - ALL SIDE PANELS HAVE THEIR OWN CLASSES - THE ONE HERE WAS JUST FOR SHOW!
+ * 			  - I COMMENTED IT OUT INSTEAD OF DELETING IN CASE WE NEED TO REFERENCE IT 
+ * 			  - FOR SIZING VALUES FOR THE OTHER PANELS!
+ */
+
 public class mainWindow extends JFrame {
 
 	/**
@@ -68,8 +75,9 @@ public class mainWindow extends JFrame {
 
 		jPanel2 = new JPanel();
 		filler1 = new Box.Filler(new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 32767));
-		jScrollPane5 = new JScrollPane();
+		sidePanelScrollPane = new JScrollPane();
 		EditPanel = new JPanel();
+		/*
 		EditTitleLabel = new JLabel();
 		LabelSubtitleLabel = new JLabel();
 		LabelTextLabel = new JLabel();
@@ -94,7 +102,7 @@ public class mainWindow extends JFrame {
 		EndShapeComboBox = new JComboBox();
 		jLabel13 = new JLabel();
 		jButton8 = new JButton();
-		jButton9 = new JButton();
+		jButton9 = new JButton();*/
 		MainWindowMenuBar = new JMenuBar();
 		FileDropdownMenu = new JMenu();
 		NewGraphMenuItem = new JMenuItem();
@@ -231,11 +239,13 @@ public class mainWindow extends JFrame {
 
 		jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-		jScrollPane5.setBorder(null);
-		jScrollPane5.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		sidePanelScrollPane.setBorder(null);
+		sidePanelScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
 		EditPanel.setPreferredSize(new java.awt.Dimension(200, 512));
 
+		/*
+		
 		EditTitleLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
 		EditTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 		EditTitleLabel.setText("Edit Nodes/Edges");
@@ -299,10 +309,12 @@ public class mainWindow extends JFrame {
 		jButton8.setMargin(new java.awt.Insets(2, 5, 2, 5));
 
 		jButton9.setLabel("Save Changes");
+		
+		*/
 
 		javax.swing.GroupLayout EditPanelLayout = new GroupLayout(EditPanel);
 		EditPanel.setLayout(EditPanelLayout);
-		EditPanelLayout.setHorizontalGroup(
+		/*EditPanelLayout.setHorizontalGroup(
 				EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(EditPanelLayout.createSequentialGroup()
 						.addGroup(EditPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -406,9 +418,9 @@ public class mainWindow extends JFrame {
 																				.addComponent(jButton8))
 																				.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 																				.addComponent(jButton9))
-				);
+				);*/
 
-		jScrollPane5.setViewportView(EditPanel);
+		sidePanelScrollPane.setViewportView(EditPanel);
 
 		javax.swing.GroupLayout jPanel2Layout = new GroupLayout(jPanel2);
 		jPanel2.setLayout(jPanel2Layout);
@@ -416,14 +428,14 @@ public class mainWindow extends JFrame {
 				jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(jPanel2Layout.createSequentialGroup()
 						.addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-								.addComponent(jScrollPane5, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+								.addComponent(sidePanelScrollPane, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
 								.addComponent(filler1, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE))
 								.addGap(0, 0, Short.MAX_VALUE))
 				);
 		jPanel2Layout.setVerticalGroup(
 				jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(jPanel2Layout.createSequentialGroup()
-						.addComponent(jScrollPane5, GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE)
+						.addComponent(sidePanelScrollPane, GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE)
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 						.addComponent(filler1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addGap(0, 0, 0))
@@ -724,16 +736,20 @@ public class mainWindow extends JFrame {
 
 	private void AddNodeBtnActionPerformed(java.awt.event.MouseEvent evt) {
 		// Bring up the Add Node panel
-		jScrollPane5.setViewportView(addNodePanel);
+		sidePanelScrollPane.setViewportView(addNodePanel);
 	}
 	
 	private void AddEdgeBtnActionPerformed(java.awt.event.MouseEvent evt) {
 		// Bring up the Add Node panel
-		jScrollPane5.setViewportView(addEdgePanel);
+		sidePanelScrollPane.setViewportView(addEdgePanel);
 	}
 
 	public static JTabbedPane getMainWindowPane() {
 		return MainWindowTabbedPane;
+	}
+	
+	public static void resetSidePane() {
+		sidePanelScrollPane.setViewportView(EditPanel);
 	}
 	
 	// Variables declaration - do not modify
@@ -746,40 +762,40 @@ public class mainWindow extends JFrame {
 	private JToggleButton AutoLabelEdgesTog;
 	private JCheckBoxMenuItem AutoLabelNodesMenuItem;
 	private JToggleButton AutoLabelNodesTog;
-	private JButton BorderColorBtn;
-	private JLabel BorderColorLabel;
+	//private JButton BorderColorBtn;
+	//private JLabel BorderColorLabel;
 	private JMenuItem ChangeBgColorMenuItem;
 	private JMenuItem CloseAllOtherTabsMenuItem;
 	private JMenuItem CloseGraphMenuItem;
 	private JMenuItem CloseTabMenuItem;
 	private JMenuItem DeselectMenuItem;
-	private JComboBox EdgeDesignComboBox;
-	private JLabel EdgeDesignLabel;
-	private JLabel EdgeSubtitleLabel;
+	//private JComboBox EdgeDesignComboBox;
+	//private JLabel EdgeDesignLabel;
+	//private JLabel EdgeSubtitleLabel;
 	private JMenu EditDropdownMenu;
-	private JPanel EditPanel;
-	private JLabel EditTitleLabel;
-	private JComboBox EndShapeComboBox;
-	private JLabel EndShapeLabel;
+	private static JPanel EditPanel;
+	//private JLabel EditTitleLabel;
+	//private JComboBox EndShapeComboBox;
+	//private JLabel EndShapeLabel;
 	private JMenuItem ExitMenuItem;
 	private JMenu FileDropdownMenu;
-	private JButton FillColorBtn;
-	private JLabel FillColorLabel;
+	//private JButton FillColorBtn;
+	//private JLabel FillColorLabel;
 	private JMenu HelpDropdownMenu;
-	private JButton LabelColorBtn;
-	private JLabel LabelColorLabel;
-	private JComboBox LabelFontComboBox;
-	private JLabel LabelFontLabel;
-	private JLabel LabelSubtitleLabel;
-	private JTextField LabelTextField;
-	private JLabel LabelTextLabel;
+	//private JButton LabelColorBtn;
+	//private JLabel LabelColorLabel;
+	//private JComboBox LabelFontComboBox;
+	//private JLabel LabelFontLabel;
+	//private JLabel LabelSubtitleLabel;
+	//private JTextField LabelTextField;
+	//private JLabel LabelTextLabel;
 	private JMenuBar MainWindowMenuBar;
 	protected static JTabbedPane MainWindowTabbedPane;
 	private JToolBar MainWindowToolBar;
 	private JMenuItem NewGraphMenuItem;
-	private JComboBox NodeShapeComboBox;
-	private JLabel NodeShapeLabel;
-	private JLabel NodeSubtitleLabel;
+	//private JComboBox NodeShapeComboBox;
+	//private JLabel NodeShapeLabel;
+	//private JLabel NodeSubtitleLabel;
 	private JMenuItem OpenAdvancedCodeViewMenuItem;
 	private JMenuItem OpenMenuItem;
 	private JMenuItem PrintMenuItem;
@@ -798,16 +814,16 @@ public class mainWindow extends JFrame {
 	private Box.Filler filler3;
 	private Box.Filler filler4;
 	private Box.Filler filler5;
-	private JButton jButton8;
-	private JButton jButton9;
-	private JLabel jLabel13;
+	//private JButton jButton8;
+	//private JButton jButton9;
+	//private JLabel jLabel13;
 	private JPanel jPanel2;
 	public GraphPanel GraphTabSubPane;
 	//private JScrollPane jScrollPane2;
 	private JScrollPane GraphTabPane;
-	private JScrollPane jScrollPane5;
-	private JSeparator jSeparator1;
-	private JSeparator jSeparator2;
+	private static JScrollPane sidePanelScrollPane;
+	//private JSeparator jSeparator1;
+	//private JSeparator jSeparator2;
 
 	// The side panels
 	protected AddNodePanel addNodePanel;
