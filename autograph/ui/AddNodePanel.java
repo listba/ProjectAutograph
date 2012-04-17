@@ -233,7 +233,7 @@ public class AddNodePanel extends JPanel {
 		}
 		
 		// (Try to) Add the node
-		Node newNode = new Node(Integer.toString(numNodes + 1), nodeLabel, (String)NodeShapeComboBox.getSelectedItem(), null);
+		Node newNode = new Node(Integer.toString(numNodes), nodeLabel, (String)NodeShapeComboBox.getSelectedItem(), null);
 		// Set the font
 		newNode.mSetFont(Font.decode((String)LabelFontComboBox.getSelectedItem()));
 		try {
