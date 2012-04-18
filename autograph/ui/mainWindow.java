@@ -123,20 +123,20 @@ public class mainWindow extends JFrame {
 		AutoConnectNodesTog.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 		AutoConnectNodesTog.setFocusable(false);
 		AutoConnectNodesTog.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-		MainWindowToolBar.add(AutoConnectNodesTog);
 		
 		// Main Window Toolbar
 		MainWindowToolBar = new JToolBar();
 		MainWindowToolBar.setFloatable(false);
 		MainWindowToolBar.setRollover(true);
 		MainWindowToolBar.add(AddNodeBtn);
-		MainWindowToolBar.add(AddEdgeBtn);
-		MainWindowToolBar.add(filler2);
 		MainWindowToolBar.add(filler3);
-		MainWindowToolBar.add(filler4);
-		MainWindowToolBar.add(filler5);
+		MainWindowToolBar.add(AddEdgeBtn);
+		MainWindowToolBar.add(filler2);	
 		MainWindowToolBar.add(AutoLabelNodesTog);
+		MainWindowToolBar.add(filler4);
 		MainWindowToolBar.add(AutoLabelEdgesTog);
+		MainWindowToolBar.add(filler5);
+		MainWindowToolBar.add(AutoConnectNodesTog);
 		
 		// Graph Tab Subpane
 		Graph graph = GraphHelper.mImportGraphFromXML("Graph.xml");	
@@ -200,19 +200,19 @@ public class mainWindow extends JFrame {
 		// Main Panel
 		mainPanel = new JPanel();
 		mainPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-		javax.swing.GroupLayout jPanel2Layout = new GroupLayout(mainPanel);
-		mainPanel.setLayout(jPanel2Layout);
-		jPanel2Layout.setHorizontalGroup(
-				jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(jPanel2Layout.createSequentialGroup()
-						.addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+		javax.swing.GroupLayout mainPanelLayout = new GroupLayout(mainPanel);
+		mainPanel.setLayout(mainPanelLayout);
+		mainPanelLayout.setHorizontalGroup(
+				mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(mainPanelLayout.createSequentialGroup()
+						.addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
 								.addComponent(sidePanelScrollPane, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
 								.addComponent(filler1, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE))
 								.addGap(0, 0, Short.MAX_VALUE))
 				);
-		jPanel2Layout.setVerticalGroup(
-				jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(jPanel2Layout.createSequentialGroup()
+		mainPanelLayout.setVerticalGroup(
+				mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(mainPanelLayout.createSequentialGroup()
 						.addComponent(sidePanelScrollPane, GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE)
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 						.addComponent(filler1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
