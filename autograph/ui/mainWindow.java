@@ -74,19 +74,19 @@ public class mainWindow extends JFrame {
 		});
 
 		// Filler 1
-		filler1 = new Box.Filler(new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 32767));
+		mainPanelFiller = new Box.Filler(new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 32767));
 
 		// Filler 2
-		filler2 = new Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(100, 0));
+		AdEdLaNoFiller = new Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(100, 0));
 
 		// Filler 3
-		filler3 = new Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(25, 0));
+		AdNoAdEdFiller = new Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(25, 0));
 
 		// Filler 4
-		filler4 = new Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(25, 0));
+		LaNoLaEdFiller = new Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(25, 0));
 
 		// Filler 5
-		filler5 = new Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(25, 0));
+		LaEdCoNoFiller = new Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(25, 0));
 
 		// Auto Label Nodes Toggle
 		AutoLabelNodesTog = new JToggleButton();
@@ -129,13 +129,13 @@ public class mainWindow extends JFrame {
 		MainWindowToolBar.setFloatable(false);
 		MainWindowToolBar.setRollover(true);
 		MainWindowToolBar.add(AddNodeBtn);
-		MainWindowToolBar.add(filler3);
+		MainWindowToolBar.add(AdNoAdEdFiller);
 		MainWindowToolBar.add(AddEdgeBtn);
-		MainWindowToolBar.add(filler2);	
+		MainWindowToolBar.add(AdEdLaNoFiller);	
 		MainWindowToolBar.add(AutoLabelNodesTog);
-		MainWindowToolBar.add(filler4);
+		MainWindowToolBar.add(LaNoLaEdFiller);
 		MainWindowToolBar.add(AutoLabelEdgesTog);
-		MainWindowToolBar.add(filler5);
+		MainWindowToolBar.add(LaEdCoNoFiller);
 		MainWindowToolBar.add(AutoConnectNodesTog);
 		
 		// Graph Tab Subpane
@@ -207,7 +207,7 @@ public class mainWindow extends JFrame {
 				.addGroup(mainPanelLayout.createSequentialGroup()
 						.addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
 								.addComponent(sidePanelScrollPane, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-								.addComponent(filler1, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE))
+								.addComponent(mainPanelFiller, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE))
 								.addGap(0, 0, Short.MAX_VALUE))
 				);
 		mainPanelLayout.setVerticalGroup(
@@ -215,7 +215,7 @@ public class mainWindow extends JFrame {
 				.addGroup(mainPanelLayout.createSequentialGroup()
 						.addComponent(sidePanelScrollPane, GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE)
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addComponent(filler1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(mainPanelFiller, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addGap(0, 0, 0))
 				);
 		
@@ -664,11 +664,11 @@ public class mainWindow extends JFrame {
 	private JMenu ToolsDropdownMenu;
 	private JMenu ViewDropdownMenu;
 	private JMenu EditDropdownMenu;	
-	private Box.Filler filler1;
-	private Box.Filler filler2;
-	private Box.Filler filler3;
-	private Box.Filler filler4;
-	private Box.Filler filler5;
+	private Box.Filler mainPanelFiller;
+	private Box.Filler AdEdLaNoFiller;
+	private Box.Filler AdNoAdEdFiller;
+	private Box.Filler LaNoLaEdFiller;
+	private Box.Filler LaEdCoNoFiller;
 	private JPanel mainPanel;
 	private static JPanel EditPanel;	
 	public GraphPanel GraphTabSubPane;
