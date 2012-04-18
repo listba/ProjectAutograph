@@ -175,8 +175,17 @@ public class Node implements Serializable {
     * @param shape is an enumeration of the shape of the node
     * @see NodeShape
     */
-   public void mSetShape(NodeShape shape){
-      vShape = shape;
+   public void mSetShape(String shape){
+	   if(shape != null){
+		   try {
+			   vShape = NodeShape.valueOf(shape.toUpperCase());
+		   } catch (IllegalArgumentException e) {
+			   vShape = NodeShape.CIRCLE;
+		   }
+	   }
+	   else{
+		   vShape = NodeShape.CIRCLE;
+	   }
    }
 
 

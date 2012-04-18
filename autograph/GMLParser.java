@@ -337,20 +337,20 @@ public class GMLParser {
                      //          rectangle anyway, so it's no big deal.
                      String type = mGetNextWord();
                      if(type == "oval"){
-                        node.mSetShape(NodeShape.OVAL);
+                        node.mSetShape("OVAL");
                      }
                      else if(type == "circle"){
-                        node.mSetShape(NodeShape.CIRCLE);
+                        node.mSetShape("CIRCLE");
                      }
                      else if(type == "rectangle"){
-                        node.mSetShape(NodeShape.RECTANGLE);
+                        node.mSetShape("RECTANGLE");
                      }
                      else if(type == "triangle"){
-                        node.mSetShape(NodeShape.TRIANGLE);
+                        node.mSetShape("TRIANGLE");
                      }
                      else{
                         //default to circle for node shapes we don't support.
-                        node.mSetShape(NodeShape.CIRCLE);
+                        node.mSetShape("CIRCLE");
                      }
                      break;
                   case FILL:
