@@ -32,14 +32,13 @@ public class GraphPanel extends JPanel implements MouseListener {
    public void paint(Graphics g) {
       super.paint(g);
       g.setColor(Color.white);
-      System.out.println(getWidth());
+      //System.out.println(getWidth());
       g.fillRect(0, 0, getWidth(), getHeight());
       ArrayList<Node> nodes = graph.mGetNodeList();
       ArrayList<Edge> edges = graph.mGetEdgeList();
       ArrayList<Node> sNodes = graph.vSelectedItems.mGetSelectedNodes();
       ArrayList<Edge> sEdges = graph.vSelectedItems.mGetSelectedEdges();
       try{
-         //GraphHelper.mDrawForceDirectedGraph(graph, g, this);
          // Draw the nodes
          for(int i = 0; i < nodes.size(); i++) {
             GraphHelper.mDrawNode(g, nodes.get(i));
@@ -103,8 +102,6 @@ public class GraphPanel extends JPanel implements MouseListener {
             break;
          }
       }
-      // TODO: Select Edges, I need to figure out a good way to figure out
-      /// the bounding box arround edges
       if (!itemSelected) {
          graph.vSelectedItems.mClearSelectedItems();
       }

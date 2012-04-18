@@ -225,8 +225,8 @@ public class GraphHelper {
 						// If the nodes are not on top of each other
 						if(diff.mGetDistance() != 0) {
 							// Add the repulsive forces
-							v.mSetDispX(v.mGetDispX() + (diff.mGetXCor() / diff.mGetDistance()) * diff.mCalcRepulsive(k, tempOrig));
-							v.mSetDispY(v.mGetDispY() + (diff.mGetYCor() / diff.mGetDistance()) * diff.mCalcRepulsive(k, tempOrig));
+							v.mSetDispX(v.mGetDispX() + (diff.mGetXCor() / diff.mGetDistance()) * diff.mCalcRepulsive(k));
+							v.mSetDispY(v.mGetDispY() + (diff.mGetYCor() / diff.mGetDistance()) * diff.mCalcRepulsive(k));
 						}
 						else {
 							// otherwise force the nodes apart!
@@ -237,7 +237,7 @@ public class GraphHelper {
 						}
 					}
 				}
-			}  
+			} 
 			/**
 			 * Calculate the attractive forces
 			 */

@@ -698,13 +698,11 @@ public class mainWindow extends JFrame {
 	}
 
 	private void SelectAllMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-		// TODO add your handling code here:
-		//MainWindowTabbedPane.selectedTab.graph.vSelectedItems.mSelectAllNodes();
 		JScrollPane currentPane = (JScrollPane)MainWindowTabbedPane.getSelectedComponent();
 		GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
 		Graph currentGraph = currentPanel.mGetGraph();
 		ArrayList<Node> nodes = currentGraph.mGetNodeList();
-      ArrayList<Edge> edges = currentGraph.mGetEdgeList();
+		ArrayList<Edge> edges = currentGraph.mGetEdgeList();
 		currentGraph.vSelectedItems.mSelectAllNodes(nodes);
 		currentGraph.vSelectedItems.mSelectAllEdges(edges);
 		currentPanel.repaint();
@@ -724,11 +722,12 @@ public class mainWindow extends JFrame {
 		JScrollPane currentPane = (JScrollPane)MainWindowTabbedPane.getSelectedComponent();
 		GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
 		Graph currentGraph = currentPanel.mGetGraph();
-      ArrayList<Edge> edges = currentGraph.mGetEdgeList();
+		ArrayList<Edge> edges = currentGraph.mGetEdgeList();
 		currentGraph.vSelectedItems.mClearSelectedItems();
 		currentGraph.vSelectedItems.mSelectAllEdges(edges);
 		currentPanel.repaint();
 	}
+	
 	public void DeselectMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		JScrollPane currentPane = (JScrollPane)MainWindowTabbedPane.getSelectedComponent();
 		GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
