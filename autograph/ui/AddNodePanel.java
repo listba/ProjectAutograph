@@ -56,6 +56,7 @@ public class AddNodePanel extends JPanel {
 		// Add Node Panel
 		AddNodePanel = new JPanel();
 		AddNodePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+		AddNodePanel.setPreferredSize(new Dimension(200, 498));
 		
 		// Add Node Title Label
 		AddNodeTitleLabel = new JLabel();
