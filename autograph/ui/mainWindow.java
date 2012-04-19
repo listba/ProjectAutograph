@@ -205,7 +205,7 @@ public class mainWindow extends JFrame {
 		sidePanelScrollPane = new JScrollPane();
 		sidePanelScrollPane.setBorder(null);
 		sidePanelScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		sidePanelScrollPane.setViewportView(EditPanel);
+		sidePanelScrollPane.setViewportView(addNodePanel);
 		
 		// Main Panel
 		mainPanel = new JPanel();

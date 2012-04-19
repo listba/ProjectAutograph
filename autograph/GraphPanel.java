@@ -32,20 +32,19 @@ public class GraphPanel extends JPanel implements MouseListener {
    public void paint(Graphics g) {
       super.paint(g);
       g.setColor(Color.white);
-      //System.out.println(getWidth());
       g.fillRect(0, 0, getWidth(), getHeight());
       ArrayList<Node> nodes = graph.mGetNodeList();
       ArrayList<Edge> edges = graph.mGetEdgeList();
       ArrayList<Node> sNodes = graph.vSelectedItems.mGetSelectedNodes();
       ArrayList<Edge> sEdges = graph.vSelectedItems.mGetSelectedEdges();
       try{
-         // Draw the nodes
-         for(int i = 0; i < nodes.size(); i++) {
-            GraphHelper.mDrawNode(g, nodes.get(i));
-         }
          // Draw the edges
          for(int i = 0; i < edges.size(); i++) {
             GraphHelper.mDrawEdge(g, edges.get(i));
+         }
+         // Draw the nodes
+         for(int i = 0; i < nodes.size(); i++) {
+            GraphHelper.mDrawNode(g, nodes.get(i));
          }
          for(int i = 0; i < sNodes.size(); i++) {
             GraphHelper.mDrawSelectedNode(g, sNodes.get(i));
