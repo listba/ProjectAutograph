@@ -110,7 +110,7 @@ public class mainWindow extends JFrame {
 		AutoLabelEdgesTog = new JToggleButton();
 		AutoLabelEdgesTog.setSelectedIcon(ToggleOn);
 		AutoLabelEdgesTog.setIcon(ToggleOff);
-		AutoLabelEdgesTog.setSelected(false);
+		AutoLabelEdgesTog.setSelected(true);
 		AutoLabelEdgesTog.setText("Auto-Label Edges");
 		//AutoLabelEdgesTog.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 		AutoLabelEdgesTog.setFocusable(false);
