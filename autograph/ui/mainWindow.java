@@ -4,6 +4,7 @@
  */
 package autograph.ui;
 
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -42,6 +43,9 @@ public class mainWindow extends JFrame {
 		
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		setMinimumSize(new java.awt.Dimension(800, 600));
+		
+		ToggleOn = new ImageIcon("resources/ToggleOn.png");
+		ToggleOff = new ImageIcon("resources/ToggleOff.png");
 		
 		// Add Node Button
 		AddNodeBtn = new JButton();
@@ -90,10 +94,11 @@ public class mainWindow extends JFrame {
 
 		// Auto Label Nodes Toggle
 		AutoLabelNodesTog = new JToggleButton();
-		Icon ALNTIcon = new ImageIcon("resources/ToggleOn.png");
-		AutoLabelNodesTog.setIcon(ALNTIcon);
+		AutoLabelNodesTog.setSelectedIcon(ToggleOn);
+		AutoLabelNodesTog.setIcon(ToggleOff);
 		AutoLabelNodesTog.setSelected(true);
 		AutoLabelNodesTog.setText("Auto-Label Nodes");
+		//AutoLabelNodesTog.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 		AutoLabelNodesTog.setFocusable(false);
 		AutoLabelNodesTog.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -103,12 +108,12 @@ public class mainWindow extends JFrame {
 		
 		// Auto Label Edges Toggle
 		AutoLabelEdgesTog = new JToggleButton();
-		Icon ALETIcon = new ImageIcon("resources/ToggleOff.png");
-		AutoLabelEdgesTog.setIcon(ALETIcon);
+		AutoLabelEdgesTog.setSelectedIcon(ToggleOn);
+		AutoLabelEdgesTog.setIcon(ToggleOff);
+		AutoLabelEdgesTog.setSelected(false);
 		AutoLabelEdgesTog.setText("Auto-Label Edges");
-		AutoLabelEdgesTog.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+		//AutoLabelEdgesTog.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 		AutoLabelEdgesTog.setFocusable(false);
-		AutoLabelEdgesTog.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 		AutoLabelEdgesTog.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				AutoLabelEdgesTogActionPerformed(evt);
@@ -117,12 +122,17 @@ public class mainWindow extends JFrame {
 		
 		// Auto Connect Nodes Toggle
 		AutoConnectNodesTog = new JToggleButton();
-		Icon ACNTIcon = new ImageIcon("resources/ToggleOff.png");
-		AutoConnectNodesTog.setIcon(ACNTIcon);
+		AutoConnectNodesTog.setSelectedIcon(ToggleOn);
+		AutoConnectNodesTog.setIcon(ToggleOff);
+		AutoConnectNodesTog.setSelected(false);
 		AutoConnectNodesTog.setText("Auto-Connect Nodes");
-		AutoConnectNodesTog.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+		//AutoConnectNodesTog.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 		AutoConnectNodesTog.setFocusable(false);
-		AutoConnectNodesTog.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+		AutoConnectNodesTog.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				AutoConnectNodesTogActionPerformed(evt);
+			}
+		});
 		
 		// Main Window Toolbar
 		MainWindowToolBar = new JToolBar();
@@ -459,6 +469,10 @@ public class mainWindow extends JFrame {
 		pack();
 	}
 
+	protected void AutoConnectNodesTogActionPerformed(ActionEvent evt) {
+		// TODO Auto-generated method stub
+	}
+
 	private void AutoLabelNodesTogActionPerformed(java.awt.event.ActionEvent evt) {
 		// TODO add your handling code here:
 	}
@@ -629,13 +643,25 @@ public class mainWindow extends JFrame {
 		sidePanelScrollPane.setViewportView(EditPanel);
 	}
 	
+	public static boolean isAutoLabelNodes() {
+		return AutoLabelNodesTog.isSelected();
+	}
+	
+	public static boolean isAutoLabelEdges() {
+		return AutoLabelEdgesTog.isSelected();
+	}
+	
+	public static boolean isAutoConnectNodes() {
+		return AutoConnectNodesTog.isSelected();
+	}
+	
 	// Variables declaration
 	private JButton AddEdgeBtn;
 	private JButton AddNodeBtn;
 	private JCheckBoxMenuItem AutoConnectNodesMenuItem;
-	private JToggleButton AutoConnectNodesTog;
-	private JToggleButton AutoLabelEdgesTog;
-	private JToggleButton AutoLabelNodesTog;
+	private static JToggleButton AutoConnectNodesTog;
+	private static JToggleButton AutoLabelEdgesTog;
+	private static JToggleButton AutoLabelNodesTog;
 	private JCheckBoxMenuItem AutoLabelNodesMenuItem;
 	private JCheckBoxMenuItem AutoLabelEdgesMenuItem;
 	protected static JTabbedPane MainWindowTabbedPane;
@@ -674,6 +700,8 @@ public class mainWindow extends JFrame {
 	public GraphPanel GraphTabSubPane;
 	private JScrollPane GraphTabPane;
 	private static JScrollPane sidePanelScrollPane;
+	protected Icon ToggleOn;
+	protected Icon ToggleOff;
 
 	// The side panels
 	protected AddNodePanel addNodePanel;

@@ -302,15 +302,31 @@ public class AddNodePanel extends JPanel {
 		GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
 		Graph currentGraph = currentPanel.mGetGraph();
 		int numNodes = currentGraph.mGetNodeList().size();	
-				
-		// Retrieve the node label
-		if(LabelTextField.getText().isEmpty()) {
-			nodeLabel = "Node" + Integer.toString(numNodes + 1);
-		}
-		else {
-			nodeLabel = LabelTextField.getText();
-		}
 		
+		// If auto Label Nodes is on
+		if(mainWindow.isAutoLabelNodes()) {
+			// Make a Node Label
+			if(LabelTextField.getText().isEmpty()) {
+				nodeLabel = "Node" + Integer.toString(numNodes + 1);
+			}
+			// Retrieve the node label
+			else {
+				nodeLabel = LabelTextField.getText();
+			}
+		}
+		// Otherwise...
+		else {
+			// They need to enter a Node Label
+			if(LabelTextField.getText().isEmpty()) {
+				JOptionPane.showMessageDialog(AddNodePanel.this, "Please specify a Node Label!", "Attention!", JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+			// Retrieve the node label
+			else {
+				nodeLabel = LabelTextField.getText();
+			}
+		}
+				
 		// Setup the new Node
 		Node newNode = new Node(Integer.toString(numNodes), nodeLabel, (String)NodeShapeComboBox.getSelectedItem(), null);
 		// Set the font
