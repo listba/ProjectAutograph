@@ -319,8 +319,9 @@ public class AddNodePanel extends JPanel {
 		else {
 			// They need to enter a Node Label
 			if(LabelTextField.getText().isEmpty()) {
-				JOptionPane.showMessageDialog(AddNodePanel.this, "Please specify a Node Label!", "Attention!", JOptionPane.WARNING_MESSAGE);
-				return;
+				nodeLabel = null;
+				//JOptionPane.showMessageDialog(AddNodePanel.this, "Please specify a Node Label!", "Attention!", JOptionPane.WARNING_MESSAGE);
+				//return;
 			}
 			// Retrieve the node label
 			else {
@@ -339,18 +340,18 @@ public class AddNodePanel extends JPanel {
 		
 		// Try to add the node
 		try {
-			currentGraph.mAddNode(currentPanel, newNode);
+			currentGraph.mAddNode(newNode);
 		} catch (CannotAddNodeException e) {
 			e.printStackTrace();
 		}
 
 		// Redraw the graph with the new node
-		GraphHelper.mDrawForceDirectedGraph(currentPanel);
 		currentPanel.repaint();
 		int newWidth = GraphHelper.mGetPreferredImageWidth(currentGraph);
 		currentPanel.setPreferredSize(new Dimension(newWidth, newWidth));
 		currentPane.revalidate();
-		mainWindow.resetSidePane();
+		GraphHelper.mDrawForceDirectedGraph(currentPanel);
+		//mainWindow.resetSidePane();
 	}
 
 	// Variables declarations

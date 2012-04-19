@@ -165,7 +165,7 @@ public class GraphHelper {
 		int area = width * height;
 		System.out.println(width);
 		
-		/*
+		
 		// Set each node at a random location
 		// within the center 60% of the screen
 		Random generator = new Random();
@@ -174,15 +174,15 @@ public class GraphHelper {
 			double randX = generator.nextDouble() * (width - (width / 5)) + (width / 5);
 			double randY = generator.nextDouble() * (height - (height / 5)) + (height / 5);
 			v.mSetCenterLocation((int)randX, (int)randY);   
-		} */
+		} 
 
 		// Value for the ideal distance between nodes
-		double k = Math.sqrt(area / numNodes);
+		double k = 0.5 * Math.sqrt(area / numNodes);
 
 		// This value is used to make sure nodes don't move too much
 		// as well as makes sure the graph is slowly coming to rest.
 		double temp = width / 10;
-		double tempOrig = temp;
+		//double tempOrig = temp;
 
 		// Values used for making sure the graph stays centered on the screen
 		int totalX = 0;

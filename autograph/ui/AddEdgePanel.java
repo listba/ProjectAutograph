@@ -325,8 +325,9 @@ public class AddEdgePanel extends JPanel {
 		else {
 			// They need to enter a Node Label
 			if(LabelTextField.getText().isEmpty()) {
-				JOptionPane.showMessageDialog(AddEdgePanel.this, "Please specify an Edge Label!", "Attention!", JOptionPane.WARNING_MESSAGE);
-				return;
+				edgeLabel = null;
+				//JOptionPane.showMessageDialog(AddEdgePanel.this, "Please specify an Edge Label!", "Attention!", JOptionPane.WARNING_MESSAGE);
+				//return;
 			}
 			// Retrieve the node label
 			else {
@@ -355,7 +356,7 @@ public class AddEdgePanel extends JPanel {
 		int newWidth = GraphHelper.mGetPreferredImageWidth(currentGraph);
 		currentPanel.setPreferredSize(new Dimension(newWidth, newWidth));
 		currentPane.revalidate();
-		mainWindow.resetSidePane();
+		//mainWindow.resetSidePane();
 	}
 
 	// Variables declaration
