@@ -101,19 +101,6 @@ public class FilePickerDialog extends javax.swing.JDialog {
 				JScrollPane newPane = new javax.swing.JScrollPane(newGraphPanel);
 				newPane.setBorder(null);
 
-				/*
-				javax.swing.GroupLayout newGraphPanelLayout = new javax.swing.GroupLayout(newGraphPanel);
-				newGraphPanel.setLayout(newGraphPanelLayout);
-				newGraphPanelLayout.setHorizontalGroup(
-						newGraphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-						.addGap(0, 912, Short.MAX_VALUE)
-						);
-				newGraphPanelLayout.setVerticalGroup(
-						newGraphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-						.addGap(0, 476, Short.MAX_VALUE)
-						);
-				*/
-
 				int imageWidth = GraphHelper.mGetPreferredImageWidth(newGraphPanel.mGetGraph());
 				newGraphPanel.setPreferredSize(new Dimension(imageWidth, imageWidth));  
 				GraphHelper.mDrawForceDirectedGraph(newGraphPanel);

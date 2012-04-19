@@ -55,8 +55,13 @@ public class GMLParser {
       LABELGRAPHICS
    }
    
+   private static enum edgeLineAttributesGML{
+      POINT
+   }
+   
    private enum edgeGraphicsAttributesGML{
       STYLE,
+      LINE,
       FILL,
       ARROW
    }
@@ -80,20 +85,78 @@ public class GMLParser {
     * @return String - the next word
     */
    public String mGetNextWord(){
-      while(vGmlText.charAt(vCurrentIndex)== ' '){
+      while(vGmlText.charAt(vCurrentIndex)== ' ' || vGmlText.charAt(vCurrentIndex) == '\t'){
          vCurrentIndex++;
       }
+      Boolean bUseTab = false;
       int nextSpaceLoc = vGmlText.indexOf(" ", vCurrentIndex);
-      String word = vGmlText.substring(vCurrentIndex, nextSpaceLoc);
+      int nextTabLoc = vGmlText.indexOf("\t", vCurrentIndex);
+      if(nextTabLoc < nextSpaceLoc && (nextTabLoc != -1))
+      {
+         bUseTab = true;
+      }
+      String word = "";
+      if(bUseTab){
+         word = vGmlText.substring(vCurrentIndex, nextTabLoc);
+      }
+      else{
+         word = vGmlText.substring(vCurrentIndex, nextSpaceLoc);
+      }
+
       if(word.startsWith("\"")){
          //if the word starts with " then find the corresponding closing "
          //and take the text from in between those quotes
          nextSpaceLoc = vGmlText.indexOf("\"", vCurrentIndex+1) + 1;
-         word = vGmlText.substring(vCurrentIndex + 1, nextSpaceLoc - 2);
+         if(bUseTab){
+            word = vGmlText.substring(vCurrentIndex + 1, nextSpaceLoc -1);
+         }
+         else{
+            word = vGmlText.substring(vCurrentIndex + 1, nextSpaceLoc - 2);
+         }
          
       }
       vCurrentIndex = nextSpaceLoc+1;
       return word;
+   }
+   
+   private void mGetEdgePointAttributes(Edge edge, Stack<String> graphLoc){
+      if(graphLoc.peek() == "edgePoint"){
+         String nextAttribute = "";
+         while(!nextAttribute.equals("]")){
+            nextAttribute = mGetNextWord();
+            
+            //We are not going to read in the x and y coordinates here, out application
+            //will draw them.
+         }
+         graphLoc.pop();
+      }
+   }
+   
+   private void mGetEdgeLineAttributes(Edge edge, Stack<String> graphLoc) throws CannotLoadGraph{
+      if(graphLoc.peek() == "edgeLine"){
+         String nextAttribute = "";
+         while(!nextAttribute.equals("]")){
+            nextAttribute = mGetNextWord();
+            try{
+               switch(edgeLineAttributesGML.valueOf(nextAttribute.toUpperCase())){
+                  case POINT:
+                     graphLoc.push("edgePoint");
+                     if(!mGetNextWord().equals("[")){
+                        throw new CannotLoadGraph("Invalid syntax");
+                     }
+                     else{
+                        mGetEdgePointAttributes(edge, graphLoc);
+                     }
+                     break;
+                  default:   
+               }
+            }
+            catch(Exception e){
+               
+            }
+         }
+         graphLoc.pop();
+      }
    }
    
    /**
@@ -116,6 +179,10 @@ public class GMLParser {
                      catch(IllegalArgumentException e){
                         edge.mSetEdgeStyle(EdgeStyle.SOLID);
                      }
+                     break;
+                  case LINE:
+                     graphLoc.push("edgeLine");
+                     mGetEdgeLineAttributes(edge, graphLoc);
                      break;
                   case FILL:
                      //GML supports colors in the form of "#RRGGBB".
@@ -280,13 +347,13 @@ public class GMLParser {
                      break;
                   case FONTSTYLE:
                      String style = mGetNextWord();
-                     if(style == "plain"){
+                     if(style.equals("plain")){
                         fontStyle = Font.PLAIN;
                      }
-                     else if(style == "italic"){
+                     else if(style.equals("italic")){
                         fontStyle = Font.ITALIC;
                      }
-                     else if(style == "bold"){
+                     else if(style.equals("bold")){
                         fontStyle = Font.BOLD;
                      }
                      break;
@@ -339,14 +406,17 @@ public class GMLParser {
                      if(type == "oval"){
                         node.mSetShape("OVAL");
                      }
-                     else if(type == "circle"){
+                     else if(type.equals("circle")){
                         node.mSetShape("CIRCLE");
                      }
-                     else if(type == "rectangle"){
+                     else if(type.equals("rectangle")){
                         node.mSetShape("RECTANGLE");
                      }
-                     else if(type == "triangle"){
+                     else if(type.equals("triangle")){
                         node.mSetShape("TRIANGLE");
+                     }
+                     else if(type.equals("square")){
+                        node.mSetShape("SQUARE");
                      }
                      else{
                         //default to circle for node shapes we don't support.
