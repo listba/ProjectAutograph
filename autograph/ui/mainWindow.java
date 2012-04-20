@@ -149,7 +149,7 @@ public class mainWindow extends JFrame {
 		MainWindowToolBar.add(AutoConnectNodesTog);
 		
 		// Graph Tab Subpane
-		Graph graph = GraphHelper.mImportGraphFromXML("Graph.xml");	
+		Graph graph = new Graph("New Graph");
 		GraphTabSubPane = new GraphPanel(graph);
 		GraphTabSubPane.setBackground(new java.awt.Color(255, 255, 255));
 		GraphTabSubPane.setPreferredSize(new java.awt.Dimension(600, 600));
@@ -173,7 +173,7 @@ public class mainWindow extends JFrame {
 		MainWindowTabbedPane = new JTabbedPane();
 		MainWindowTabbedPane.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 		MainWindowTabbedPane.setMinimumSize(new java.awt.Dimension(114, 95));
-		MainWindowTabbedPane.addTab("Original Tab", GraphTabPane);
+		MainWindowTabbedPane.addTab("New Graph", GraphTabPane);
 
 		// Add Node Panel
 		addNodePanel = new AddNodePanel();
@@ -252,6 +252,11 @@ public class mainWindow extends JFrame {
 		// Save Menu Item
 		SaveMenuItem = new JMenuItem();
 		SaveMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+		SaveMenuItem.addActionListener(new java.awt.event.ActionListener(){
+		   public void actionPerformed(java.awt.event.ActionEvent evt){
+		      SaveMenuItemActionPerformed(evt);
+		   }
+		});
 		SaveMenuItem.setText("Save");
 		
 		// Save As Menu Item
@@ -603,6 +608,54 @@ public class mainWindow extends JFrame {
 		}
 	}
 
+	private void SaveMenuItemActionPerformed(java.awt.event.ActionEvent evt){
+	   int selectedIndex = MainWindowTabbedPane.getSelectedIndex();
+	   GraphPanel currentPanel = (GraphPanel)(((JScrollPane)MainWindowTabbedPane.getComponentAt(selectedIndex)).getViewport().getView());
+	   String filePath = currentPanel.mGetFilePath();
+	   if(filePath != null && !filePath.isEmpty()){
+	      //now we check the various extensions that we support and save accordingly.
+	      if(filePath.endsWith(".ag")){
+	         GraphHelper.mSaveGraphObject(currentPanel.mGetGraph(), filePath);
+	      }
+	      else if(filePath.endsWith(".xml")){
+	         GraphHelper.mExportGraphToXML(currentPanel.mGetGraph(), filePath);
+	      }
+	      else if(filePath.endsWith(".txt")){
+	         try{
+	            GraphHelper.mExportGraphToGML(currentPanel.mGetGraph(), filePath);
+	         }
+	         catch (Exception e){
+	            //TODO: implement error dialog
+	         }
+	      }
+	      else if(filePath.endsWith(".png")){
+	         GraphHelper.mSavePNG(currentPanel, filePath);
+	      }
+	      else if(filePath.endsWith(".bmp")){
+	         GraphHelper.mSaveBMP(currentPanel, filePath);
+	      }
+	      else if(filePath.endsWith(".jpg")){
+	         GraphHelper.mSaveJPG(currentPanel, filePath);
+	      }
+	      else if(filePath.endsWith(".gif")){
+	         GraphHelper.mSaveGIF(currentPanel, filePath);
+	      }
+	      else{
+	         //something is wrong. Open the filePickerDialog so the user can choose where
+	         //and how to open this object.
+	         FilePickerDialog saveDialog = new FilePickerDialog(this, true);
+	         saveDialog.mOpenSaveDialog(MainWindowTabbedPane);
+	      }
+	      
+	   }
+	   else{
+	      //something is wrong. Open the filePickerDialog so the user can choose where
+	      //and how to save this object.
+	      FilePickerDialog saveDialog = new FilePickerDialog(this, true);
+	      saveDialog.mOpenSaveDialog(MainWindowTabbedPane);
+	   }
+	}
+	
 	private void SaveAsMenuItemActionPerformed(java.awt.event.ActionEvent evt){
 		FilePickerDialog saveDialog = new FilePickerDialog(this, true);
 		saveDialog.mOpenSaveDialog(MainWindowTabbedPane);

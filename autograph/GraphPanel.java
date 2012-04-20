@@ -10,9 +10,11 @@ import javax.swing.JPanel;
 
 public class GraphPanel extends JPanel implements MouseListener {
    private Graph graph;
+   private String filePath;
    public GraphPanel (Graph g) {
       this.graph = g;
       this.addMouseListener(this);
+      this.filePath = "";
       setLayout(null);
    }
    
@@ -22,6 +24,14 @@ public class GraphPanel extends JPanel implements MouseListener {
    
    public Graph mGetGraph(){
 	   return graph;
+   }
+   
+   public void mSetFilePath(String path){
+      filePath = path;
+   }
+   
+   public String mGetFilePath(){
+      return filePath;
    }
    /**
     * paint - overides the default paint method for panels

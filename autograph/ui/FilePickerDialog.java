@@ -67,7 +67,7 @@ public class FilePickerDialog extends javax.swing.JDialog {
 	 * @param MainWindowTabbedPane - the tabbed pane to put the new tab into.
 	 */
 	public void mOpenFilePickerDialog(JTabbedPane MainWindowTabbedPane){
-
+	   
 		int returnVal = FilePicker.showOpenDialog(this.getParent());
 		if(returnVal == JFileChooser.APPROVE_OPTION){
 			//the user has selected a file.
@@ -95,16 +95,19 @@ public class FilePickerDialog extends javax.swing.JDialog {
 					//load from gml
 					loadedGraph = GraphHelper.mImportGraphFromGML(selectedFile.getPath(), null);
 				}
-
 				
 				GraphPanel newGraphPanel = new GraphPanel(loadedGraph);
+				newGraphPanel.mSetFilePath(selectedFile.getPath());
 				JScrollPane newPane = new javax.swing.JScrollPane(newGraphPanel);
 				newPane.setBorder(null);
 
 				int imageWidth = GraphHelper.mGetPreferredImageWidth(newGraphPanel.mGetGraph());
 				newGraphPanel.setPreferredSize(new Dimension(imageWidth, imageWidth));  
 				GraphHelper.mDrawForceDirectedGraph(newGraphPanel);
-				MainWindowTabbedPane.addTab(loadedGraph.mGetTitle(), newPane);
+				
+				//giving the tab the file's name.
+				int extensionStart = fileName.lastIndexOf('.');
+				MainWindowTabbedPane.addTab(fileName.substring(0, extensionStart), newPane);
 				MainWindowTabbedPane.setSelectedIndex(MainWindowTabbedPane.getTabCount()-1);
 
 			}
@@ -130,6 +133,10 @@ public class FilePickerDialog extends javax.swing.JDialog {
 			//if the save button is clicked and a file name has been entered
 			//retrieve the file path to the file (will include file name in path)
 			String filePath = FilePicker.getSelectedFile().getPath();
+			
+			//we are also going to retrieve and update the fileName as necessary.
+			//This way we can easily update the tab name to reflect the file name.
+			String fileName = FilePicker.getSelectedFile().getName();
 			if(filePath != null && !filePath.isEmpty()){
 				//make sure it is a valid save type
 				if(FilePicker.getFileFilter().getDescription() == "gif"){
@@ -137,6 +144,7 @@ public class FilePickerDialog extends javax.swing.JDialog {
 					if(!filePath.endsWith(".gif")){
 						//make sure the file has the correct extension
 						filePath = filePath + ".gif";
+						fileName = fileName + ".gif";
 					}
 					GraphHelper.mSaveGIF(currentPanel, filePath);
 				}
@@ -145,6 +153,7 @@ public class FilePickerDialog extends javax.swing.JDialog {
 					if(!filePath.endsWith(".jpg")){
 						//make sure the file has the correct extension
 						filePath = filePath +".jpg";
+						fileName = fileName + ".jpg";
 					}
 					GraphHelper.mSaveJPG(currentPanel, filePath);
 				}
@@ -153,6 +162,7 @@ public class FilePickerDialog extends javax.swing.JDialog {
 					if(!filePath.endsWith(".bmp")){
 						//make sure the file has the correct extension
 						filePath = filePath + ".bmp";
+						fileName = fileName + ".bmp";
 					}
 					GraphHelper.mSaveBMP(currentPanel, filePath);
 				}
@@ -161,6 +171,7 @@ public class FilePickerDialog extends javax.swing.JDialog {
 					if(!filePath.endsWith(".png")){
 						//make sure the file has the correct extension
 						filePath = filePath + ".png";
+						fileName = fileName + ".png";
 					}
 					GraphHelper.mSavePNG(currentPanel, filePath);
 				}
@@ -169,6 +180,7 @@ public class FilePickerDialog extends javax.swing.JDialog {
 					if(!filePath.endsWith(".xml")){
 						//make sure the file has the correct extension
 						filePath = filePath + ".xml";
+						fileName = fileName + ".xml";
 					}
 					GraphHelper.mExportGraphToXML(currentPanel.mGetGraph(), filePath);
 				}
@@ -177,6 +189,7 @@ public class FilePickerDialog extends javax.swing.JDialog {
 					if(!filePath.endsWith(".txt")){
 						//make sure the file has the correct extension
 						filePath = filePath + ".txt";
+						fileName = fileName + ".txt";
 					}
 					try{
 						GraphHelper.mExportGraphToGML(currentPanel.mGetGraph(), filePath);
@@ -190,11 +203,19 @@ public class FilePickerDialog extends javax.swing.JDialog {
 					if(!filePath.endsWith(".ag")){
 						//make sure the file has the correct extension
 						filePath = filePath + ".ag";
+						fileName = fileName + ".ag";
 					}
 					GraphHelper.mSaveGraphObject(currentPanel.mGetGraph(), filePath);
 				}
 				else{
 					//TODO: implement error dialog for this scenario (should never happen, but can't hurt to be prepared).
+				}
+				
+				//update the tab name to the new file name. and update the filePath for the panel
+				if(fileName != null && !fileName.isEmpty()){
+				   currentPanel.mSetFilePath(filePath);
+				   int extensionStart = fileName.lastIndexOf('.');
+				   MainWindowTabbedPane.setTitleAt(selectedIndex, fileName.substring(0, extensionStart));
 				}
 			}
 			else{
