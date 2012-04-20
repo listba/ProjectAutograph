@@ -154,8 +154,8 @@ public class AddEdgePanel extends JPanel {
 		StartNodeLabel.setText("Start Node");
 		
 		// Select Source Node Combo Box
-		SelectStartNodeComboBox = new JComboBox();
-		SelectStartNodeComboBox.setModel(new DefaultComboBoxModel(getNodeList()));
+		SelectStartNodeComboBox = new JComboBox(getNodeList());
+		//SelectStartNodeComboBox.setModel(new DefaultComboBoxModel(getNodeList()));
 		SelectStartNodeComboBox.addItemListener(new java.awt.event.ItemListener() {
 			public void itemStateChanged(java.awt.event.ItemEvent evt) {
 				StartNodeSelectItemChanged(evt);
@@ -167,8 +167,8 @@ public class AddEdgePanel extends JPanel {
 		EndNodeLabel.setText("End Node");
 		
 		// Select Destination Combo Box
-		SelectEndNodeComboBox = new JComboBox();
-		SelectEndNodeComboBox.setModel(new DefaultComboBoxModel(getNodeList()));
+		SelectEndNodeComboBox = new JComboBox(getNodeList());
+		//SelectEndNodeComboBox.setModel(new DefaultComboBoxModel(getNodeList()));
 		SelectEndNodeComboBox.addItemListener(new java.awt.event.ItemListener() {
 			public void itemStateChanged(java.awt.event.ItemEvent evt) {
 				EndNodeSelectItemChanged(evt);
@@ -473,9 +473,9 @@ public class AddEdgePanel extends JPanel {
 	private JLabel LabelTextLabel;
 	private JButton OkBtn;
 	private JLabel EndNodeLabel;
-	private JComboBox SelectEndNodeComboBox;
+	protected static JComboBox SelectEndNodeComboBox;
 	private JLabel StartNodeLabel;
-	private JComboBox SelectStartNodeComboBox;
+	protected static JComboBox SelectStartNodeComboBox;
 	private Box.Filler panelFiller;
 	private JScrollPane panelScrollPane;
 	private JSeparator panelSeperator;

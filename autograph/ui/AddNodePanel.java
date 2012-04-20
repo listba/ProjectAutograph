@@ -344,6 +344,10 @@ public class AddNodePanel extends JPanel {
 			e.printStackTrace();
 		}
 
+		// Add to the AddEdge lists
+		AddEdgePanel.SelectEndNodeComboBox.addItem(Integer.toString(numNodes) + " - " + nodeLabel);
+		AddEdgePanel.SelectStartNodeComboBox.addItem(Integer.toString(numNodes) + " - " + nodeLabel);
+		
 		// Redraw the graph with the new node
 		currentPanel.repaint();
 		int newWidth = GraphHelper.mGetPreferredImageWidth(currentGraph);
