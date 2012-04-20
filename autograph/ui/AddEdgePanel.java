@@ -296,7 +296,10 @@ public class AddEdgePanel extends JPanel {
 	}
 
 	protected void EndNodeSelectItemChanged(ItemEvent evt) {
-		if(evt.getStateChange() == ItemEvent.SELECTED) {
+		if(evt.getStateChange() == ItemEvent.DESELECTED) {
+			deSelectedItem = (String)evt.getItem();
+		}
+		else if(evt.getStateChange() == ItemEvent.SELECTED) {
 			// Graph/Window pointers
 			mainWindowTabbedPane = mainWindow.getMainWindowPane();
 			JScrollPane currentPane = (JScrollPane)mainWindowTabbedPane.getSelectedComponent();
@@ -307,6 +310,11 @@ public class AddEdgePanel extends JPanel {
 			// Get the new selected Node's ID
 			String selectedItem = (String)evt.getItem();
 			String[] splitItem = selectedItem.split(" - ");
+			if(selectedItem.equals((String)SelectStartNodeComboBox.getSelectedItem())) {
+				SelectEndNodeComboBox.setSelectedItem(deSelectedItem);
+				JOptionPane.showMessageDialog(AddEdgePanel.this, "Cannot Connect A Node to Itself (Yet)!", "Attention!", JOptionPane.WARNING_MESSAGE);
+				return;
+			}
 
 			// Set the local Node pointer
 			endNode = currentGraph.mGetNodeById(splitItem[0]);
@@ -316,6 +324,9 @@ public class AddEdgePanel extends JPanel {
 	}
 
 	protected void StartNodeSelectItemChanged(ItemEvent evt) {
+		if(evt.getStateChange() == ItemEvent.DESELECTED) {
+			deSelectedItem = (String)evt.getItem();
+		}
 		if(evt.getStateChange() == ItemEvent.SELECTED) {
 			// Graph/Window pointers
 			mainWindowTabbedPane = mainWindow.getMainWindowPane();
@@ -327,6 +338,11 @@ public class AddEdgePanel extends JPanel {
 			// Get the new selected Node's ID
 			String selectedItem = (String)SelectStartNodeComboBox.getSelectedItem();
 			String[] splitItem = selectedItem.split(" - ");
+			if(selectedItem.equals((String)SelectEndNodeComboBox.getSelectedItem())) {
+				SelectStartNodeComboBox.setSelectedItem(deSelectedItem);
+				JOptionPane.showMessageDialog(AddEdgePanel.this, "Cannot Connect A Node to Itself (Yet)!", "Attention!", JOptionPane.WARNING_MESSAGE);
+				return;
+			}
 			
 			// Set the local Node pointer
 			startNode = currentGraph.mGetNodeById(splitItem[0]);
@@ -406,29 +422,36 @@ public class AddEdgePanel extends JPanel {
 				edgeLabel = LabelTextField.getText();
 			}
 		}
-		
-		// Create the new edge
-		Edge newEdge = new Edge(Integer.toString(numEdges), edgeLabel, startNode, endNode, "NODIRECTION", (String)EdgeDesignComboBox.getSelectedItem(), false);
-		// Set the font
-		newEdge.mSetFont(Font.decode((String)LabelFontComboBox.getSelectedItem()));
-		// Set the Colors
-		newEdge.mSetEdgeColor(edgeColor);
-		newEdge.mSetLabelColor(labelColor);
+		// If both nodes have been selected
+		if(!(((String)SelectStartNodeComboBox.getSelectedItem()).equals("")) && !(((String)SelectEndNodeComboBox.getSelectedItem()).equals(""))) {
+			// Create the new edge
+			Edge newEdge = new Edge(Integer.toString(numEdges), edgeLabel, startNode, endNode, "NODIRECTION", (String)EdgeDesignComboBox.getSelectedItem(), false);
+			// Set the font
+			newEdge.mSetFont(Font.decode((String)LabelFontComboBox.getSelectedItem()));
+			// Set the Colors
+			newEdge.mSetEdgeColor(edgeColor);
+			newEdge.mSetLabelColor(labelColor);
 
-		// Try to add the node
-		try {
-			currentGraph.mAddEdge(newEdge);
-		} catch (CannotAddEdgeException e) {
-			e.printStackTrace();
+			// Try to add the node
+			try {
+				currentGraph.mAddEdge(newEdge);
+			} catch (CannotAddEdgeException e) {
+				e.printStackTrace();
+			}
+
+			// Redraw the graph with the new node
+			GraphHelper.mDrawForceDirectedGraph(currentPanel);
+			currentPanel.repaint();
+			int newWidth = GraphHelper.mGetPreferredImageWidth(currentGraph);
+			currentPanel.setPreferredSize(new Dimension(newWidth, newWidth));
+			currentPane.revalidate();
+			//mainWindow.resetSidePane();
 		}
-
-		// Redraw the graph with the new node
-		GraphHelper.mDrawForceDirectedGraph(currentPanel);
-		currentPanel.repaint();
-		int newWidth = GraphHelper.mGetPreferredImageWidth(currentGraph);
-		currentPanel.setPreferredSize(new Dimension(newWidth, newWidth));
-		currentPane.revalidate();
-		//mainWindow.resetSidePane();
+		else {
+			JOptionPane.showMessageDialog(AddEdgePanel.this, "Please select both nodes!", "Attention!", JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+		
 	}
 
 	// Variables declaration
@@ -465,6 +488,8 @@ public class AddEdgePanel extends JPanel {
 	
 	protected Color labelColor;
 	protected Color edgeColor;
+	
+	protected String deSelectedItem;
 	
 	protected Node startNode;
 	protected Node endNode;
