@@ -56,7 +56,6 @@ public class AddNodePanel extends JPanel {
 		// Add Node Panel
 		AddNodePanel = new JPanel();
 		AddNodePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-		AddNodePanel.setPreferredSize(new Dimension(200, 498));
 		
 		// Add Node Title Label
 		AddNodeTitleLabel = new JLabel();
@@ -162,13 +161,13 @@ public class AddNodePanel extends JPanel {
 				AddNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(AddNodePanelLayout.createSequentialGroup()
 						.addGroup(AddNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addComponent(AddNodeTitleLabel, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 								.addComponent(LabelSubtitleLabel)
 								.addComponent(NodeSubtitleLabel))
 								.addGap(0, 0, Short.MAX_VALUE))
 								.addGroup(AddNodePanelLayout.createSequentialGroup()
 										.addContainerGap()
 										.addGroup(AddNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+												.addComponent(AddNodeTitleLabel, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 												.addComponent(LabelTextField, 0, GroupLayout.DEFAULT_SIZE, 198)
 												.addComponent(LabelFontComboBox, 0, GroupLayout.DEFAULT_SIZE, 198)
 												.addGroup(AddNodePanelLayout.createSequentialGroup()
@@ -253,8 +252,8 @@ public class AddNodePanel extends JPanel {
 		layout.setVerticalGroup(
 				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(layout.createSequentialGroup()
-						.addComponent(panelScrollPane, GroupLayout.PREFERRED_SIZE, 512, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(panelScrollPane, GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE)
+						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 						.addComponent(filler1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addGap(0, 0, 0))
 				);
