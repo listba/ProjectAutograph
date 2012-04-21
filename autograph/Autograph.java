@@ -1,17 +1,12 @@
 package autograph;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.event.*;
 
+import java.awt.Dimension;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
-
-import java.util.ArrayList;
 import autograph.ui.mainWindow;
+import autograph.ui.ButtonTabComponent;
 
 public class Autograph extends mainWindow {
 
@@ -19,6 +14,7 @@ public class Autograph extends mainWindow {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		for(int i = 0; i < MainWindowTabbedPane.getTabCount(); i++){
+			MainWindowTabbedPane.setTabComponentAt(i, new ButtonTabComponent(MainWindowTabbedPane.getTitleAt(i), MainWindowTabbedPane));
 			GraphPanel graphPanel = (GraphPanel)(((JScrollPane)MainWindowTabbedPane.getComponentAt(i)).getViewport().getView());
 			int imageWidth = GraphHelper.mGetPreferredImageWidth(graphPanel.mGetGraph());
 
