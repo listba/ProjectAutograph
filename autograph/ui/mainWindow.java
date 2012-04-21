@@ -174,7 +174,7 @@ public class mainWindow extends JFrame {
 		MainWindowTabbedPane.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 		MainWindowTabbedPane.setMinimumSize(new java.awt.Dimension(114, 95));
 		MainWindowTabbedPane.addTab("New Graph", GraphTabPane);
-
+		
 		// Add Node Panel
 		addNodePanel = new AddNodePanel();
 		addNodePanel.setPreferredSize(new java.awt.Dimension(200, 512));
@@ -529,18 +529,9 @@ public class mainWindow extends JFrame {
 
 		newPane.setViewportView(newGraphPanel);
 
-		javax.swing.GroupLayout newGraphPanelLayout = new GroupLayout(newGraphPanel);
-		newGraphPanel.setLayout(newGraphPanelLayout);
-		newGraphPanelLayout.setHorizontalGroup(
-				newGraphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGap(0, 912, Short.MAX_VALUE)
-				);
-		newGraphPanelLayout.setVerticalGroup(
-				newGraphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGap(0, 476, Short.MAX_VALUE)
-				);
-		MainWindowTabbedPane.addTab(newTitle, newPane);
 
+		MainWindowTabbedPane.addTab(newTitle, newPane);
+		MainWindowTabbedPane.setTabComponentAt(MainWindowTabbedPane.indexOfComponent(newPane), new ButtonTabComponent(newTitle, MainWindowTabbedPane));
 	}
 
 	private void SelectAllMenuItemActionPerformed(java.awt.event.ActionEvent evt) {

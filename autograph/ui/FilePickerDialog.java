@@ -107,9 +107,11 @@ public class FilePickerDialog extends javax.swing.JDialog {
 				
 				//giving the tab the file's name.
 				int extensionStart = fileName.lastIndexOf('.');
-				MainWindowTabbedPane.addTab(fileName.substring(0, extensionStart), newPane);
-				MainWindowTabbedPane.setSelectedIndex(MainWindowTabbedPane.getTabCount()-1);
-
+				String newTitle =fileName.substring(0, extensionStart);
+				MainWindowTabbedPane.addTab(newTitle, newPane);
+				MainWindowTabbedPane.setSelectedIndex(MainWindowTabbedPane.indexOfComponent(newPane));
+				MainWindowTabbedPane.setTabComponentAt(MainWindowTabbedPane.indexOfComponent(newPane), new ButtonTabComponent(newTitle, MainWindowTabbedPane));
+				
 			}
 		}
 	}
