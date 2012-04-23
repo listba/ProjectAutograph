@@ -111,7 +111,12 @@ public class FilePickerDialog extends javax.swing.JDialog {
 				MainWindowTabbedPane.addTab(newTitle, newPane);
 				MainWindowTabbedPane.setSelectedIndex(MainWindowTabbedPane.indexOfComponent(newPane));
 				MainWindowTabbedPane.setTabComponentAt(MainWindowTabbedPane.indexOfComponent(newPane), new ButtonTabComponent(newTitle, MainWindowTabbedPane));
-				
+					
+				// Clear the old list
+				AddEdgePanel.SelectEndNodeComboBox.removeAllItems();
+				AddEdgePanel.SelectEndNodeComboBox.addItem("");
+				AddEdgePanel.SelectStartNodeComboBox.removeAllItems();
+				AddEdgePanel.SelectStartNodeComboBox.addItem("");
 				// Add to the AddEdge lists
 				for(int i = 0; i < loadedGraph.mGetNodeList().size(); i++) {
 					AddEdgePanel.SelectEndNodeComboBox.addItem(Integer.toString(i) + " - " + loadedGraph.mGetNodeList().get(i).mGetLabel());
