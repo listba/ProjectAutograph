@@ -310,7 +310,7 @@ public class AddEdgePanel extends JPanel {
 			// Get the new selected Node's ID
 			String selectedItem = (String)evt.getItem();
 			String[] splitItem = selectedItem.split(" - ");
-			if(selectedItem.equals((String)SelectStartNodeComboBox.getSelectedItem())) {
+			if(selectedItem.equals((String)SelectStartNodeComboBox.getSelectedItem()) && !selectedItem.equals("")) {
 				SelectEndNodeComboBox.setSelectedItem(deSelectedItem);
 				JOptionPane.showMessageDialog(AddEdgePanel.this, "Cannot Connect A Node to Itself (Yet)!", "Attention!", JOptionPane.WARNING_MESSAGE);
 				return;
@@ -338,7 +338,7 @@ public class AddEdgePanel extends JPanel {
 			// Get the new selected Node's ID
 			String selectedItem = (String)SelectStartNodeComboBox.getSelectedItem();
 			String[] splitItem = selectedItem.split(" - ");
-			if(selectedItem.equals((String)SelectEndNodeComboBox.getSelectedItem())) {
+			if(selectedItem.equals((String)SelectEndNodeComboBox.getSelectedItem()) && !selectedItem.equals("")) {
 				SelectStartNodeComboBox.setSelectedItem(deSelectedItem);
 				JOptionPane.showMessageDialog(AddEdgePanel.this, "Cannot Connect A Node to Itself (Yet)!", "Attention!", JOptionPane.WARNING_MESSAGE);
 				return;
@@ -438,7 +438,7 @@ public class AddEdgePanel extends JPanel {
 			} catch (CannotAddEdgeException e) {
 				e.printStackTrace();
 			}
-
+			
 			// Redraw the graph with the new node
 			GraphHelper.mDrawForceDirectedGraph(currentPanel);
 			currentPanel.repaint();
@@ -449,9 +449,11 @@ public class AddEdgePanel extends JPanel {
 		}
 		else {
 			JOptionPane.showMessageDialog(AddEdgePanel.this, "Please select both nodes!", "Attention!", JOptionPane.WARNING_MESSAGE);
-			return;
 		}
 		
+		SelectStartNodeComboBox.setSelectedItem("");
+		SelectEndNodeComboBox.setSelectedItem("");
+		currentGraph.vSelectedItems.mClearSelectedItems();	
 	}
 
 	// Variables declaration

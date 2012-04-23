@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
 
 import autograph.Edge;
 import autograph.Graph;
@@ -174,6 +175,26 @@ public class mainWindow extends JFrame {
 		MainWindowTabbedPane.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 		MainWindowTabbedPane.setMinimumSize(new java.awt.Dimension(114, 95));
 		MainWindowTabbedPane.addTab("New Graph", GraphTabPane);
+		MainWindowTabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
+			public void stateChanged(ChangeEvent evt) {
+				JTabbedPane pane = (JTabbedPane)evt.getSource();	
+				JScrollPane currentPane = (JScrollPane)pane.getSelectedComponent();
+				GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
+				Graph currentGraph = currentPanel.mGetGraph();
+				int numNodes = currentGraph.mGetNodeList().size();	
+				
+				// Clear the old list
+				AddEdgePanel.SelectEndNodeComboBox.removeAllItems();
+				AddEdgePanel.SelectEndNodeComboBox.addItem("");
+				AddEdgePanel.SelectStartNodeComboBox.removeAllItems();
+				AddEdgePanel.SelectStartNodeComboBox.addItem("");
+				// Add to the AddEdge lists
+				for(int i = 0; i < numNodes; i++) {
+					AddEdgePanel.SelectEndNodeComboBox.addItem(Integer.toString(i) + " - " + currentGraph.mGetNodeList().get(i).mGetLabel());
+					AddEdgePanel.SelectStartNodeComboBox.addItem(Integer.toString(i) + " - " + currentGraph.mGetNodeList().get(i).mGetLabel());
+				}
+			}	
+		});
 		
 		// Add Node Panel
 		addNodePanel = new AddNodePanel();
