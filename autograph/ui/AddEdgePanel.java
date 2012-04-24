@@ -413,7 +413,7 @@ public class AddEdgePanel extends JPanel {
 		else {
 			// They need to enter a Node Label
 			if(LabelTextField.getText().isEmpty()) {
-				edgeLabel = null;
+				edgeLabel = "";
 				//JOptionPane.showMessageDialog(AddEdgePanel.this, "Please specify an Edge Label!", "Attention!", JOptionPane.WARNING_MESSAGE);
 				//return;
 			}
