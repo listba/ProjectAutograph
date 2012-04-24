@@ -385,6 +385,11 @@ public class mainWindow extends JFrame {
 				AutoLabelNodesMenuItemActionPerformed(evt);
 			}
 		});
+		AutoLabelEdgesMenuItem.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				AutoLabelEdgesMenuItemActionPerformed(evt);
+			}
+		});
 		AutoConnectNodesMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				AutoConnectNodesMenuItemActionPerformed(evt);
@@ -394,15 +399,15 @@ public class mainWindow extends JFrame {
 
 	// EVENT Functions
 	protected void AutoConnectNodesTogActionPerformed(ActionEvent evt) {
-		// TODO Auto-generated method stub
+		AutoConnectNodesMenuItem.setState(!AutoConnectNodesMenuItem.getState());
 	}
 
 	private void AutoLabelNodesTogActionPerformed(java.awt.event.ActionEvent evt) {
-		// TODO add your handling code here:
+		AutoLabelNodesMenuItem.setState(!AutoLabelNodesMenuItem.getState());
 	}
 
 	private void AutoLabelEdgesTogActionPerformed(java.awt.event.ActionEvent evt) {
-		// TODO add your handling code here:
+		AutoLabelEdgesMenuItem.setState(!AutoLabelEdgesMenuItem.getState());
 	}
 
 	/**
@@ -580,12 +585,16 @@ public class mainWindow extends JFrame {
 		dialog.mOpenFilePickerDialog(MainWindowTabbedPane);
 	}
 
+	protected void AutoLabelEdgesMenuItemActionPerformed(ActionEvent evt) {
+		AutoLabelEdgesTog.setSelected(!AutoLabelEdgesTog.isSelected());		
+	}
+	
 	private void AutoLabelNodesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-		// TODO add your handling code here:
+		AutoLabelNodesTog.setSelected(!AutoLabelNodesTog.isSelected());
 	}
 
 	private void AutoConnectNodesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-		// TODO add your handling code here:
+		AutoConnectNodesTog.setSelected(!AutoConnectNodesTog.isSelected());
 	}
 
 	private void AddNodeBtnActionPerformed(java.awt.event.MouseEvent evt) {
