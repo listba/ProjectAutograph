@@ -1,6 +1,9 @@
 package autograph;
 import java.awt.*;
 import autograph.GraphPanel;
+
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Line2D;
 import java.awt.image.*;
 import java.io.*;
 
@@ -44,8 +47,8 @@ import org.xml.sax.SAXException;
  */
 public class GraphHelper {
 
-
-
+   private final static int ARR_SIZE = 4;
+   
 	private enum nodeAttributes{
 		ID,
 		LABEL,
@@ -1031,6 +1034,31 @@ public class GraphHelper {
 			}
 		}
 	}
+	
+	/**
+	 * Draws the arrow head given the coordinates for the starting and ending points of the line.
+	 * @param g - the graphics object to draw with
+	 * @param startX - the beginning x coordinate
+	 * @param startY - the beginning y coordinate
+	 * @param endX - the ending x coordinate
+	 * @param endY - the ending y coordinate
+	 */
+	private static void mDrawArrowHead(Graphics g, int startX, int startY, int endX, int endY){
+	   Graphics2D g2 = (Graphics2D)(g);
+	   double phi = Math.toRadians(40);
+	   int barb = 10;
+	   double dy = startY - endY;
+	   double dx = startX - endX;
+	   double theta = Math.atan2(dy, dx);
+	   
+	   double x, y, rho = theta + phi;
+	   for(int j = 0; j < 2; j++){
+	      x = startX - barb * Math.cos(rho);
+	      y = startY - barb * Math.sin(rho);
+	      g2.draw(new Line2D.Double(startX, startY, x, y));
+	      rho = theta - phi;
+	   }
+	}
 
 	/**
 	 * DrawEdge - Draws an edge between two nodes. The edge will dynamically choose one of 4 points on each
@@ -1049,7 +1077,6 @@ public class GraphHelper {
 		//TODO: account for triangle nodes (edges currently do not intersect at correct locations for triangles)
 
 		g.setColor(e.mGetEdgeColor());
-
 		int startX;
 		int startY;
 		int endX;
@@ -1194,28 +1221,14 @@ public class GraphHelper {
 			//we are done. It will work
 			break;
 		case STARTDIRECTION:
-			//KMW Note: I'm having difficulty coming up with good code to do this.
-			//          I know we can use sin/cos/tan to calculate points to draw a
-			//          triangle, but every way I think of to do this we would need to
-			//          break it into 4 cases for each combination of node placements in
-			//          relation to each other, and this seems unnecessary to me.
-			/*int x[] = new int[3];
-            int y[] = new int[3];
-            x[0] = startX;
-            y[0] = startY;
-
-            x[1] = ;
-            y[1] = ;
-
-            x[3] = ;
-            y[3] = ;
-            g.drawPolygon(x, y, 3);*/
+		   mDrawArrowHead(g, startX, startY, endX, endY);
 			break;
 		case ENDDIRECTION:
-
+		   mDrawArrowHead(g, endX, endY, startX, startY);
 			break;
 		case DOUBLEDIRECTION:
-
+		   mDrawArrowHead(g, startX, startY, endX, endY);
+		   mDrawArrowHead(g, endX, endY, startX, startY);
 			break;
 		}
 
