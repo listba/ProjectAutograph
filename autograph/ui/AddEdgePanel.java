@@ -296,9 +296,7 @@ public class AddEdgePanel extends JPanel {
 	}
 
 	protected void EndNodeSelectItemChanged(ItemEvent evt) {
-		System.out.println("Point 0");
 		if(evt.getStateChange() == ItemEvent.DESELECTED) {
-			System.out.println("Point 1");
 			deSelectedItem = (String)evt.getItem();
 		}
 		else if(evt.getStateChange() == ItemEvent.SELECTED) {
@@ -308,7 +306,6 @@ public class AddEdgePanel extends JPanel {
 			GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
 			Graph currentGraph = currentPanel.mGetGraph();
 			//int numNodes = currentGraph.mGetNodeList().size();
-			System.out.println("Point 2");
 
 			// Get the new selected Node's ID
 			String selectedItem = (String)evt.getItem();
@@ -318,13 +315,11 @@ public class AddEdgePanel extends JPanel {
 				JOptionPane.showMessageDialog(AddEdgePanel.this, "Cannot Connect A Node to Itself (Yet)!", "Attention!", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
-			System.out.println("Point 3");
 
 			// Set the local Node pointer
 			endNode = currentGraph.mGetNodeById(splitItem[0]);
 			currentGraph.vSelectedItems.mAppendNode(endNode);
 			currentPanel.repaint();
-			System.out.println("Point 4");
 		}
 	}
 
