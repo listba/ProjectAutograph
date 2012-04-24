@@ -6,8 +6,7 @@ package autograph.ui;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-
-import javax.swing.*;
+import java.awt.EventQueue;
 import javax.swing.event.ChangeEvent;
 
 import autograph.Edge;
@@ -15,6 +14,38 @@ import autograph.Graph;
 import autograph.GraphHelper;
 import autograph.Node;
 import autograph.GraphPanel;
+
+import javax.swing.JFrame;
+import javax.swing.JSplitPane;
+import java.awt.BorderLayout;
+
+import javax.swing.JPopupMenu;
+import javax.swing.JTabbedPane;
+import javax.swing.JScrollPane;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JToolBar;
+import javax.swing.JButton;
+import javax.swing.ToolTipManager;
+import javax.swing.UIManager;
+import javax.swing.JPanel;
+
+import java.awt.Font;
+import javax.swing.SwingConstants;
+import javax.swing.ImageIcon;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.Dimension;
+
+import java.awt.event.KeyEvent;
+import javax.swing.KeyStroke;
+import java.awt.event.InputEvent;
+import java.awt.Component;
+import javax.swing.Box;
+import javax.swing.JToggleButton;
+import javax.swing.border.TitledBorder;
 
 public class mainWindow extends JFrame {
 
@@ -41,140 +72,229 @@ public class mainWindow extends JFrame {
 	 */
 	@SuppressWarnings("unchecked")
 	private void initComponents() {
+		// This is necessary to allow heavy weight and lightweight components to be used together
+		// Without this the menu items popup (light weight) is overridden by the GraphPanel (heavy weight)
+		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+		ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
+		MainWindowComponent = new JFrame();
+		MainWindowComponent.setMinimumSize(new Dimension(800, 600));
+		MainWindowComponent.setBounds(100, 100, 575, 316);
+		MainWindowComponent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-		setMinimumSize(new java.awt.Dimension(800, 600));
+		MainWindowPanel = new JPanel();
+		MainWindowComponent.getContentPane().add(MainWindowPanel, BorderLayout.CENTER);
+		MainWindowPanel.setLayout(new BorderLayout(0, 0));
 		
-		ToggleOn = new ImageIcon("resources/ToggleOn.png");
-		ToggleOff = new ImageIcon("resources/ToggleOff.png");
+		MainWindowSplitPane = new JSplitPane();
+		MainWindowPanel.add(MainWindowSplitPane);
 		
-		// Add Node Button
-		AddNodeBtn = new JButton();
-		Icon addIcon = new ImageIcon("resources/AddNode.png");
-		AddNodeBtn.setIcon(addIcon);
-		AddNodeBtn.setText("Add Node");
+		MainWindowTabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		MainWindowTabbedPane.setBorder(UIManager.getBorder("TitledBorder.border"));
+		MainWindowSplitPane.setRightComponent(MainWindowTabbedPane);
+
+		Graph graph = new Graph("New Graph");
+		GraphPanel graphTabSubPane = new GraphPanel(graph);
+		graphTabSubPane.setBackground(new java.awt.Color(255, 255, 255));
+		//graphTabSubPane.setPreferredSize(new java.awt.Dimension(600, 400));
+		
+		JScrollPane graphTabPane = new JScrollPane();
+		graphTabPane.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		graphTabPane.setViewportView(graphTabSubPane);
+
+		MainWindowTabbedPane.addTab("New Graph", null, graphTabPane, null);
+		
+		// Add Node Panel
+		addNodePanel = new AddNodePanel();
+		//addNodePanel.setPreferredSize(new java.awt.Dimension(200, 512));
+
+		// Add Edge Panel
+		addEdgePanel = new AddEdgePanel();
+		//addEdgePanel.setPreferredSize(new java.awt.Dimension(200, 512));
+
+		// Edit Node Panel
+		editNodePanel = new EditNodePanel();
+		//editNodePanel.setPreferredSize(new java.awt.Dimension(200, 512));
+
+		// Edit Edge Panel
+		editEdgePanel = new EditEdgePanel();
+		//editEdgePanel.setPreferredSize(new java.awt.Dimension(200, 512));
+
+		// Edit Both Panel
+		editNodeEdgePanel = new EditNodeEdgePanel();
+		//editNodeEdgePanel.setPreferredSize(new java.awt.Dimension(200, 512));
+		
+		// Edit Panel
+		EditPanel = new JPanel();
+		//EditPanel.setPreferredSize(new java.awt.Dimension(200, 512));
+
+		SidePanelScrollPane = new JScrollPane();
+		SidePanelScrollPane.setPreferredSize(new java.awt.Dimension(200,550));
+		SidePanelScrollPane.setViewportView(addNodePanel);
+		MainWindowSplitPane.setLeftComponent(SidePanelScrollPane);
+		
+		MainWindowToolBar = new JToolBar();
+		MainWindowToolBar.setFloatable(false);
+		MainWindowPanel.add(MainWindowToolBar, BorderLayout.NORTH);
+		
+		AddNodeBtn = new JButton("Add Node");
 		AddNodeBtn.setFocusable(false);
-		AddNodeBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-		AddNodeBtn.setMargin(new java.awt.Insets(5, 5, 2, 5));
-		AddNodeBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+		MainWindowToolBar.add(AddNodeBtn);
+		AddNodeBtn.setHorizontalTextPosition(SwingConstants.CENTER);
+		AddNodeBtn.setVerticalAlignment(SwingConstants.BOTTOM);
+		AddNodeBtn.setVerticalTextPosition(SwingConstants.BOTTOM);
+		AddNodeBtn.setIcon(new ImageIcon("resources/AddNode.png"));
+		
+		AddEdgeBtn = new JButton("Add Edge");
+		AddEdgeBtn.setFocusable(false);
+		MainWindowToolBar.add(AddEdgeBtn);
+		AddEdgeBtn.setHorizontalTextPosition(SwingConstants.CENTER);
+		AddEdgeBtn.setVerticalAlignment(SwingConstants.BOTTOM);
+		AddEdgeBtn.setVerticalTextPosition(SwingConstants.BOTTOM);
+		AddEdgeBtn.setIcon(new ImageIcon("resources/AddEdge.png"));
+		
+		// This is used for dynamic spcaing between the Add edge-Node buttons and the 
+		// Toggle Buttons - it will increase/descrease in size as necessary to push
+		// the buttons to the far left and far right
+		MainWindowToolBarHorizontalGlue = Box.createHorizontalGlue();
+		MainWindowToolBar.add(MainWindowToolBarHorizontalGlue);
+		
+		AutoLabelNodesTog = new JToggleButton("Auto-Label Nodes");
+		AutoLabelNodesTog.setSelectedIcon(new ImageIcon("resources/ToggleOn.png"));
+		AutoLabelNodesTog.setIcon(new ImageIcon("resources/ToggleOff.png"));
+		MainWindowToolBar.add(AutoLabelNodesTog);
+		
+		AutoLabelEdgesTog = new JToggleButton("Auto-Label Edges");
+		AutoLabelEdgesTog.setSelectedIcon(new ImageIcon("resources/ToggleOn.png"));
+		AutoLabelEdgesTog.setIcon(new ImageIcon("resources/ToggleOff.png"));
+		MainWindowToolBar.add(AutoLabelEdgesTog);
+		
+		AutoConnectNodesTog = new JToggleButton("Auto-Connect Nodes");
+		AutoConnectNodesTog.setSelectedIcon(new ImageIcon("resources/ToggleOn.png"));
+		AutoConnectNodesTog.setIcon(new ImageIcon("resources/ToggleOff.png"));
+		MainWindowToolBar.add(AutoConnectNodesTog);
+		
+		JMenuBar MainWindowMenuBar = new JMenuBar();
+		MainWindowMenuBar.setInheritsPopupMenu(true);
+		MainWindowComponent.getContentPane().add(MainWindowMenuBar, BorderLayout.NORTH);
+		
+		FileDropdownMenu = new JMenu("File");
+		MainWindowMenuBar.add(FileDropdownMenu);
+		
+		NewGraphMenuItem = new JMenuItem("New Graph...");
+		NewGraphMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
+		FileDropdownMenu.add(NewGraphMenuItem);
+		
+		OpenMenuItem = new JMenuItem("Open...");
+		OpenMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
+		FileDropdownMenu.add(OpenMenuItem);
+		
+		SaveMenuItem = new JMenuItem("Save");
+		SaveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
+		FileDropdownMenu.add(SaveMenuItem);
+		
+		SaveAsMenuItem = new JMenuItem("Save As...");
+		FileDropdownMenu.add(SaveAsMenuItem);
+		
+		PrintMenuItem = new JMenuItem("Print...");
+		PrintMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_MASK));
+		FileDropdownMenu.add(PrintMenuItem);
+		
+		PrintPreviewMenuItem = new JMenuItem("Print Preview");
+		FileDropdownMenu.add(PrintPreviewMenuItem);
+		
+		CloseGraphMenuItem = new JMenuItem("Close Graph");
+		CloseGraphMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, InputEvent.SHIFT_MASK));
+		FileDropdownMenu.add(CloseGraphMenuItem);
+		
+		ExitMenuItem = new JMenuItem("Exit");
+		ExitMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, InputEvent.ALT_MASK));
+		FileDropdownMenu.add(ExitMenuItem);
+		
+		EditDropdownMenu = new JMenu("Edit");
+		MainWindowMenuBar.add(EditDropdownMenu);
+		
+		SelectAllMenuItem = new JMenuItem("Select All");
+		SelectAllMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK));
+		EditDropdownMenu.add(SelectAllMenuItem);
+		
+		SelectAllNodesMenuItem = new JMenuItem("Select All Nodes");
+		EditDropdownMenu.add(SelectAllNodesMenuItem);
+		
+		SelectAllEdgesMenuItem = new JMenuItem("Select All Edges");
+		EditDropdownMenu.add(SelectAllEdgesMenuItem);
+		
+		DeselectMenuItem = new JMenuItem("Deselect All");
+		DeselectMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
+		EditDropdownMenu.add(DeselectMenuItem);
+		
+		ViewDropdownMenu = new JMenu("View");
+		MainWindowMenuBar.add(ViewDropdownMenu);
+		
+		CloseTabMenuItem = new JMenuItem("Close Tab");
+		ViewDropdownMenu.add(CloseTabMenuItem);
+		
+		CloseAllOtherTabsMenuItem = new JMenuItem("Close All Other Tabs");
+		ViewDropdownMenu.add(CloseAllOtherTabsMenuItem);
+		
+		OpenAdvancedCodeViewMenuItem = new JMenuItem("Open Advanced Code View");
+		ViewDropdownMenu.add(OpenAdvancedCodeViewMenuItem);
+		
+		ChangeBGColorMenuItem = new JMenuItem("Change Background Color");
+		ViewDropdownMenu.add(ChangeBGColorMenuItem);
+		
+		ToolsDropdownMenu = new JMenu("Tools");
+		MainWindowMenuBar.add(ToolsDropdownMenu);
+		
+		AutoLabelNodesMenuItem = new JCheckBoxMenuItem("Auto-Label Nodes");
+		AutoLabelNodesMenuItem.setSelected(true);
+		AutoLabelNodesMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK));
+		ToolsDropdownMenu.add(AutoLabelNodesMenuItem);
+		
+		AutoLabelEdgesMenuItem = new JCheckBoxMenuItem("Auto-Label Edges");
+		AutoLabelEdgesMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK));
+		ToolsDropdownMenu.add(AutoLabelEdgesMenuItem);
+		
+		AutoConnectNodesMenuItem = new JCheckBoxMenuItem("Auto-Connect Nodes");
+		ToolsDropdownMenu.add(AutoConnectNodesMenuItem);
+		
+		HelpDropdownMenu = new JMenu("Help");
+		MainWindowMenuBar.add(HelpDropdownMenu);
+		
+		UserGuideMenuItem = new JMenuItem("User Guide");
+		HelpDropdownMenu.add(UserGuideMenuItem);
+		
+		LaunchWebsiteMenuItem = new JMenuItem("Launch Website");
+		HelpDropdownMenu.add(LaunchWebsiteMenuItem);
+		
+		AboutAutographMenuItem = new JMenuItem("About Autograph");
+		HelpDropdownMenu.add(AboutAutographMenuItem);
+
+		// Regsiter Events
 		AddNodeBtn.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
 				AddNodeBtnActionPerformed(evt);
 			}
 		});
-		
-		// Add Edge Button
-		AddEdgeBtn = new JButton();
-		Icon edgeIcon = new ImageIcon("resources/AddEdge.png");
-		AddEdgeBtn.setIcon(edgeIcon);
-		AddEdgeBtn.setText("Add Edge");
-		AddEdgeBtn.setFocusable(false);
-		AddEdgeBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-		AddEdgeBtn.setMargin(new java.awt.Insets(5, 5, 2, 5));
-		AddEdgeBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 		AddEdgeBtn.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
 				AddEdgeBtnActionPerformed(evt);
 			}
 		});
-
-		// Filler 1
-		mainPanelFiller = new Box.Filler(new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 32767));
-
-		// Filler 2
-		AdEdLaNoFiller = new Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(100, 0));
-
-		// Filler 3
-		AdNoAdEdFiller = new Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(25, 0));
-
-		// Filler 4
-		LaNoLaEdFiller = new Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(25, 0));
-
-		// Filler 5
-		LaEdCoNoFiller = new Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(25, 0));
-
-		// Auto Label Nodes Toggle
-		AutoLabelNodesTog = new JToggleButton();
-		AutoLabelNodesTog.setSelectedIcon(ToggleOn);
-		AutoLabelNodesTog.setIcon(ToggleOff);
-		AutoLabelNodesTog.setSelected(true);
-		AutoLabelNodesTog.setText("Auto-Label Nodes");
-		//AutoLabelNodesTog.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-		AutoLabelNodesTog.setFocusable(false);
 		AutoLabelNodesTog.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				AutoLabelNodesTogActionPerformed(evt);
 			}
 		});
-		
-		// Auto Label Edges Toggle
-		AutoLabelEdgesTog = new JToggleButton();
-		AutoLabelEdgesTog.setSelectedIcon(ToggleOn);
-		AutoLabelEdgesTog.setIcon(ToggleOff);
-		AutoLabelEdgesTog.setSelected(true);
-		AutoLabelEdgesTog.setText("Auto-Label Edges");
-		//AutoLabelEdgesTog.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-		AutoLabelEdgesTog.setFocusable(false);
 		AutoLabelEdgesTog.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				AutoLabelEdgesTogActionPerformed(evt);
 			}
 		});
-		
-		// Auto Connect Nodes Toggle
-		AutoConnectNodesTog = new JToggleButton();
-		AutoConnectNodesTog.setSelectedIcon(ToggleOn);
-		AutoConnectNodesTog.setIcon(ToggleOff);
-		AutoConnectNodesTog.setSelected(false);
-		AutoConnectNodesTog.setText("Auto-Connect Nodes");
-		//AutoConnectNodesTog.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-		AutoConnectNodesTog.setFocusable(false);
 		AutoConnectNodesTog.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				AutoConnectNodesTogActionPerformed(evt);
 			}
 		});
-		
-		// Main Window Toolbar
-		MainWindowToolBar = new JToolBar();
-		MainWindowToolBar.setFloatable(false);
-		MainWindowToolBar.setRollover(true);
-		MainWindowToolBar.add(AddNodeBtn);
-		MainWindowToolBar.add(AdNoAdEdFiller);
-		MainWindowToolBar.add(AddEdgeBtn);
-		MainWindowToolBar.add(AdEdLaNoFiller);	
-		MainWindowToolBar.add(AutoLabelNodesTog);
-		MainWindowToolBar.add(LaNoLaEdFiller);
-		MainWindowToolBar.add(AutoLabelEdgesTog);
-		MainWindowToolBar.add(LaEdCoNoFiller);
-		MainWindowToolBar.add(AutoConnectNodesTog);
-		
-		// Graph Tab Subpane
-		Graph graph = new Graph("New Graph");
-		GraphTabSubPane = new GraphPanel(graph);
-		GraphTabSubPane.setBackground(new java.awt.Color(255, 255, 255));
-		GraphTabSubPane.setPreferredSize(new java.awt.Dimension(600, 600));
-		javax.swing.GroupLayout GraphTabSubPaneLayout = new GroupLayout(GraphTabSubPane);
-		GraphTabSubPane.setLayout(GraphTabSubPaneLayout);
-		GraphTabSubPaneLayout.setHorizontalGroup(
-				GraphTabSubPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGap(0, 912, Short.MAX_VALUE)
-				);
-		GraphTabSubPaneLayout.setVerticalGroup(
-				GraphTabSubPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGap(0, 476, Short.MAX_VALUE)
-				);
-		
-		// Graph Tab Pane
-		GraphTabPane = new JScrollPane();
-		GraphTabPane.setBorder(null);
-		GraphTabPane.setViewportView(GraphTabSubPane);
-		
-		// Main Window Tabbed Pane
-		MainWindowTabbedPane = new JTabbedPane();
-		MainWindowTabbedPane.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-		MainWindowTabbedPane.setMinimumSize(new java.awt.Dimension(114, 95));
-		MainWindowTabbedPane.addTab("New Graph", GraphTabPane);
 		MainWindowTabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
 			public void stateChanged(ChangeEvent evt) {
 				JTabbedPane pane = (JTabbedPane)evt.getSource();	
@@ -182,7 +302,7 @@ public class mainWindow extends JFrame {
 				GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
 				Graph currentGraph = currentPanel.mGetGraph();
 				int numNodes = currentGraph.mGetNodeList().size();	
-				
+
 				// Clear the old list
 				AddEdgePanel.SelectEndNodeComboBox.removeAllItems();
 				AddEdgePanel.SelectEndNodeComboBox.addItem("");
@@ -195,306 +315,79 @@ public class mainWindow extends JFrame {
 				}
 			}	
 		});
-		
-		// Add Node Panel
-		addNodePanel = new AddNodePanel();
-		addNodePanel.setPreferredSize(new java.awt.Dimension(200, 512));
-		
-		// Add Edge Panel
-		addEdgePanel = new AddEdgePanel();
-		addEdgePanel.setPreferredSize(new java.awt.Dimension(200, 512));
-		
-		// Edit Node Panel
-		editNodePanel = new EditNodePanel();
-		editNodePanel.setPreferredSize(new java.awt.Dimension(200, 512));
-		
-		// Edit Edge Panel
-		editEdgePanel = new EditEdgePanel();
-		editEdgePanel.setPreferredSize(new java.awt.Dimension(200, 512));
-		
-		// Edit Both Panel
-		editNodeEdgePanel = new EditNodeEdgePanel();
-		editNodeEdgePanel.setPreferredSize(new java.awt.Dimension(200, 512));
-		
-		// Edit Panel
-		EditPanel = new JPanel();
-		EditPanel.setPreferredSize(new java.awt.Dimension(200, 512));
-		javax.swing.GroupLayout EditPanelLayout = new GroupLayout(EditPanel);
-		EditPanel.setLayout(EditPanelLayout);
-		
-		// Side Panel Scroll Pane
-		sidePanelScrollPane = new JScrollPane();
-		sidePanelScrollPane.setBorder(null);
-		sidePanelScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		sidePanelScrollPane.setViewportView(addNodePanel);
-		
-		// Main Panel
-		mainPanel = new JPanel();
-		mainPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-		javax.swing.GroupLayout mainPanelLayout = new GroupLayout(mainPanel);
-		mainPanel.setLayout(mainPanelLayout);
-		mainPanelLayout.setHorizontalGroup(
-				mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(mainPanelLayout.createSequentialGroup()
-						.addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-								.addComponent(sidePanelScrollPane, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-								.addComponent(mainPanelFiller, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE))
-								.addGap(0, 0, Short.MAX_VALUE))
-				);
-		mainPanelLayout.setVerticalGroup(
-				mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(mainPanelLayout.createSequentialGroup()
-						.addComponent(sidePanelScrollPane, GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE)
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addComponent(mainPanelFiller, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addGap(0, 0, 0))
-				);
-		
-		// New Graph Menu Item
-		NewGraphMenuItem = new JMenuItem();
-		NewGraphMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
-		NewGraphMenuItem.setText("New Graph...");
 		NewGraphMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				NewGraphMenuItemActionPerformed(evt);
 			}
 		});
-
-		// Open Menu Item
-		OpenMenuItem = new JMenuItem();
-		OpenMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-		OpenMenuItem.setText("Open...");
 		OpenMenuItem.addActionListener(new java.awt.event.ActionListener(){
 			public void actionPerformed(java.awt.event.ActionEvent evt){
 				OpenMenuItemActionPerformed(evt);
 			}
 		});
-		
-		// Save Menu Item
-		SaveMenuItem = new JMenuItem();
-		SaveMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
 		SaveMenuItem.addActionListener(new java.awt.event.ActionListener(){
 		   public void actionPerformed(java.awt.event.ActionEvent evt){
 		      SaveMenuItemActionPerformed(evt);
 		   }
 		});
-		SaveMenuItem.setText("Save");
-		
-		// Save As Menu Item
-		SaveAsMenuItem = new JMenuItem();
-		SaveAsMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
-		SaveAsMenuItem.setText("Save As...");
 		SaveAsMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				SaveAsMenuItemActionPerformed(evt);
 			}
 		});
-		
-		// Print Menu Item
-		PrintMenuItem = new JMenuItem();
-		PrintMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
-		PrintMenuItem.setText("Print...");
-		
-		// Print Preview Menu Item
-		PrintPreviewMenuItem = new JMenuItem();
-		PrintPreviewMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
-		PrintPreviewMenuItem.setText("Print Preview");
-		
-		// Close Graph Menu Item
-		CloseGraphMenuItem = new JMenuItem();
-		CloseGraphMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
-		CloseGraphMenuItem.setText("Close Graph");
 		CloseGraphMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				CloseGraphMenuItemActionPerformed(evt);
 			}
 		});
-		
-		// Exit Menu Item
-		ExitMenuItem = new JMenuItem();
-		ExitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
-		ExitMenuItem.setText("Exit");
 		ExitMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				ExitMenuItemActionPerformed(evt);
 			}
 		});
-		
-		// Select All Menu Item
-		SelectAllMenuItem = new JMenuItem();
-		SelectAllMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
-		SelectAllMenuItem.setText("Select All");
 		SelectAllMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				SelectAllMenuItemActionPerformed(evt);
 			}
 		});
-		
-		// Select All Nodes Menu Item
-		SelectAllNodesMenuItem = new JMenuItem();
-		SelectAllNodesMenuItem.setText("Select All Nodes");
 		SelectAllNodesMenuItem.addActionListener( new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				SelectAllNodesMenuItemActionPerformed(evt);
 			}
 		});
-		
-		// Select All Adges Menu Item
-		SelectAllEdgesMenuItem = new JMenuItem();
-		SelectAllEdgesMenuItem.setText("Select All Edges");
 		SelectAllEdgesMenuItem.addActionListener( new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				SelectAllEdgesMenuItemActionPerformed(evt);
 			}
 		});
-		
-		// Deselect Menu Item
-		DeselectMenuItem = new JMenuItem();
-		DeselectMenuItem.setText("Deselect");
-		DeselectMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
 		DeselectMenuItem.addActionListener( new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				DeselectMenuItemActionPerformed(evt);
 			}
 		});
-		
-		// Close Tab Menu Item
-		CloseTabMenuItem = new JMenuItem();
-		CloseTabMenuItem.setText("Close Tab");
 		CloseTabMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				CloseTabMenuItemActionPerformed(evt);
 			}
 		});
-		
-		// Close All Other Tabes Menu Item
-		CloseAllOtherTabsMenuItem = new JMenuItem();
-		CloseAllOtherTabsMenuItem.setText("Close All Other Tabs");
 		CloseAllOtherTabsMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt){
 				CloseAllOtherTabsMenuItemActionPerformed(evt);
 			}
 		});
-		
-		// Open Advanced Code View Menu Item
-		OpenAdvancedCodeViewMenuItem = new JMenuItem();
-		OpenAdvancedCodeViewMenuItem.setText("Open Advanced Code View");
-			
-		// Auto Label Nodes Menu Item
-		AutoLabelNodesMenuItem = new JCheckBoxMenuItem();
-		AutoLabelNodesMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-		AutoLabelNodesMenuItem.setSelected(true);
-		AutoLabelNodesMenuItem.setText("Auto-Label Nodes");
 		AutoLabelNodesMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				AutoLabelNodesMenuItemActionPerformed(evt);
 			}
 		});
-		
-		// Auto Label Edges Menu Item
-		AutoLabelEdgesMenuItem = new JCheckBoxMenuItem();
-		AutoLabelEdgesMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-		AutoLabelEdgesMenuItem.setText("Auto-Label Edges");
-		
-		// Auto Connect Nodes Menu Item
-		AutoConnectNodesMenuItem = new JCheckBoxMenuItem();
-		AutoConnectNodesMenuItem.setText("Auto-Connect Nodes");
 		AutoConnectNodesMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				AutoConnectNodesMenuItemActionPerformed(evt);
 			}
 		});
-		
-		// Change Background Color Menu Item
-		ChangeBgColorMenuItem = new JMenuItem();
-		ChangeBgColorMenuItem.setText("Change Background Color");
-		
-		// View User Guide Menu Item
-		ViewUserGuideMenuItem = new JMenuItem();
-		ViewUserGuideMenuItem.setText("View User Guide");
-		
-		// About Autograph Menu Item
-		AboutAutographMenuItem = new JMenuItem();
-		AboutAutographMenuItem.setText("About Autograph...");
+	} // End Initialization
 
-		// File Drop Down Menu
-		FileDropdownMenu = new JMenu();
-		FileDropdownMenu.setText("File");
-		FileDropdownMenu.add(NewGraphMenuItem);
-		FileDropdownMenu.add(OpenMenuItem);
-		FileDropdownMenu.add(SaveMenuItem);
-		FileDropdownMenu.add(SaveAsMenuItem);
-		FileDropdownMenu.add(PrintMenuItem);
-		FileDropdownMenu.add(PrintPreviewMenuItem);
-		FileDropdownMenu.add(CloseGraphMenuItem);
-		FileDropdownMenu.add(ExitMenuItem);
-
-		// Edit Drop Down Menu
-		EditDropdownMenu = new JMenu();
-		EditDropdownMenu.setText("Edit");
-		EditDropdownMenu.add(SelectAllMenuItem);
-		EditDropdownMenu.add(SelectAllNodesMenuItem);
-		EditDropdownMenu.add(SelectAllEdgesMenuItem);
-		EditDropdownMenu.add(DeselectMenuItem);
-
-		// View Drop Down Menu
-		ViewDropdownMenu = new JMenu();
-		ViewDropdownMenu.setText("View");
-		ViewDropdownMenu.add(CloseTabMenuItem);
-		ViewDropdownMenu.add(CloseAllOtherTabsMenuItem);
-		ViewDropdownMenu.add(OpenAdvancedCodeViewMenuItem);
-
-		// Tools Drop Down Menu
-		ToolsDropdownMenu = new JMenu();
-		ToolsDropdownMenu.setText("Tools");
-		ToolsDropdownMenu.add(AutoLabelNodesMenuItem);
-		ToolsDropdownMenu.add(AutoLabelEdgesMenuItem);
-		ToolsDropdownMenu.add(AutoConnectNodesMenuItem);
-		ToolsDropdownMenu.add(ChangeBgColorMenuItem);
-		
-		HelpDropdownMenu = new JMenu();
-		HelpDropdownMenu.setText("Help");
-		HelpDropdownMenu.add(ViewUserGuideMenuItem);
-		HelpDropdownMenu.add(AboutAutographMenuItem);
-		
-		// Main Window Menu Bar
-		MainWindowMenuBar = new JMenuBar();
-		MainWindowMenuBar.add(FileDropdownMenu);
-		MainWindowMenuBar.add(EditDropdownMenu);
-		MainWindowMenuBar.add(ViewDropdownMenu);
-		MainWindowMenuBar.add(ToolsDropdownMenu);
-		MainWindowMenuBar.add(HelpDropdownMenu);		
-		setJMenuBar(MainWindowMenuBar);
-
-		// Layout
-		javax.swing.GroupLayout layout = new GroupLayout(getContentPane());
-		getContentPane().setLayout(layout);
-		layout.setHorizontalGroup(
-				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(layout.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addGroup(layout.createSequentialGroup()
-										.addComponent(mainPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(MainWindowTabbedPane, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-										.addComponent(MainWindowToolBar, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-										.addContainerGap())
-				);
-		layout.setVerticalGroup(
-				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(layout.createSequentialGroup()
-						.addComponent(MainWindowToolBar, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(MainWindowTabbedPane, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-								.addContainerGap())
-				);
-
-		pack();
-	}
-
+	// EVENT Functions
 	protected void AutoConnectNodesTogActionPerformed(ActionEvent evt) {
 		// TODO Auto-generated method stub
 	}
@@ -536,7 +429,7 @@ public class mainWindow extends JFrame {
 				}
 			}
 		}
-		
+
 		//KMW Note: We are simply creating a new blank tab right now. We do not need to worry
 		//          about drawing any graphs in this function.
 		Graph newGraph = new Graph(newTitle);
@@ -585,7 +478,7 @@ public class mainWindow extends JFrame {
 		currentGraph.vSelectedItems.mSelectAllEdges(edges);
 		currentPanel.repaint();
 	}
-	
+
 	public void DeselectMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		JScrollPane currentPane = (JScrollPane)MainWindowTabbedPane.getSelectedComponent();
 		GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
@@ -658,7 +551,7 @@ public class mainWindow extends JFrame {
 	         FilePickerDialog saveDialog = new FilePickerDialog(this, true);
 	         saveDialog.mOpenSaveDialog(MainWindowTabbedPane);
 	      }
-	      
+
 	   }
 	   else{
 	      //something is wrong. Open the filePickerDialog so the user can choose where
@@ -667,7 +560,7 @@ public class mainWindow extends JFrame {
 	      saveDialog.mOpenSaveDialog(MainWindowTabbedPane);
 	   }
 	}
-	
+
 	private void SaveAsMenuItemActionPerformed(java.awt.event.ActionEvent evt){
 		FilePickerDialog saveDialog = new FilePickerDialog(this, true);
 		saveDialog.mOpenSaveDialog(MainWindowTabbedPane);
@@ -692,89 +585,89 @@ public class mainWindow extends JFrame {
 
 	private void AddNodeBtnActionPerformed(java.awt.event.MouseEvent evt) {
 		// Bring up the Add Node panel
-		sidePanelScrollPane.setViewportView(addNodePanel);
+		SidePanelScrollPane.setViewportView(addNodePanel);
 	}
-	
+
 	private void AddEdgeBtnActionPerformed(java.awt.event.MouseEvent evt) {
 		// Bring up the Add Node panel
-		sidePanelScrollPane.setViewportView(addEdgePanel);
+		SidePanelScrollPane.setViewportView(addEdgePanel);
 	}
 
 	public static JTabbedPane getMainWindowPane() {
 		return MainWindowTabbedPane;
 	}
-	
+
 	public static void resetSidePane() {
-		sidePanelScrollPane.setViewportView(EditPanel);
+		SidePanelScrollPane.setViewportView(EditPanel);
 	}
-	
+
 	public static boolean isAutoLabelNodes() {
 		return AutoLabelNodesTog.isSelected();
 	}
-	
+
 	public static boolean isAutoLabelEdges() {
 		return AutoLabelEdgesTog.isSelected();
 	}
-	
+
 	public static boolean isAutoConnectNodes() {
 		return AutoConnectNodesTog.isSelected();
 	}
-	
-	// Variables declaration
-	private JButton AddEdgeBtn;
-	private JButton AddNodeBtn;
-	private JCheckBoxMenuItem AutoConnectNodesMenuItem;
-	private static JToggleButton AutoConnectNodesTog;
-	private static JToggleButton AutoLabelEdgesTog;
-	private static JToggleButton AutoLabelNodesTog;
-	private JCheckBoxMenuItem AutoLabelNodesMenuItem;
-	private JCheckBoxMenuItem AutoLabelEdgesMenuItem;
-	protected static JTabbedPane MainWindowTabbedPane;
-	private JToolBar MainWindowToolBar;
-	private JMenuItem NewGraphMenuItem;
-	private JMenuItem OpenAdvancedCodeViewMenuItem;
-	private JMenuItem OpenMenuItem;
-	private JMenuItem PrintMenuItem;
-	private JMenuItem PrintPreviewMenuItem;
-	private JMenuItem SaveAsMenuItem;
-	private JMenuItem SaveMenuItem;
-	private JMenuItem SelectAllEdgesMenuItem;
-	private JMenuItem SelectAllMenuItem;
-	private JMenuItem SelectAllNodesMenuItem;
-	private JMenuItem ChangeBgColorMenuItem;
-	private JMenuItem CloseAllOtherTabsMenuItem;
-	private JMenuItem CloseGraphMenuItem;
-	private JMenuItem CloseTabMenuItem;
-	private JMenuItem DeselectMenuItem;
-	private JMenuItem ViewUserGuideMenuItem;
-	private JMenuItem AboutAutographMenuItem;
-	private JMenuItem ExitMenuItem;
-	private JMenuBar MainWindowMenuBar;
-	private JMenu FileDropdownMenu;
-	private JMenu HelpDropdownMenu;
-	private JMenu ToolsDropdownMenu;
-	private JMenu ViewDropdownMenu;
-	private JMenu EditDropdownMenu;	
-	private Box.Filler mainPanelFiller;
-	private Box.Filler AdEdLaNoFiller;
-	private Box.Filler AdNoAdEdFiller;
-	private Box.Filler LaNoLaEdFiller;
-	private Box.Filler LaEdCoNoFiller;
-	private JPanel mainPanel;
-	private static JPanel EditPanel;	
-	public GraphPanel GraphTabSubPane;
-	private JScrollPane GraphTabPane;
-	private static JScrollPane sidePanelScrollPane;
-	protected Icon ToggleOn;
-	protected Icon ToggleOff;
 
+	// The Panels
+	protected JFrame MainWindowComponent;
+	protected JPanel MainWindowPanel;
+	protected JSplitPane MainWindowSplitPane;
+	protected static JTabbedPane MainWindowTabbedPane;
 	// The side panels
+	protected static JPanel EditPanel;	
+	protected static JScrollPane SidePanelScrollPane;
 	protected AddNodePanel addNodePanel;
 	protected AddEdgePanel addEdgePanel;
 	protected EditNodePanel editNodePanel;
 	protected EditEdgePanel editEdgePanel;
 	protected EditNodeEdgePanel editNodeEdgePanel;
-
+	// The Menubar
+	protected JMenuBar MainWindowMenuBar;
+	// File Menu
+	protected JMenu FileDropdownMenu;
+	protected JMenuItem NewGraphMenuItem;
+	protected JMenuItem OpenMenuItem;
+	protected JMenuItem SaveMenuItem;
+	protected JMenuItem SaveAsMenuItem;
+	protected JMenuItem PrintMenuItem;
+	protected JMenuItem PrintPreviewMenuItem;
+	protected JMenuItem CloseGraphMenuItem;
+	protected JMenuItem ExitMenuItem;
+	// Edit Menu
+	protected JMenu EditDropdownMenu;
+	protected JMenuItem SelectAllMenuItem;
+	protected JMenuItem SelectAllNodesMenuItem;
+	protected JMenuItem SelectAllEdgesMenuItem;
+	protected JMenuItem DeselectMenuItem;
+	// View Menu
+	protected JMenu ViewDropdownMenu;
+	protected JMenuItem CloseTabMenuItem;
+	protected JMenuItem CloseAllOtherTabsMenuItem;
+	protected JMenuItem OpenAdvancedCodeViewMenuItem;
+	protected JMenuItem ChangeBGColorMenuItem;
+	//Tools Menu
+	protected JMenu ToolsDropdownMenu;
+	protected JCheckBoxMenuItem AutoLabelNodesMenuItem;
+	protected JCheckBoxMenuItem AutoLabelEdgesMenuItem;
+	protected JCheckBoxMenuItem AutoConnectNodesMenuItem;
+	//Help Menu
+	protected JMenu HelpDropdownMenu;
+	protected JMenuItem UserGuideMenuItem;
+	protected JMenuItem LaunchWebsiteMenuItem;
+	protected JMenuItem AboutAutographMenuItem;
+	// The Toolbar
+	protected JToolBar MainWindowToolBar;
+	protected JButton AddNodeBtn;
+	protected JButton AddEdgeBtn;
+	protected Component MainWindowToolBarHorizontalGlue;
+	protected static JToggleButton AutoLabelNodesTog;
+	protected static JToggleButton AutoLabelEdgesTog;
+	protected static JToggleButton AutoConnectNodesTog;
 }
 
 

@@ -7,6 +7,8 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import autograph.ui.mainWindow;
 import autograph.ui.ButtonTabComponent;
+import javax.swing.UIManager.*;
+import javax.swing.UIManager;
 
 public class Autograph extends mainWindow {
 
@@ -28,16 +30,24 @@ public class Autograph extends mainWindow {
 	}
 
 	public static void main(String[] args) {
-
-
+      try {
+          for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+              if ("Nimbus".equals(info.getName())) {
+                  UIManager.setLookAndFeel(info.getClassName());
+                  break;
+              }
+          }
+      } catch (Exception e) {
+          // If Nimbus is not available, you can set the GUI to another look and feel.
+         System.out.println("OH NO! You're missing Nimbus so this won't look as sexy :(");
+      }
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				Autograph autograph = new Autograph(
+				Autograph  window = new Autograph(
 						"Autograph");
-				autograph.setVisible(true);
+            window.MainWindowComponent.setVisible(true);
 			}
-
 		});
 	}
 }
