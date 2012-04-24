@@ -173,7 +173,7 @@ public class mainWindow extends JFrame {
 		AutoConnectNodesTog.setIcon(new ImageIcon("resources/ToggleOff.png"));
 		MainWindowToolBar.add(AutoConnectNodesTog);
 		
-		JMenuBar MainWindowMenuBar = new JMenuBar();
+		MainWindowMenuBar = new JMenuBar();
 		MainWindowMenuBar.setInheritsPopupMenu(true);
 		MainWindowComponent.getContentPane().add(MainWindowMenuBar, BorderLayout.NORTH);
 		
@@ -246,7 +246,7 @@ public class mainWindow extends JFrame {
 		MainWindowMenuBar.add(ToolsDropdownMenu);
 		
 		AutoLabelNodesMenuItem = new JCheckBoxMenuItem("Auto-Label Nodes");
-		AutoLabelNodesMenuItem.setSelected(true);
+		//AutoLabelNodesMenuItem.setSelected(true);
 		AutoLabelNodesMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK));
 		ToolsDropdownMenu.add(AutoLabelNodesMenuItem);
 		
@@ -297,21 +297,26 @@ public class mainWindow extends JFrame {
 		});
 		MainWindowTabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
 			public void stateChanged(ChangeEvent evt) {
-				JTabbedPane pane = (JTabbedPane)evt.getSource();	
-				JScrollPane currentPane = (JScrollPane)pane.getSelectedComponent();
-				GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
-				Graph currentGraph = currentPanel.mGetGraph();
-				int numNodes = currentGraph.mGetNodeList().size();	
+				JTabbedPane pane = (JTabbedPane)evt.getSource();
+				if(!(pane.getTabCount() == 0)) {
+					JScrollPane currentPane = (JScrollPane)pane.getSelectedComponent();
+					GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
+					Graph currentGraph = currentPanel.mGetGraph();
+					int numNodes = currentGraph.mGetNodeList().size();	
 
-				// Clear the old list
-				AddEdgePanel.SelectEndNodeComboBox.removeAllItems();
-				AddEdgePanel.SelectEndNodeComboBox.addItem("");
-				AddEdgePanel.SelectStartNodeComboBox.removeAllItems();
-				AddEdgePanel.SelectStartNodeComboBox.addItem("");
-				// Add to the AddEdge lists
-				for(int i = 0; i < numNodes; i++) {
-					AddEdgePanel.SelectEndNodeComboBox.addItem(Integer.toString(i) + " - " + currentGraph.mGetNodeList().get(i).mGetLabel());
-					AddEdgePanel.SelectStartNodeComboBox.addItem(Integer.toString(i) + " - " + currentGraph.mGetNodeList().get(i).mGetLabel());
+					// Clear the old list
+					AddEdgePanel.SelectEndNodeComboBox.removeAllItems();
+					AddEdgePanel.SelectEndNodeComboBox.addItem("");
+					AddEdgePanel.SelectStartNodeComboBox.removeAllItems();
+					AddEdgePanel.SelectStartNodeComboBox.addItem("");
+					// Add to the AddEdge lists
+					for(int i = 0; i < numNodes; i++) {
+						AddEdgePanel.SelectEndNodeComboBox.addItem(currentGraph.mGetNodeList().get(i).mGetId() + " - " + currentGraph.mGetNodeList().get(i).mGetLabel());
+						AddEdgePanel.SelectStartNodeComboBox.addItem(currentGraph.mGetNodeList().get(i).mGetId() + " - " + currentGraph.mGetNodeList().get(i).mGetLabel());
+					}
+				}
+				else {
+					return;
 				}
 			}	
 		});

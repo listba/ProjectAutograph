@@ -119,8 +119,8 @@ public class FilePickerDialog extends javax.swing.JDialog {
 				AddEdgePanel.SelectStartNodeComboBox.addItem("");
 				// Add to the AddEdge lists
 				for(int i = 0; i < loadedGraph.mGetNodeList().size(); i++) {
-					AddEdgePanel.SelectEndNodeComboBox.addItem(Integer.toString(i) + " - " + loadedGraph.mGetNodeList().get(i).mGetLabel());
-					AddEdgePanel.SelectStartNodeComboBox.addItem(Integer.toString(i) + " - " + loadedGraph.mGetNodeList().get(i).mGetLabel());
+					AddEdgePanel.SelectEndNodeComboBox.addItem(loadedGraph.mGetNodeList().get(i).mGetId() + " - " + loadedGraph.mGetNodeList().get(i).mGetLabel());
+					AddEdgePanel.SelectStartNodeComboBox.addItem(loadedGraph.mGetNodeList().get(i).mGetId() + " - " + loadedGraph.mGetNodeList().get(i).mGetLabel());
 				}
 			}
 		}

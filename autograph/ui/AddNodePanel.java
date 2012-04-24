@@ -344,6 +344,7 @@ public class AddNodePanel extends JPanel {
 			e.printStackTrace();
 		}
 
+		if(nodeLabel == null) nodeLabel = "No Label";
 		// Add to the AddEdge lists
 		AddEdgePanel.SelectEndNodeComboBox.addItem(Integer.toString(numNodes) + " - " + nodeLabel);
 		AddEdgePanel.SelectStartNodeComboBox.addItem(Integer.toString(numNodes) + " - " + nodeLabel);
