@@ -48,11 +48,6 @@ public class AddNodePanel extends JPanel {
 		fillColor = Color.WHITE;
 		borderColor = Color.BLACK;
 		
-		// Panel Scroll Pane
-		panelScrollPane = new JScrollPane();
-		panelScrollPane.setBorder(null);
-		panelScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		
 		// Add Node Panel
 		AddNodePanel = new JPanel();
 		AddNodePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -237,8 +232,6 @@ public class AddNodePanel extends JPanel {
 														.addContainerGap())
 				);
 
-		panelScrollPane.setViewportView(AddNodePanel);
-
 		javax.swing.GroupLayout layout = new GroupLayout(this);
 		this.setLayout(layout);
 		layout.setHorizontalGroup(
@@ -378,7 +371,6 @@ public class AddNodePanel extends JPanel {
 	private JLabel NodeSubtitleLabel;
 	private Box.Filler filler1;
 	private JButton addButton;
-	private JScrollPane panelScrollPane;
 	private JSeparator paneSeparator;
 
 	protected JTabbedPane mainWindowTabbedPane;
