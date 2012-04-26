@@ -612,6 +612,24 @@ public class mainWindow extends JFrame {
 		return MainWindowTabbedPane;
 	}
 
+	public static void setSidePanel(String selected) {
+		if(selected == "Node") {
+			SidePanelScrollPane.setViewportView(editNodePanel);
+		}
+		else if(selected == "Edge") {
+			SidePanelScrollPane.setViewportView(editEdgePanel);
+		}
+		else if(selected == "Both") {
+			SidePanelScrollPane.setViewportView(editNodeEdgePanel);
+		}
+		else if(selected == "Deselect") {
+			SidePanelScrollPane.setViewportView(addNodePanel);
+		}
+		else {
+			System.out.println("Oops! - The string was wrong");
+		}
+	}
+	
 	public static void resetSidePane() {
 		SidePanelScrollPane.setViewportView(EditPanel);
 	}
@@ -636,11 +654,11 @@ public class mainWindow extends JFrame {
 	// The side panels
 	protected static JPanel EditPanel;	
 	protected static JScrollPane SidePanelScrollPane;
-	protected AddNodePanel addNodePanel;
-	protected AddEdgePanel addEdgePanel;
-	protected EditNodePanel editNodePanel;
-	protected EditEdgePanel editEdgePanel;
-	protected EditNodeEdgePanel editNodeEdgePanel;
+	protected static AddNodePanel addNodePanel;
+	protected static AddEdgePanel addEdgePanel;
+	protected static EditNodePanel editNodePanel;
+	protected static EditEdgePanel editEdgePanel;
+	protected static EditNodeEdgePanel editNodeEdgePanel;
 	// The Menubar
 	protected JMenuBar MainWindowMenuBar;
 	// File Menu

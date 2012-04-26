@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import autograph.ui.mainWindow;
+
 public class GraphPanel extends JPanel implements MouseListener, MouseMotionListener {
    private Graph graph;
    private String filePath;
@@ -113,6 +115,22 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
       }
       if (!itemSelected) {
          graph.vSelectedItems.mClearSelectedItems();
+         mainWindow.setSidePanel("Deselect");
+      }
+      // Change the edit panel accordingly
+      else {
+    	  // If both edges and nodes are selected...
+    	  if(!(graph.vSelectedItems.mGetSelectedNodes().isEmpty()) && !(graph.vSelectedItems.mGetSelectedEdges().isEmpty())) {
+    		  mainWindow.setSidePanel("Both");
+    	  }
+    	  // If only nodes are selected
+    	  else if(!(graph.vSelectedItems.mGetSelectedNodes().isEmpty())) {
+    		  mainWindow.setSidePanel("Node");
+    	  }
+    	  // If only edges are selected
+    	  else if(!(graph.vSelectedItems.mGetSelectedEdges().isEmpty())) {
+    		  mainWindow.setSidePanel("Edge");
+    	  }
       }
       this.repaint();
    } 
