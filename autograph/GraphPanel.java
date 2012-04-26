@@ -4,16 +4,20 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-public class GraphPanel extends JPanel implements MouseListener {
+public class GraphPanel extends JPanel implements MouseListener, MouseMotionListener {
    private Graph graph;
    private String filePath;
+   private Node nodeToDrag;
+   private boolean inDrag = false;
    public GraphPanel (Graph g) {
       this.graph = g;
       this.addMouseListener(this);
+      this.addMouseMotionListener(this);
       this.filePath = "";
       setLayout(null);
    }
@@ -75,8 +79,6 @@ public class GraphPanel extends JPanel implements MouseListener {
     * @param e    Mouse event that stores information about mouse click
     */
    public void mouseClicked(MouseEvent e) {
-      System.out.println("Mouse Clicked");
-      System.out.println("x:"+e.getX()+",y:"+e.getY());
       ArrayList<Node> nodes = graph.mGetNodeList();
       ArrayList<Edge> edges = graph.mGetEdgeList();
       boolean itemSelected = false;
@@ -92,7 +94,6 @@ public class GraphPanel extends JPanel implements MouseListener {
                graph.vSelectedItems.mSelectNode(nodes.get(i));
             }
             itemSelected = true;
-            System.out.println("NODE #"+i);
             break;
          }
       }
@@ -107,7 +108,6 @@ public class GraphPanel extends JPanel implements MouseListener {
                graph.vSelectedItems.mSelectEdge(edges.get(i));
             }
             itemSelected = true;
-            System.out.println("Edge #"+i);
             break;
          }
       }
@@ -119,14 +119,37 @@ public class GraphPanel extends JPanel implements MouseListener {
    // Other Mouse Events, since we are implementing an interface we 
    // must include implementations for these even if we don't use it
    public void mousePressed(MouseEvent e) {
+      ArrayList<Node> nodes = graph.mGetNodeList();
+       for (int i = 0; i < nodes.size(); i++){
+         if (nodes.get(i).mContains(e.getX(), e.getY()))
+         {
+            nodeToDrag = nodes.get(i);
+            inDrag = true;
+            break;
+         }
+      }
    }
 
    public void mouseReleased(MouseEvent e) {
+      inDrag = false;
+      nodeToDrag = null;
+   }
+
+   public void mouseDragged(MouseEvent e) {
+      if(inDrag && nodeToDrag != null)
+      {
+         nodeToDrag.mSetCenterLocation(e.getX(), e.getY());
+         this.repaint();
+      }
    }
 
    public void mouseEntered(MouseEvent e) {
    }
 
    public void mouseExited(MouseEvent e) {
+   }
+
+   public void mouseMoved(MouseEvent e) {
+
    }
 }

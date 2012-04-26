@@ -30,17 +30,21 @@ public class Autograph extends mainWindow {
 	}
 
 	public static void main(String[] args) {
-     /* try {
-          for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-              if ("Nimbus".equals(info.getName())) {
+      try {
+         for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+              /*if ("Nimbus".equals(info.getName())) {
                   UIManager.setLookAndFeel(info.getClassName());
                   break;
-              }
+              }*/
           }
+         // Sets Look and Feel to defualt for OS
+         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
       } catch (Exception e) {
-          // If Nimbus is not available, you can set the GUI to another look and feel.
-         System.out.println("OH NO! You're missing Nimbus so this won't look as sexy :(");
-      }*/
+         System.out.println("OH NO! switching to default look and feel. The following are available on your computer:");
+          for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+            System.out.println(info.getName());
+          }
+      }
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {

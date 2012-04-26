@@ -282,13 +282,13 @@ public class AddEdgePanel extends JPanel {
 						.addComponent(panelFiller, GroupLayout.PREFERRED_SIZE, 210, GroupLayout.PREFERRED_SIZE)
 						.addGap(0, 0, Short.MAX_VALUE))
 						.addGroup(layout.createSequentialGroup()
-								.addComponent(panelScrollPane, GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
+								.addComponent(AddEdgePanel, GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
 								.addContainerGap())
 				);
 		layout.setVerticalGroup(
 				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(layout.createSequentialGroup()
-						.addComponent(panelScrollPane, GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
+						.addComponent(AddEdgePanel, GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 						.addComponent(panelFiller, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addGap(0, 0, 0))

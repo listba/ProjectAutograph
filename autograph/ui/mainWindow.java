@@ -77,7 +77,7 @@ public class mainWindow extends JFrame {
 		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 		ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
 		MainWindowComponent = new JFrame();
-		MainWindowComponent.setMinimumSize(new Dimension(800, 600));
+		MainWindowComponent.setMinimumSize(new Dimension(800, 650));
 		MainWindowComponent.setBounds(100, 100, 575, 316);
 		MainWindowComponent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -128,7 +128,8 @@ public class mainWindow extends JFrame {
 		//EditPanel.setPreferredSize(new java.awt.Dimension(200, 512));
 
 		SidePanelScrollPane = new JScrollPane();
-		SidePanelScrollPane.setPreferredSize(new java.awt.Dimension(200,550));
+		SidePanelScrollPane.setPreferredSize(new java.awt.Dimension(230,550));
+		SidePanelScrollPane.setBackground(new java.awt.Color(255, 255, 255));
 		SidePanelScrollPane.setViewportView(addNodePanel);
 		MainWindowSplitPane.setLeftComponent(SidePanelScrollPane);
 		
