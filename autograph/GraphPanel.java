@@ -17,7 +17,7 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
    private Graph graph;
    private String filePath;
    private ArrayList<Node> nodesToDrag;
-   private boolean inDrag = false;
+   private boolean dragStart = false;
    private boolean drawBox = false;
    private int startX;
    private int startY;
@@ -131,8 +131,7 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
          if (nodes.get(i).mContains(e.getX(), e.getY()))
          {
             if (e.isControlDown()) {
-               System.out.println("wut");
-               //graph.vSelectedItems.mAppendNode(nodes.get(i));
+               graph.vSelectedItems.mAppendNode(nodes.get(i));
             } else if (e.isShiftDown()) {
                graph.vSelectedItems.mSelectAllNodes(nodes);
             } else {
@@ -181,42 +180,46 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
    // Other Mouse Events, since we are implementing an interface we 
    // must include implementations for these even if we don't use it
    public void mousePressed(MouseEvent e) {
-      ArrayList<Node> nodes = graph.mGetNodeList();
-      inDrag = true;
+      dragStart = true;
       startX = e.getX();
       startY = e.getY();
-      for (int i = 0; i < nodes.size(); i++){
-         if (nodes.get(i).mContains(e.getX(), e.getY()))
-         {
-            if (e.isControlDown()) {
-               System.out.println("wat");
-               graph.vSelectedItems.mAppendNode(nodes.get(i));
-            } else if (e.isShiftDown()) {
-               graph.vSelectedItems.mSelectAllNodes(nodes);
-            } else {
-               graph.vSelectedItems.mClearSelectedItems();
-               graph.vSelectedItems.mSelectNode(nodes.get(i));
-            }
-            nodesToDrag = graph.vSelectedItems.mGetSelectedNodes();
-            System.out.println(getPreferredSize());
-            this.repaint();
-            break;
-         }
-      }
    }
 
    public void mouseReleased(MouseEvent e) {
-      inDrag = false;
-      drawBox = false;
-      nodesToDrag = null;
-      graph.vSelectedItems.mClearSelectedItems();
-      // TODO: Add Nodes and Edges to selection Box
-      this.repaint();
-      
+      if (nodesToDrag != null || drawBox)
+      {
+         drawBox = false;
+         nodesToDrag = null;
+         graph.vSelectedItems.mClearSelectedItems();
+         // TODO: Add Nodes and Edges to selection Box
+         this.repaint();
+      }
+      dragStart = false;
    }
 
    public void mouseDragged(MouseEvent e) {
-      if(inDrag && nodesToDrag != null)
+      if (dragStart)
+      {
+          ArrayList<Node> nodes = graph.mGetNodeList();
+         for (int i = 0; i < nodes.size(); i++){
+            if (nodes.get(i).mContains(startX, startY))
+            {
+               if (e.isControlDown()) {
+                  graph.vSelectedItems.mAppendNode(nodes.get(i));
+               } else if (e.isShiftDown()) {
+                  graph.vSelectedItems.mSelectAllNodes(nodes);
+               } else {
+                  graph.vSelectedItems.mClearSelectedItems();
+                  graph.vSelectedItems.mSelectNode(nodes.get(i));
+               }
+               nodesToDrag = graph.vSelectedItems.mGetSelectedNodes();
+               dragStart = false;
+               break;
+            }
+         }
+      }
+
+      if(nodesToDrag != null)
       {
          int newX = e.getX()-startX;
          int newY = e.getY()-startY;
@@ -224,44 +227,48 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
          int maxHeight = 0;
          boolean outsideXViewport = false;
          boolean outsideYViewport = false;
-         for (int i = 0; i< nodesToDrag.size(); i++)
-         {
+         for (int i = 0; i< nodesToDrag.size(); i++) {
+
             Node nodeToDrag = nodesToDrag.get(i);
             int x = newX + nodeToDrag.mGetCenterX();
             int y = newY + nodeToDrag.mGetCenterY();
+
             if (x <= 0) {outsideXViewport = true;} 
             if (y <= 0) {outsideYViewport = true;}
 
             if (outsideYViewport && outsideXViewport) {break;}
          }
-         if (!outsideXViewport || !outsideYViewport)
-         {
-            for (int i = 0; i< nodesToDrag.size(); i++)
-            {
+         if (!outsideXViewport || !outsideYViewport) {
+            for (int i = 0; i< nodesToDrag.size(); i++) {
                Node nodeToDrag = nodesToDrag.get(i);
                int x = newX + nodeToDrag.mGetCenterX();
                int y = newY + nodeToDrag.mGetCenterY();
-               if(outsideXViewport) {nodeToDrag.mSetCenterLocation(nodeToDrag.mGetCenterX(), y);}
-               else if (outsideYViewport) {nodeToDrag.mSetCenterLocation(x, nodeToDrag.mGetCenterY());}
-               else {nodeToDrag.mSetCenterLocation(x, y);}
+
+               if(outsideXViewport) {
+                  nodeToDrag.mSetCenterLocation(nodeToDrag.mGetCenterX(), y);
+               } else if (outsideYViewport) {
+                  nodeToDrag.mSetCenterLocation(x, nodeToDrag.mGetCenterY());
+               } else {
+                  nodeToDrag.mSetCenterLocation(x, y);
+               }
+
             }
 
-            if(outsideXViewport){startY = e.getY();}
-            if(outsideYViewport){startX = e.getX();}
-            else 
-            {
+            if(outsideXViewport){
+               startY = e.getY();
+            } else if(outsideYViewport) {
+               startX = e.getX();
+            } else {
                startX = e.getX();
                startY = e.getY();
-            }
-            this.repaint();
+            }  
          }
-      } else if (inDrag)
-      {
+      } else {
          endX = e.getX();
          endY = e.getY();
          drawBox = true;
-         this.repaint();
       }
+      this.repaint();
    }
 
    public void mouseEntered(MouseEvent e) {
