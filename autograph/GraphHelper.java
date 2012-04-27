@@ -2,26 +2,19 @@ package autograph;
 import java.awt.*;
 import autograph.GraphPanel;
 
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.image.*;
 import java.io.*;
 
-import autograph.Edge.Direction;
-import autograph.Edge.EdgeStyle;
-import autograph.Node.NodeShape;
 import autograph.exception.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Stack;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -977,12 +970,12 @@ public class GraphHelper {
 			int labelLeftX = upperLeftX + widthDifference/2; 
 			//y coordinate of the lower left position of the string (for centering the string in the node)
 			int labelLeftY = upperLeftY + heightDifference/2 + labelHeight/2; 
-
 			switch (n.mGetShape()){
 			case CIRCLE:
 			case OVAL:
 				//KMW Note: Graphics2D has antialiasing that renders the pictures much clearer.
 				Graphics2D g2 = (Graphics2D)g;
+				g2.setStroke(new BasicStroke());
 				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 				//draw shape first so label is not overwritten
 				g2.setColor(n.mGetFillColor());
@@ -1036,31 +1029,6 @@ public class GraphHelper {
 	}
 	
 	/**
-	 * Draws the arrow head given the coordinates for the starting and ending points of the line.
-	 * @param g - the graphics object to draw with
-	 * @param startX - the beginning x coordinate
-	 * @param startY - the beginning y coordinate
-	 * @param endX - the ending x coordinate
-	 * @param endY - the ending y coordinate
-	 */
-	private static void mDrawArrowHead(Graphics g, int startX, int startY, int endX, int endY){
-	   Graphics2D g2 = (Graphics2D)(g);
-	   double phi = Math.toRadians(40);
-	   int barb = 10;
-	   double dy = startY - endY;
-	   double dx = startX - endX;
-	   double theta = Math.atan2(dy, dx);
-	   
-	   double x, y, rho = theta + phi;
-	   for(int j = 0; j < 2; j++){
-	      x = startX - barb * Math.cos(rho);
-	      y = startY - barb * Math.sin(rho);
-	      g2.draw(new Line2D.Double(startX, startY, x, y));
-	      rho = theta - phi;
-	   }
-	}
-
-	/**
 	 * DrawEdge - Draws an edge between two nodes. The edge will dynamically choose one of 4 points on each
 	 *            node as the start/end point
 	 *
@@ -1070,207 +1038,22 @@ public class GraphHelper {
 	 */
 	public static void mDrawEdge(Graphics g, Edge e) {
 		//TODO: implement for non-straight edges
-		//TODO: implement for different edge styles/directions.
-		//TODO: implement label placement.
 		//TODO: figure out how we want to handle the case where the edge label is longer than the edge 
 		//      (if we need to recalculate node position etc.)
 		//TODO: account for triangle nodes (edges currently do not intersect at correct locations for triangles)
 
-		g.setColor(e.mGetEdgeColor());
-		int startX;
-		int startY;
-		int endX;
-		int endY;
-		int differenceX;
-		int differenceY;
-
+	   EdgeDrawer edgeDrawer = new EdgeDrawer(g, e);
+		
 		Node startNode = e.mGetStartNode();
 		Node endNode = e.mGetEndNode();
-
-		int startNodeCenterX = startNode.mGetCenterX();
-		int startNodeCenterY = startNode.mGetCenterY();
-		int endNodeCenterX = endNode.mGetCenterX();
-		int endNodeCenterY = endNode.mGetCenterY();
-
-		//first thing we do is calculate which of the 4 points we will draw the edge from on each node
-		if(startNodeCenterX - endNodeCenterX > 0){
-			//we will either use the left, top, or bottom point
-			differenceX = startNodeCenterX - endNodeCenterX;
-			if(startNodeCenterY - endNodeCenterY > 0){
-				//we will either user the left point or the top point
-				differenceY = startNodeCenterY - endNodeCenterY;
-				if (differenceX > differenceY){ 
-					//startNodeX > endNodeX && startNodeY > endNodeY && x difference is bigger.
-
-					//use the left point on the start node and right point on the end node
-					startX = startNodeCenterX - startNode.mGetWidth()/2;
-					startY = startNodeCenterY;
-					endX = endNodeCenterX + endNode.mGetWidth()/2;
-					endY = endNodeCenterY;
-				}
-				else { // startNodex > endNodeX && startNodeY > endNodeY && y difference is bigger
-					//use the top point on the start node and bottom point on the end node
-					startX = startNodeCenterX;
-					startY = startNodeCenterY - startNode.mGetHeight()/2;
-					endX = endNodeCenterX;
-					endY = endNodeCenterY + endNode.mGetHeight()/2;
-				}
-			}
-			else{ // startNodeX > endNodeX && endNodeY >= startNodeY
-				//we will either use the left point or the bottom point
-				differenceY = endNodeCenterY - startNodeCenterY;
-				if (differenceX > differenceY) {
-					//startNodeX > endNodeX && endNodeY >= startNodeY && differenceX > differenceY 
-
-					//use the left point on the start node and the right point on the end node
-					startX = startNodeCenterX - startNode.mGetWidth()/2;
-					startY = startNodeCenterY;
-					endX =  endNodeCenterX + endNode.mGetWidth()/2;
-					endY = endNodeCenterY;
-				}
-				else{
-					//use the bottom point on the start node and the top point on the end node
-					startX = startNodeCenterX;
-					startY = startNodeCenterY + startNode.mGetHeight()/2;
-					endX = endNodeCenterX;
-					endY = endNodeCenterY - endNode.mGetHeight()/2;
-				}
-			}
+		
+		if(startNode != endNode){
+   		edgeDrawer.mDrawStraightEdge(startNode, endNode);
 		}
 		else{
-			//we will either use the right, top, or bottom point on the start node
-			differenceX = endNodeCenterX - startNodeCenterX;
-			if(startNodeCenterY - endNodeCenterY > 0){
-				//use either right point or top point
-				differenceY = startNodeCenterY - endNodeCenterY;
-				if(differenceX > differenceY){
-					//use the right point on the start node and the left point on the end node
-					startX = startNodeCenterX + startNode.mGetWidth()/2;
-					startY = startNodeCenterY;
-					endX = endNodeCenterX - endNode.mGetWidth()/2;
-					endY = endNodeCenterY;
-				}
-				else{
-					//use the top point on the start node and the bottom point on the end node
-					startX = startNodeCenterX;
-					startY = startNodeCenterY - startNode.mGetHeight()/2;
-					endX = endNodeCenterX;
-					endY = endNodeCenterY + endNode.mGetWidth()/2;
-				}
-			}
-			else{
-				//use either right point or bottom point
-				differenceY = endNodeCenterY - startNodeCenterY;
-				if(differenceX > differenceY){
-					//use right point on the start node and the left point on the end node
-					startX = startNodeCenterX + startNode.mGetWidth()/2;
-					startY = startNodeCenterY;
-					endX = endNodeCenterX - endNode.mGetWidth()/2;
-					endY = endNodeCenterY;
-				}
-				else{
-					//use bottom point on the start node and the top point on the end node
-					startX = startNodeCenterX;
-					startY = startNodeCenterY + startNode.mGetHeight()/2;
-					endX = endNodeCenterX;
-					endY = endNodeCenterY - endNode.mGetHeight()/2;
-				}
-			}
-		}
-		e.mSetStartCoordinates(startX, startY);
-		e.mSetEndCoordinates(endX, endY);
-		int labelX = (startX + endX)/2 + 5;
-		int labelY = (startY +endY)/2 - 5;
-
-		switch (e.mGetEdgeStyle()){
-		case DOTTED:
-			BasicStroke dotted =  new BasicStroke(
-					1f, 
-					BasicStroke.CAP_ROUND, 
-					BasicStroke.JOIN_ROUND, 
-					1f, 
-					new float[] {2f}, 
-					0f);
-			Graphics2D g2 = (Graphics2D)g;
-			g2.setStroke(dotted);
-			g2.drawLine(startX, startY, endX, endY);
-			break;
-		case DASHED:
-			float dash1[] = {10.0f};
-			BasicStroke dashed =
-					new BasicStroke(1.0f,
-							BasicStroke.CAP_BUTT,
-							BasicStroke.JOIN_MITER,
-							10.0f, dash1, 0.0f);
-			Graphics2D gr2 = (Graphics2D)g;
-			gr2.setStroke(dashed);
-			gr2.drawLine(startX, startY, endX, endY);
-			break;
-		case SOLID:
-		default:
-			g.drawLine(startX, startY, endX, endY);
-			break;
+		   edgeDrawer.mDrawEdgeToSelf(startNode);
 		}
 
-		mDrawEdgeLabel(g, e, startX, startY, endX, endY);
-
-		//KMW Note: for now we will only support one style of arrow. (a filled in triangle)
-		//          at some point we will need to support the other types.
-		switch(e.mGetDirection()){
-		case NODIRECTION:
-			//we are done. It will work
-			break;
-		case STARTDIRECTION:
-		   mDrawArrowHead(g, startX, startY, endX, endY);
-			break;
-		case ENDDIRECTION:
-		   mDrawArrowHead(g, endX, endY, startX, startY);
-			break;
-		case DOUBLEDIRECTION:
-		   mDrawArrowHead(g, startX, startY, endX, endY);
-		   mDrawArrowHead(g, endX, endY, startX, startY);
-			break;
-		}
-
-	}
-
-	/**
-	 * Calculates the edge label position and draws it to the panel.
-	 * @param g - the graphics object doing the drawing.
-	 * @param e - the Edge to calculate the label position for.
-	 * @param startX - the start point of the edge's x coordinate
-	 * @param startY - the start point of the edge's y coordinate
-	 * @param endX - the end point of the edge's x coordinate
-	 * @param endY - the end point of the edge's y coordinate
-	 */
-	public static void mDrawEdgeLabel(Graphics g, Edge e, int startX, int startY, int endX, int endY){
-		g.setColor(e.mGetLabelColor());
-
-		//calculate the label position.
-		//KMW Note: this is not working correctly yet. Somtimes the edge lables are going throught the middle
-		//          of the edge.
-		int labelX;
-		int labelY;
-
-		if(startX < endX){
-			labelX = (startX + endX)/2 + 5;
-			if(startY > endY){
-				labelY = (startY + endY)/2 + 5;
-			}
-			else{
-				labelY = (startY + endY)/2 - 5;
-			}
-		}
-		else{
-			labelX = (startX + endX)/2 - 5;
-			if(startY > endY){
-				labelY = (startY + endY)/2 + 5;
-			}
-			else{
-				labelY = (startY + endY)/2 - 5;
-			}
-		}
-		g.drawString(e.mGetLabel(), labelX, labelY);
 	}
 
 	/**
