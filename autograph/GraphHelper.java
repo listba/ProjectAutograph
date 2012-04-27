@@ -1283,7 +1283,7 @@ public class GraphHelper {
 	 * @see     SelectedItems
 	 */
 	public static void mDrawSelectedNode(Graphics g, Node n) {
-		Graphics2D g2d = (Graphics2D)g;
+		Graphics2D g2d = (Graphics2D)g.create();
 		float dash1[] = {10.0f};
 		BasicStroke dashed =
 				new BasicStroke(1.0f,
@@ -1293,6 +1293,7 @@ public class GraphHelper {
 		g2d.setStroke(dashed);
 		g2d.setColor(Color.cyan);
 		g2d.drawRect(n.mGetUpperLeftX()-5, n.mGetUpperLeftY()-5, n.mGetWidth()+10, n.mGetHeight()+10);
+		g2d.dispose();
 	}
 
 	public static void mDrawSelectedEdge(Graphics g, Edge e) {
@@ -1300,7 +1301,7 @@ public class GraphHelper {
 		int startY = e.mGetStartY();
 		int endX = e.mGetEndX();
 		int endY = e.mGetEndY();
-		Graphics2D g2d = (Graphics2D)g;
+		Graphics2D g2d = (Graphics2D)g.create();
 			float dash1[] = {10.0f};
 			BasicStroke dashed = 
 				new BasicStroke(1.0f,
@@ -1316,6 +1317,7 @@ public class GraphHelper {
 
 			g2d.drawLine(startX, startY+herp, startX, startY-herp);
 			g2d.drawLine(endX, endY+herp, endX, endY-herp);
+			g2d.dispose();
 	}
 	/**
 	 * savePNG - Save a graph as a .png file
