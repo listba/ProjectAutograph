@@ -4,6 +4,9 @@
  */
 package autograph.ui;
 
+import java.awt.Color;
+import java.awt.event.MouseEvent;
+
 import javax.swing.*;
 
 public class EditEdgePanel extends JPanel {
@@ -21,123 +24,150 @@ public class EditEdgePanel extends JPanel {
 	@SuppressWarnings("unchecked")
 	private void initComponents() {
 
+		// Setup
 		setBackground(new java.awt.Color(255, 255, 255));
-		setMinimumSize(new java.awt.Dimension(200, 300));
-		setPreferredSize(new java.awt.Dimension(200, 459));
-		
+		setMinimumSize(new java.awt.Dimension(200, 512));
+		setPreferredSize(new java.awt.Dimension(200, 512));
+
+		// The Colors
+		labelColor = Color.BLACK;
+		edgeColor = Color.BLACK;
+
 		// Edge Options Panel
 		EdgeOptionsPanel = new JPanel();
-		EdgeOptionsPanel.setPreferredSize(new java.awt.Dimension(200, 457));
-		
+		EdgeOptionsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+		EdgeOptionsPanel.setPreferredSize(new java.awt.Dimension(200, 512));
+
 		// Edge Options Title Label
 		EdgeOptionsTitleLabel = new JLabel();
-		EdgeOptionsTitleLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); 
+		EdgeOptionsTitleLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); 
 		EdgeOptionsTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 		EdgeOptionsTitleLabel.setText("Edge Options");
-		EdgeOptionsTitleLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-		EdgeOptionsTitleLabel.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
-		
+
 		// Label Text Label
 		LabelTextLabel = new JLabel();
 		LabelTextLabel.setText("Label Text");
-		
+
 		// Label Text Field
 		LabelTextField = new JTextField();
-		
+
 		// Text Color Label
 		TextColorLabel = new JLabel();
 		TextColorLabel.setText("Text Color");
-		
+
 		// Edge Design Combo Box
 		EdgeDesignComboBox = new JComboBox();
-		EdgeDesignComboBox.setModel(new DefaultComboBoxModel(new String[] { "____", "_ _ _", "- - - -", "......", "===", " " }));
-		
+		EdgeDesignComboBox.setModel(new DefaultComboBoxModel(new String[] {"Solid", "Dotted", "Dashed"}));
+
 		// End Shape Label
 		EndShapeLabel = new JLabel();
 		EndShapeLabel.setText("End Shape");
-		
+
 		// End Shape Combo Box
 		EndShapeComboBox = new JComboBox();
-		EndShapeComboBox.setModel(new DefaultComboBoxModel(new String[] { "A-A", "A-B", "A-C", "B-B", "B-C", "C-C" }));
-		
+		EndShapeComboBox.setModel(new DefaultComboBoxModel(new String[] {"None", "Line Arrow", "Shape Arrow", "Filled Arrow"}));
+
 		//Edge Color Label
 		EdgeColorLabel = new JLabel();
 		EdgeColorLabel.setText("Edge Color");
-		
+
 		// Edge Color Button
 		EdgeColorBtn = new JButton();
-		EdgeColorBtn.setText("[  ]");
+		EdgeColorBtn.setText("Select Color");
 		EdgeColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
-		
+		EdgeColorBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+				EdgeColorBtnActionPerformed(evt);
+			}
+		});
+
 		// Edge Design Label
 		EdgeDesignLabel = new JLabel();
 		EdgeDesignLabel.setText("Edge Design");
-		
+
 		// Text Color Button
 		TextColorBtn = new JButton();
-		TextColorBtn.setText("[  ]");
+		TextColorBtn.setText("Select Color");
 		TextColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
-		
+		TextColorBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+				TextColorBtnActionPerformed(evt);
+			}
+		});
+
 		// Panel Filler
 		filler1 = new Box.Filler(new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 32767));
 
+		// Save Button
+		SaveButton = new JButton();
+		SaveButton.setText("Save Changes");
+
 		// Layout
-		GroupLayout EdgeOptionsPanelLayout = new GroupLayout(EdgeOptionsPanel);
-		EdgeOptionsPanel.setLayout(EdgeOptionsPanelLayout);
-		EdgeOptionsPanelLayout.setHorizontalGroup(
-				EdgeOptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addComponent(EdgeOptionsTitleLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-				.addGroup(EdgeOptionsPanelLayout.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(EdgeOptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addGroup(EdgeOptionsPanelLayout.createSequentialGroup()
-										.addGroup(EdgeOptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-												.addComponent(TextColorLabel)
-												.addComponent(EndShapeLabel)
-												.addComponent(EdgeColorLabel)
-												.addComponent(EdgeDesignLabel))
-												.addGap(18, 18, 18)
-												.addGroup(EdgeOptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-														.addComponent(EndShapeComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-														.addComponent(EdgeColorBtn)
-														.addComponent(EdgeDesignComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-														.addComponent(TextColorBtn))
-														.addGap(0, 0, Short.MAX_VALUE))
-														.addGroup(EdgeOptionsPanelLayout.createSequentialGroup()
-																.addGroup(EdgeOptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-																		.addComponent(LabelTextField)
-																		.addGroup(EdgeOptionsPanelLayout.createSequentialGroup()
-																				.addComponent(LabelTextLabel)
-																				.addGap(0, 0, Short.MAX_VALUE)))
-																				.addContainerGap())))
+		javax.swing.GroupLayout AddEdgePanelLayout = new GroupLayout(EdgeOptionsPanel);
+		EdgeOptionsPanel.setLayout(AddEdgePanelLayout);
+		AddEdgePanelLayout.setHorizontalGroup(
+				AddEdgePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(AddEdgePanelLayout.createSequentialGroup()
+						.addGroup(AddEdgePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING))
+								.addGap(0, 0, Short.MAX_VALUE))
+								.addGroup(AddEdgePanelLayout.createSequentialGroup()
+										.addContainerGap()
+										.addGroup(AddEdgePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+												.addComponent(EdgeOptionsTitleLabel, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+												.addComponent(LabelTextField, 0, GroupLayout.DEFAULT_SIZE, 190)
+												.addGroup(javax.swing.GroupLayout.Alignment.LEADING, AddEdgePanelLayout.createSequentialGroup()
+														.addGap(0, 0, Short.MAX_VALUE)
+														.addComponent(SaveButton))
+														.addGroup(AddEdgePanelLayout.createSequentialGroup()
+																.addGroup(AddEdgePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+																		.addGroup(AddEdgePanelLayout.createSequentialGroup()
+																				.addGroup(AddEdgePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+																						.addComponent(LabelTextLabel)
+																						.addComponent(EndShapeLabel)
+																						.addComponent(EdgeColorLabel))
+																						.addGap(10, 10, 10)
+																						.addGroup(AddEdgePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+																								.addComponent(EdgeColorBtn, 0, GroupLayout.DEFAULT_SIZE, 120)
+																								.addComponent(TextColorBtn, 0, GroupLayout.DEFAULT_SIZE, 120)
+																								.addComponent(EdgeDesignComboBox, 0, GroupLayout.DEFAULT_SIZE, 120)
+																								.addComponent(EndShapeComboBox, 0, GroupLayout.DEFAULT_SIZE, 120)))
+																								.addGroup(AddEdgePanelLayout.createSequentialGroup()
+																										.addGroup(AddEdgePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+																												.addComponent(EdgeDesignLabel)
+																												.addComponent(TextColorLabel))
+																												.addGap(18, 18, 18)
+																												.addGroup(AddEdgePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING))))
+																												.addGap(0, 0, Short.MAX_VALUE)))
+																												.addContainerGap())
 				);
-		EdgeOptionsPanelLayout.setVerticalGroup(
-				EdgeOptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(EdgeOptionsPanelLayout.createSequentialGroup()
-						.addComponent(EdgeOptionsTitleLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
-						.addGap(18, 18, 18)
+		AddEdgePanelLayout.setVerticalGroup(
+				AddEdgePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(AddEdgePanelLayout.createSequentialGroup()
+						.addComponent(EdgeOptionsTitleLabel)
+						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
 						.addComponent(LabelTextLabel)
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 						.addComponent(LabelTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addGap(14, 14, 14)
-						.addGroup(EdgeOptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addGroup(EdgeOptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(TextColorLabel)
-										.addComponent(TextColorBtn))
-										.addGroup(EdgeOptionsPanelLayout.createSequentialGroup()
-												.addGap(41, 41, 41)
-												.addGroup(EdgeOptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-														.addComponent(EndShapeComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-														.addComponent(EndShapeLabel))
+						.addGap(18, 18, 18)
+						.addGroup(AddEdgePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addComponent(TextColorLabel)
+								.addComponent(TextColorBtn))
+								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+								.addGroup(AddEdgePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+										.addComponent(EdgeDesignLabel)
+										.addComponent(EdgeDesignComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+										.addGap(18, 18, 18)
+										.addGroup(AddEdgePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+												.addComponent(EndShapeLabel)
+												.addComponent(EndShapeComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+												.addGap(18, 18, 18)
+												.addGroup(AddEdgePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+														.addComponent(EdgeColorLabel)
+														.addComponent(EdgeColorBtn))
 														.addGap(18, 18, 18)
-														.addGroup(EdgeOptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-																.addComponent(EdgeColorBtn)
-																.addComponent(EdgeColorLabel))
-																.addGap(18, 18, 18)
-																.addGroup(EdgeOptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-																		.addComponent(EdgeDesignComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-																		.addComponent(EdgeDesignLabel))))
-																		.addContainerGap(203, Short.MAX_VALUE))
+																		.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+																		.addComponent(SaveButton)
+																		.addContainerGap())
 				);
 
 		GroupLayout layout = new GroupLayout(this);
@@ -160,7 +190,29 @@ public class EditEdgePanel extends JPanel {
 						.addGap(0, 0, 0))
 				);
 	}
-	
+
+	/*
+	 * The Label Color Button was clicked
+	 */
+	protected void TextColorBtnActionPerformed(MouseEvent evt) {
+		Color newColor = JColorChooser.showDialog(EditEdgePanel.this, "Choose Label Color", labelColor);
+
+		if (newColor != null) {
+			labelColor = newColor;
+		}
+	}
+
+	/*
+	 * The Edge Color Button was clicked
+	 */
+	protected void EdgeColorBtnActionPerformed(MouseEvent evt) {
+		Color newColor = JColorChooser.showDialog(EditEdgePanel.this, "Choose Edge Color", edgeColor);
+
+		if (newColor != null) {
+			edgeColor = newColor;
+		}
+	}
+
 	// Variables declaration
 	private JButton EdgeColorBtn;
 	private JLabel EdgeColorLabel;
@@ -175,4 +227,8 @@ public class EditEdgePanel extends JPanel {
 	private JButton TextColorBtn;
 	private JLabel TextColorLabel;
 	private Box.Filler filler1;
+	private JButton SaveButton;
+
+	protected Color labelColor;
+	protected Color edgeColor;
 }
