@@ -55,13 +55,13 @@ public class AddNodePanel extends JPanel {
 		
 		// Add Node Title Label
 		AddNodeTitleLabel = new JLabel();
-		AddNodeTitleLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+		AddNodeTitleLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); 
 		AddNodeTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 		AddNodeTitleLabel.setText("Add Node");
 		
 		// Label Subtitle Label
 		LabelSubtitleLabel = new JLabel();
-		LabelSubtitleLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+		LabelSubtitleLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); 
 		LabelSubtitleLabel.setText("Label");
 		
 		// Label Text Label

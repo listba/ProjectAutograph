@@ -13,7 +13,7 @@ import javax.swing.*;
 public class EditNodePanel extends JPanel {
 
 	/**
-	 * Creates new form AddNodePanel
+	 * Creates new form EditNodePanel
 	 */
 	public EditNodePanel() {
 		initComponents();
@@ -26,6 +26,10 @@ public class EditNodePanel extends JPanel {
 	private void initComponents() {
 
 		// Setup
+		GraphicsEnvironment ge;
+		ge = GraphicsEnvironment.getLocalGraphicsEnvironment(); 
+		String[] fontNames = ge.getAvailableFontFamilyNames();
+
 		setBackground(new java.awt.Color(255, 255, 255));
 		setMinimumSize(new java.awt.Dimension(200, 512));
 		setPreferredSize(new java.awt.Dimension(200, 512));
@@ -35,16 +39,21 @@ public class EditNodePanel extends JPanel {
 		fillColor = Color.WHITE;
 		borderColor = Color.BLACK;
 
-		// Node Options Panel
-		NodeOptionsPanel = new JPanel();
-		NodeOptionsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-		NodeOptionsPanel.setPreferredSize(new java.awt.Dimension(200, 512));
+		// Add Node Panel
+		EditNodePanel = new JPanel();
+		EditNodePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+		EditNodePanel.setPreferredSize(new java.awt.Dimension(200, 512));
 
-		// Node Options Title Label
-		NodeOptionsTitleLabel = new JLabel();
-		NodeOptionsTitleLabel.setFont(new java.awt.Font("Tahoma", 1, 12));
-		NodeOptionsTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-		NodeOptionsTitleLabel.setText("Node Options");
+		// Add Node Title Label
+		EditNodeTitleLabel = new JLabel();
+		EditNodeTitleLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); 
+		EditNodeTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+		EditNodeTitleLabel.setText("Edit Node");
+
+		// Label Subtitle Label
+		LabelSubtitleLabel = new JLabel();
+		LabelSubtitleLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); 
+		LabelSubtitleLabel.setText("Label");
 
 		// Label Text Label
 		LabelTextLabel = new JLabel();
@@ -53,27 +62,41 @@ public class EditNodePanel extends JPanel {
 		// Label Text Field
 		LabelTextField = new JTextField();
 
+		// Label Font Label
+		LabelFontLabel = new JLabel();
+		LabelFontLabel.setText("Label Font");
+
+		// Label Font Combo Box
+		LabelFontComboBox = new JComboBox();
+		LabelFontComboBox.setModel(new DefaultComboBoxModel(fontNames));
+		LabelFontComboBox.setSelectedItem("Courier");
+
+		// Label Color Label
+		LabelColorLabel = new JLabel();
+		LabelColorLabel.setText("Label Color");
+
+		// Label Color Button
+		LabelColorBtn = new JButton();
+		LabelColorBtn.setText("Select Color");
+		LabelColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
+		LabelColorBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+				LabelColorBtnActionPerformed(evt);
+			}
+		});
+
+		// Node Subtitle Label
+		NodeSubtitleLabel = new JLabel();
+		NodeSubtitleLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
+		NodeSubtitleLabel.setText("Node");
+
 		// Node Shape Label
 		NodeShapeLabel = new JLabel();
 		NodeShapeLabel.setText("Node Shape");
 
-		// Node Shape Combo Box
-		NodeShapeComboBox = new JComboBox();
-		NodeShapeComboBox.setModel(new DefaultComboBoxModel(new String[] { "Circle", "Oval", "Square", "Rectangle", "Triangle" }));
-
 		// Border Color Label
 		BorderColorLabel = new JLabel();
 		BorderColorLabel.setText("Border Color");
-
-		// Border Color Button
-		BorderColorBtn = new JButton();
-		BorderColorBtn.setText("Select Color");
-		BorderColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
-		BorderColorBtn.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mouseClicked(java.awt.event.MouseEvent evt) {
-				BorderColorBtnActionPerformed(evt);
-			}
-		});
 
 		// Fill Color Label
 		FillColorLabel = new JLabel();
@@ -89,87 +112,110 @@ public class EditNodePanel extends JPanel {
 			}
 		});
 
-		// Text Color Label
-		TextColorLabel = new JLabel();
-		TextColorLabel.setText("Text Color");
+		// Node Shape Combo Box
+		NodeShapeComboBox = new JComboBox();
+		NodeShapeComboBox.setModel(new DefaultComboBoxModel(new String[] { "Circle", "Oval", "Square", "Rectangle", "Triangle" }));
 
-		// Text Color Button
-		TextColorBtn = new JButton();
-		TextColorBtn.setText("Select Color");
-		TextColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
-		TextColorBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+		// Border Color Button
+		BorderColorBtn = new JButton();
+		BorderColorBtn.setText("Select Color");
+		BorderColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
+		BorderColorBtn.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
-				TextColorBtnActionPerformed(evt);
+				BorderColorBtnActionPerformed(evt);
 			}
 		});
 
-		// Panel Filler
-		filler1 = new Box.Filler(new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 32767));
+		// Pane Separator
+		paneSeparator = new JSeparator();
 
-		// Save Button
+		// Edit Node Button
 		SaveButton = new JButton();
 		SaveButton.setText("Save Changes");
+		SaveButton.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+				SaveBtnActionPerformed(evt);
+			}
+		});
+
+		// Filler
+		panelFiller = new Box.Filler(new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 32767));
 
 		// Layout
-		javax.swing.GroupLayout AddNodePanelLayout = new GroupLayout(NodeOptionsPanel);
-		NodeOptionsPanel.setLayout(AddNodePanelLayout);
-		AddNodePanelLayout.setHorizontalGroup(
-				AddNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(AddNodePanelLayout.createSequentialGroup()
-						.addGroup(AddNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING))
+		javax.swing.GroupLayout EditNodePanelLayout = new GroupLayout(EditNodePanel);
+		EditNodePanel.setLayout(EditNodePanelLayout);
+		EditNodePanelLayout.setHorizontalGroup(
+				EditNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(EditNodePanelLayout.createSequentialGroup()
+						.addGroup(EditNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+								.addComponent(LabelSubtitleLabel)
+								.addComponent(NodeSubtitleLabel))
 								.addGap(0, 0, Short.MAX_VALUE))
-								.addGroup(AddNodePanelLayout.createSequentialGroup()
+								.addGroup(EditNodePanelLayout.createSequentialGroup()
 										.addContainerGap()
-										.addGroup(AddNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-												.addComponent(NodeOptionsTitleLabel, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addGroup(EditNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+												.addComponent(EditNodeTitleLabel, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 												.addComponent(LabelTextField, 0, GroupLayout.DEFAULT_SIZE, 190)
-												.addGroup(javax.swing.GroupLayout.Alignment.LEADING, AddNodePanelLayout.createSequentialGroup()
+												.addComponent(LabelFontComboBox, 0, GroupLayout.DEFAULT_SIZE, 190)
+												.addComponent(paneSeparator, 0, GroupLayout.DEFAULT_SIZE, 186)
+												.addGroup(javax.swing.GroupLayout.Alignment.LEADING, EditNodePanelLayout.createSequentialGroup()
 														.addGap(0, 0, Short.MAX_VALUE)
 														.addComponent(SaveButton))
-														.addGroup(AddNodePanelLayout.createSequentialGroup()
-																.addGroup(AddNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-																		.addGroup(AddNodePanelLayout.createSequentialGroup()
-																				.addGroup(AddNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+														.addGroup(EditNodePanelLayout.createSequentialGroup()
+																.addGroup(EditNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+																		.addGroup(EditNodePanelLayout.createSequentialGroup()
+																				.addGroup(EditNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 																						.addComponent(LabelTextLabel)
+																						.addComponent(LabelFontLabel)
 																						.addComponent(BorderColorLabel)
 																						.addComponent(FillColorLabel))
-																						.addGroup(AddNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+																						.addGroup(EditNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 																								.addComponent(FillColorBtn, 0, GroupLayout.DEFAULT_SIZE, 120)
 																								.addComponent(BorderColorBtn, 0, GroupLayout.DEFAULT_SIZE, 120)
-																								.addComponent(TextColorBtn, 0, GroupLayout.DEFAULT_SIZE, 120)
+																								.addComponent(LabelColorBtn, 0, GroupLayout.DEFAULT_SIZE, 120)
 																								.addComponent(NodeShapeComboBox, 0, GroupLayout.DEFAULT_SIZE, 120)))
-																								.addGroup(AddNodePanelLayout.createSequentialGroup()
-																										.addGroup(AddNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+																								.addGroup(EditNodePanelLayout.createSequentialGroup()
+																										.addGroup(EditNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 																												.addComponent(NodeShapeLabel)
-																												.addComponent(TextColorLabel))
+																												.addComponent(LabelColorLabel))
 																												.addGap(18, 18, 18)
-																												.addGroup(AddNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING))))
+																												.addGroup(EditNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING))))
 																												.addGap(0, 0, Short.MAX_VALUE)))
 																												.addContainerGap())
 
 				);
-		AddNodePanelLayout.setVerticalGroup(
-				AddNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(AddNodePanelLayout.createSequentialGroup()
-						.addComponent(NodeOptionsTitleLabel)
+		EditNodePanelLayout.setVerticalGroup(
+				EditNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(EditNodePanelLayout.createSequentialGroup()
+						.addComponent(EditNodeTitleLabel)
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+						.addComponent(LabelSubtitleLabel)
+						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 						.addComponent(LabelTextLabel)
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 						.addComponent(LabelTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addGap(18, 18, 18)
-						.addGroup(AddNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(TextColorLabel)
-								.addComponent(TextColorBtn))
+						.addComponent(LabelFontLabel)
+						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+						.addComponent(LabelFontComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addGap(18, 18, 18)
+						.addGroup(EditNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addComponent(LabelColorLabel)
+								.addComponent(LabelColorBtn))
 								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-								.addGroup(AddNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+								.addComponent(paneSeparator, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
+								.addGap(3, 3, 3)
+								.addComponent(NodeSubtitleLabel)
+								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addGroup(EditNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
 										.addComponent(NodeShapeLabel)
 										.addComponent(NodeShapeComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 										.addGap(18, 18, 18)
-										.addGroup(AddNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+										.addGroup(EditNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
 												.addComponent(BorderColorLabel)
 												.addComponent(BorderColorBtn))
 												.addGap(18, 18, 18)
-												.addGroup(AddNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+												.addGroup(EditNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
 														.addComponent(FillColorLabel)
 														.addComponent(FillColorBtn))
 														.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
@@ -177,31 +223,37 @@ public class EditNodePanel extends JPanel {
 														.addContainerGap())
 				);
 
-		GroupLayout layout = new GroupLayout(this);
+		javax.swing.GroupLayout layout = new GroupLayout(this);
 		this.setLayout(layout);
 		layout.setHorizontalGroup(
 				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(layout.createSequentialGroup()
-						.addComponent(filler1, GroupLayout.PREFERRED_SIZE, 210, GroupLayout.PREFERRED_SIZE)
+						.addComponent(panelFiller, GroupLayout.PREFERRED_SIZE, 210, GroupLayout.PREFERRED_SIZE)
 						.addGap(0, 0, Short.MAX_VALUE))
 						.addGroup(layout.createSequentialGroup()
-								.addComponent(NodeOptionsPanel, GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
+								.addComponent(EditNodePanel, GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
 								.addContainerGap())
 				);
 		layout.setVerticalGroup(
 				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(layout.createSequentialGroup()
-						.addComponent(NodeOptionsPanel, GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
-						.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-						.addComponent(filler1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(EditNodePanel, GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
+						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+						.addComponent(panelFiller, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addGap(0, 0, 0))
 				);
+	}
+
+	// The Save Button is clicked
+	protected void SaveBtnActionPerformed(MouseEvent evt) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	/*
 	 * The Label Color Button was clicked
 	 */
-	protected void TextColorBtnActionPerformed(MouseEvent evt) {
+	protected void LabelColorBtnActionPerformed(MouseEvent evt) {
 		Color newColor = JColorChooser.showDialog(EditNodePanel.this, "Choose Label Color", labelColor);
 
 		if (newColor != null) {
@@ -231,21 +283,26 @@ public class EditNodePanel extends JPanel {
 		}
 	}
 
-	// Variables declaration
+	// Variables declarations
+	private JPanel EditNodePanel;
+	private JLabel EditNodeTitleLabel;
 	private JButton BorderColorBtn;
 	private JLabel BorderColorLabel;
 	private JButton FillColorBtn;
 	private JLabel FillColorLabel;
+	private JButton LabelColorBtn;
+	private JLabel LabelColorLabel;
+	private JComboBox LabelFontComboBox;
+	private JLabel LabelFontLabel;
+	private JLabel LabelSubtitleLabel;
 	private JTextField LabelTextField;
 	private JLabel LabelTextLabel;
-	private JPanel NodeOptionsPanel;
-	private JLabel NodeOptionsTitleLabel;
 	private JComboBox NodeShapeComboBox;
 	private JLabel NodeShapeLabel;
-	private JButton TextColorBtn;
-	private JLabel TextColorLabel;
-	private Box.Filler filler1;
+	private JLabel NodeSubtitleLabel;
+	private Box.Filler panelFiller;
 	private JButton SaveButton;
+	private JSeparator paneSeparator;
 
 	protected Color labelColor;
 	protected Color fillColor;
