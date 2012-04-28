@@ -405,6 +405,7 @@ public class EditNodePanel extends JPanel {
 			fillColor = selectedNode.mGetFillColor();
 			borderColor = selectedNode.mGetBorderColor();
 			NodeShapeComboBox.setSelectedItem(selectedNode.mGetShape().toString());
+			LabelFontComboBox.setSelectedItem(selectedNode.mGetFont().toString());
 		}
 	}
 

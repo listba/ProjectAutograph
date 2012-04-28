@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.io.Serializable;
+
+import autograph.Node.NodeShape;
 import autograph.exception.*;
 /**
  * Edge contains all data for edge objects of a Graph.
@@ -198,6 +200,24 @@ public class Edge implements Serializable {
       vEdgeStyle = style;
    }
 
+   /**
+    * SetEdgeStyle - sets the edge's style
+    * @param style - string of the style
+    * @see EdgeStyle
+    */
+   public void mSetEdgeStyle(String style) {
+	   if(style != null){
+		   try {
+			   vEdgeStyle = EdgeStyle.valueOf(style.toUpperCase());
+		   } catch (IllegalArgumentException e) {
+			   vEdgeStyle = EdgeStyle.SOLID;
+		   }
+	   }
+	   else{
+		   vEdgeStyle = EdgeStyle.SOLID;
+	   }
+   }
+   
    /**
     * GetEdgeStyle - gets the edge's style
     * @return - an enumeration of the edge style

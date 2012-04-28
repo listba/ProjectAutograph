@@ -5,11 +5,17 @@
 package autograph.ui;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 
 import javax.swing.*;
+
+import autograph.Edge;
+import autograph.Graph;
+import autograph.GraphPanel;
+import autograph.Node;
 
 public class EditEdgePanel extends JPanel {
 
@@ -240,8 +246,99 @@ public class EditEdgePanel extends JPanel {
 
 	// The Save Button is clicked
 	protected void SaveButtonActionPerformed(ActionEvent evt) {
-		// TODO Auto-generated method stub
 
+		// Graph/Window pointers
+		mainWindowTabbedPane = mainWindow.getMainWindowPane();
+		JScrollPane currentPane = (JScrollPane)mainWindowTabbedPane.getSelectedComponent();
+		GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
+		Graph currentGraph = currentPanel.mGetGraph();
+
+		// If more than one edge is selected
+		if(currentGraph.vSelectedItems.mGetSelectedEdges().size() > 1) {
+			Edge currentEdge;
+
+			for(int i = 0; i < currentGraph.vSelectedItems.mGetSelectedEdges().size(); i++) {
+
+				// Get the current edge
+				currentEdge = currentGraph.vSelectedItems.mGetSelectedEdges().get(i);
+
+				// If auto Label Edges is on
+				if(mainWindow.isAutoLabelEdges()) {
+					// Make a Node Label
+					if(LabelTextField.getText().isEmpty()) {
+						edgeLabel = "Edge" + currentEdge.mGetLabel();
+					}
+					// Retrieve the node label
+					else {
+						edgeLabel = LabelTextField.getText();
+					}
+				}
+				// Otherwise...
+				else {
+					// They need to enter a Node Label
+					if(LabelTextField.getText().isEmpty()) {
+						edgeLabel = "";
+						//JOptionPane.showMessageDialog(AddEdgePanel.this, "Please specify an Edge Label!", "Attention!", JOptionPane.WARNING_MESSAGE);
+						//return;
+					}
+					// Retrieve the node label
+					else {
+						edgeLabel = LabelTextField.getText();
+					}
+				}
+
+				// Set the edge's fields
+				currentEdge.mSetLabel(edgeLabel);
+				currentEdge.mSetLabelColor(labelColor);
+				currentEdge.mSetEdgeColor(edgeColor);
+				currentEdge.mSetFont(Font.decode((String)LabelFontComboBox.getSelectedItem()));
+				// TODO: UPDATE END SHAPE!
+				currentEdge.mSetEdgeStyle((String)EdgeDesignComboBox.getSelectedItem());
+			}
+		}
+		// Otherwise 1 edge is selected...
+		else {
+			
+			// Get the current edge
+			Edge currentEdge = currentGraph.vSelectedItems.mGetSelectedEdges().get(0);
+
+			// If auto Label Edges is on
+			if(mainWindow.isAutoLabelEdges()) {
+				// Make a Node Label
+				if(LabelTextField.getText().isEmpty()) {
+					edgeLabel = "Edge" + currentEdge.mGetLabel();
+				}
+				// Retrieve the node label
+				else {
+					edgeLabel = LabelTextField.getText();
+				}
+			}
+			// Otherwise...
+			else {
+				// They need to enter a Node Label
+				if(LabelTextField.getText().isEmpty()) {
+					edgeLabel = "";
+					//JOptionPane.showMessageDialog(AddEdgePanel.this, "Please specify an Edge Label!", "Attention!", JOptionPane.WARNING_MESSAGE);
+					//return;
+				}
+				// Retrieve the node label
+				else {
+					edgeLabel = LabelTextField.getText();
+				}
+			}
+
+			// Set the edge's fields
+			currentEdge.mSetLabel(edgeLabel);
+			currentEdge.mSetLabelColor(labelColor);
+			currentEdge.mSetEdgeColor(edgeColor);
+			currentEdge.mSetFont(Font.decode((String)LabelFontComboBox.getSelectedItem()));
+			// TODO: UPDATE END SHAPE!
+			currentEdge.mSetEdgeStyle((String)EdgeDesignComboBox.getSelectedItem());
+		}
+
+		currentGraph.vSelectedItems.mClearSelectedItems();
+		mainWindow.resetSidePane();
+		currentPanel.repaint();	
 	}
 
 	// If the Edge Color Button is clicked
@@ -259,6 +356,37 @@ public class EditEdgePanel extends JPanel {
 
 		if (newColor != null) {
 			labelColor = newColor;
+		}
+	}
+
+	protected void updateFields() {
+		// Graph/Window pointers
+		mainWindowTabbedPane = mainWindow.getMainWindowPane();
+		JScrollPane currentPane = (JScrollPane)mainWindowTabbedPane.getSelectedComponent();
+		GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
+		Graph currentGraph = currentPanel.mGetGraph();
+
+		// If there is more than 1 edge selected
+		if(currentGraph.vSelectedItems.mGetSelectedNodes().size() > 1) {
+
+			// Set the values to defaults, as multiple nodes are selected
+			LabelTextField.setText("");
+			labelColor = Color.BLACK;
+			edgeColor = Color.BLACK;
+			LabelFontComboBox.setSelectedItem("Courier");
+			EndShapeComboBox.setSelectedItem("None");
+			EdgeDesignComboBox.setSelectedItem("Solid");
+		}
+		// Otherwise... (only one edge is selected)
+		else {
+			Edge selectedEdge = currentGraph.vSelectedItems.mGetSelectedEdges().get(0); 
+			LabelTextField.setText(selectedEdge.mGetLabel());
+			labelColor = selectedEdge.mGetLabelColor();
+			edgeColor = selectedEdge.mGetEdgeColor();
+			LabelFontComboBox.setSelectedItem(selectedEdge.mGetFont().toString());
+			// TODO: UPDATE END SHAPE
+			EndShapeComboBox.setSelectedItem("None");
+			EdgeDesignComboBox.setSelectedItem(selectedEdge.mGetEdgeStyle().toString());
 		}
 	}
 
@@ -282,6 +410,12 @@ public class EditEdgePanel extends JPanel {
 	private JButton SaveButton;
 	private Box.Filler panelFiller;
 	private JSeparator panelSeperator;
+
+	protected JTabbedPane mainWindowTabbedPane;
+	protected JScrollPane currentPane;
+	protected GraphPanel currentPanel;
+	protected Graph currentGraph;
+	protected String edgeLabel;
 
 	protected Color labelColor;
 	protected Color edgeColor;

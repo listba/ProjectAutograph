@@ -619,6 +619,7 @@ public class mainWindow extends JFrame {
 		}
 		else if(selected == "Edge") {
 			SidePanelScrollPane.setViewportView(editEdgePanel);
+			editEdgePanel.updateFields();
 		}
 		else if(selected == "Both") {
 			SidePanelScrollPane.setViewportView(editNodeEdgePanel);
