@@ -43,8 +43,8 @@ public class AddEdgePanel extends JPanel {
 		String[] fontNames = ge.getAvailableFontFamilyNames();
 		
 		setBackground(new java.awt.Color(255, 255, 255));
-		setMinimumSize(new java.awt.Dimension(200, 510));
-		setPreferredSize(new java.awt.Dimension(200, 510));
+		setMinimumSize(new java.awt.Dimension(200, 512));
+		setPreferredSize(new java.awt.Dimension(200, 512));
 		
 		labelColor = Color.BLACK;
 		edgeColor = Color.BLACK;
@@ -52,7 +52,7 @@ public class AddEdgePanel extends JPanel {
 		// Add Edge Panel
 		AddEdgePanel = new JPanel();
 		AddEdgePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-		AddEdgePanel.setPreferredSize(new java.awt.Dimension(200, 510));
+		AddEdgePanel.setPreferredSize(new java.awt.Dimension(200, 512));
 		
 		// Add Edge Title Label
 		AddEdgeTitleLabel = new JLabel();

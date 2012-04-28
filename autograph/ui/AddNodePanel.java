@@ -51,7 +51,7 @@ public class AddNodePanel extends JPanel {
 		// Add Node Panel
 		AddNodePanel = new JPanel();
 		AddNodePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-		AddNodePanel.setPreferredSize(new java.awt.Dimension(200, 510));
+		AddNodePanel.setPreferredSize(new java.awt.Dimension(200, 512));
 		
 		// Add Node Title Label
 		AddNodeTitleLabel = new JLabel();
@@ -96,7 +96,7 @@ public class AddNodePanel extends JPanel {
 		
 		// Node Subtitle Label
 		NodeSubtitleLabel = new JLabel();
-		NodeSubtitleLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+		NodeSubtitleLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
 		NodeSubtitleLabel.setText("Node");
 		
 		// Node Shape Label
