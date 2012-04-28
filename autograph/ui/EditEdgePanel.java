@@ -99,9 +99,9 @@ public class EditEdgePanel extends JPanel {
 		EdgeDesignLabel = new JLabel();
 		EdgeDesignLabel.setText("Edge Design");
 
-		// End Shape Label
-		EndShapeLabel = new JLabel();
-		EndShapeLabel.setText("End Shape");
+		// Direction Label
+		DirectionLabel = new JLabel();
+		DirectionLabel.setText("Direction");
 
 		// Edge Color Label
 		EdgeColorLabel = new JLabel();
@@ -121,9 +121,9 @@ public class EditEdgePanel extends JPanel {
 		EdgeDesignComboBox = new JComboBox();
 		EdgeDesignComboBox.setModel(new DefaultComboBoxModel(new String[] {"Solid", "Dotted", "Dashed"}));
 
-		// Edge Shape Combo Box
-		EndShapeComboBox = new JComboBox();
-		EndShapeComboBox.setModel(new DefaultComboBoxModel(new String[] {"None", "Line Arrow", "Shape Arrow", "Filled Arrow"}));
+		// Direction Combo Box
+		DirectionComboBox = new JComboBox();
+		DirectionComboBox.setModel(new DefaultComboBoxModel(new String[] {"NoDirection", "StartDirection", "EndDirection", "DoubleDirection"}));
 
 		// Panel Separator
 		panelSeperator = new JSeparator();
@@ -166,14 +166,14 @@ public class EditEdgePanel extends JPanel {
 																				.addGroup(EditEdgePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 																						.addComponent(LabelTextLabel)
 																						.addComponent(LabelFontLabel)
-																						.addComponent(EndShapeLabel)
+																						.addComponent(DirectionLabel)
 																						.addComponent(EdgeColorLabel))
 																						.addGap(10, 10, 10)
 																						.addGroup(EditEdgePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 																								.addComponent(EdgeColorBtn, 0, GroupLayout.DEFAULT_SIZE, 120)
 																								.addComponent(LabelColorBtn, 0, GroupLayout.DEFAULT_SIZE, 120)
 																								.addComponent(EdgeDesignComboBox, 0, GroupLayout.DEFAULT_SIZE, 120)
-																								.addComponent(EndShapeComboBox, 0, GroupLayout.DEFAULT_SIZE, 120)))
+																								.addComponent(DirectionComboBox, 0, GroupLayout.DEFAULT_SIZE, 120)))
 																								.addGroup(EditEdgePanelLayout.createSequentialGroup()
 																										.addGroup(EditEdgePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 																												.addComponent(EdgeDesignLabel)
@@ -211,8 +211,8 @@ public class EditEdgePanel extends JPanel {
 										.addComponent(EdgeDesignComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 										.addGap(18, 18, 18)
 										.addGroup(EditEdgePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-												.addComponent(EndShapeLabel)
-												.addComponent(EndShapeComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+												.addComponent(DirectionLabel)
+												.addComponent(DirectionComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 												.addGap(18, 18, 18)
 												.addGroup(EditEdgePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
 														.addComponent(EdgeColorLabel)
@@ -292,7 +292,7 @@ public class EditEdgePanel extends JPanel {
 				currentEdge.mSetLabelColor(labelColor);
 				currentEdge.mSetEdgeColor(edgeColor);
 				currentEdge.mSetFont(Font.decode((String)LabelFontComboBox.getSelectedItem()));
-				// TODO: UPDATE END SHAPE!
+				currentEdge.mSetDirection((String)DirectionComboBox.getSelectedItem());
 				currentEdge.mSetEdgeStyle((String)EdgeDesignComboBox.getSelectedItem());
 			}
 		}
@@ -332,7 +332,7 @@ public class EditEdgePanel extends JPanel {
 			currentEdge.mSetLabelColor(labelColor);
 			currentEdge.mSetEdgeColor(edgeColor);
 			currentEdge.mSetFont(Font.decode((String)LabelFontComboBox.getSelectedItem()));
-			// TODO: UPDATE END SHAPE!
+			currentEdge.mSetDirection((String)DirectionComboBox.getSelectedItem());
 			currentEdge.mSetEdgeStyle((String)EdgeDesignComboBox.getSelectedItem());
 		}
 
@@ -367,14 +367,14 @@ public class EditEdgePanel extends JPanel {
 		Graph currentGraph = currentPanel.mGetGraph();
 
 		// If there is more than 1 edge selected
-		if(currentGraph.vSelectedItems.mGetSelectedNodes().size() > 1) {
+		if(currentGraph.vSelectedItems.mGetSelectedEdges().size() > 1) {
 
 			// Set the values to defaults, as multiple nodes are selected
 			LabelTextField.setText("");
 			labelColor = Color.BLACK;
 			edgeColor = Color.BLACK;
 			LabelFontComboBox.setSelectedItem("Courier");
-			EndShapeComboBox.setSelectedItem("None");
+			DirectionComboBox.setSelectedItem("NoDirection");
 			EdgeDesignComboBox.setSelectedItem("Solid");
 		}
 		// Otherwise... (only one edge is selected)
@@ -384,8 +384,7 @@ public class EditEdgePanel extends JPanel {
 			labelColor = selectedEdge.mGetLabelColor();
 			edgeColor = selectedEdge.mGetEdgeColor();
 			LabelFontComboBox.setSelectedItem(selectedEdge.mGetFont().toString());
-			// TODO: UPDATE END SHAPE
-			EndShapeComboBox.setSelectedItem("None");
+			DirectionComboBox.setSelectedItem(selectedEdge.mGetDirection().toString());
 			EdgeDesignComboBox.setSelectedItem(selectedEdge.mGetEdgeStyle().toString());
 		}
 	}
@@ -398,8 +397,8 @@ public class EditEdgePanel extends JPanel {
 	private JComboBox EdgeDesignComboBox;
 	private JLabel EdgeDesignLabel;
 	private JLabel EdgeSubtitleLabel;
-	private JComboBox EndShapeComboBox;
-	private JLabel EndShapeLabel;
+	private JComboBox DirectionComboBox;
+	private JLabel DirectionLabel;
 	private JButton LabelColorBtn;
 	private JLabel LabelColorLabel;
 	private JComboBox LabelFontComboBox;

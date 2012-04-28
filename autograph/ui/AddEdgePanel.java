@@ -104,9 +104,9 @@ public class AddEdgePanel extends JPanel {
 		EdgeDesignLabel = new JLabel();
 		EdgeDesignLabel.setText("Edge Design");
 		
-		// End Shape Label
-		EndShapeLabel = new JLabel();
-		EndShapeLabel.setText("End Shape");
+		// Direction Label
+		DirectionLabel = new JLabel();
+		DirectionLabel.setText("Direction");
 		
 		// Edge Color Label
 		EdgeColorLabel = new JLabel();
@@ -126,9 +126,9 @@ public class AddEdgePanel extends JPanel {
 		EdgeDesignComboBox = new JComboBox();
 		EdgeDesignComboBox.setModel(new DefaultComboBoxModel(new String[] {"Solid", "Dotted", "Dashed"}));
 		
-		// Edge Shape Combo Box
-		EndShapeComboBox = new JComboBox();
-		EndShapeComboBox.setModel(new DefaultComboBoxModel(new String[] {"None", "Line Arrow", "Shape Arrow", "Filled Arrow"}));
+		// Direction Combo Box
+		DirectionComboBox = new JComboBox();
+		DirectionComboBox.setModel(new DefaultComboBoxModel(new String[] {"NoDirection", "StartDirection", "EndDirection", "DoubleDirection"}));
 		
 		// Panel Separator
 		panelSeperator = new JSeparator();
@@ -197,7 +197,7 @@ public class AddEdgePanel extends JPanel {
 																				.addGroup(AddEdgePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 																						.addComponent(LabelTextLabel)
 																						.addComponent(LabelFontLabel)
-																						.addComponent(EndShapeLabel)
+																						.addComponent(DirectionLabel)
 																						.addComponent(EdgeColorLabel)
 																						.addComponent(StartNodeLabel)
 																						.addComponent(EndNodeLabel))
@@ -206,7 +206,7 @@ public class AddEdgePanel extends JPanel {
 																								.addComponent(EdgeColorBtn, 0, GroupLayout.DEFAULT_SIZE, 120)
 																								.addComponent(LabelColorBtn, 0, GroupLayout.DEFAULT_SIZE, 120)
 																								.addComponent(EdgeDesignComboBox, 0, GroupLayout.DEFAULT_SIZE, 120)
-																								.addComponent(EndShapeComboBox, 0, GroupLayout.DEFAULT_SIZE, 120)
+																								.addComponent(DirectionComboBox, 0, GroupLayout.DEFAULT_SIZE, 120)
 																								.addComponent(SelectEndNodeComboBox, 0, GroupLayout.DEFAULT_SIZE, 120)
 																								.addComponent(SelectStartNodeComboBox, 0, GroupLayout.DEFAULT_SIZE, 120)))
 																								.addGroup(AddEdgePanelLayout.createSequentialGroup()
@@ -246,8 +246,8 @@ public class AddEdgePanel extends JPanel {
 										.addComponent(EdgeDesignComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 										.addGap(18, 18, 18)
 										.addGroup(AddEdgePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-												.addComponent(EndShapeLabel)
-												.addComponent(EndShapeComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+												.addComponent(DirectionLabel)
+												.addComponent(DirectionComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 												.addGap(18, 18, 18)
 												.addGroup(AddEdgePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
 														.addComponent(EdgeColorLabel)
@@ -406,7 +406,7 @@ public class AddEdgePanel extends JPanel {
 		// If both nodes have been selected
 		if(!(((String)SelectStartNodeComboBox.getSelectedItem()).equals("")) && !(((String)SelectEndNodeComboBox.getSelectedItem()).equals(""))) {
 			// Create the new edge
-			Edge newEdge = new Edge(Integer.toString(numEdges), edgeLabel, startNode, endNode, "NODIRECTION", (String)EdgeDesignComboBox.getSelectedItem(), false);
+			Edge newEdge = new Edge(Integer.toString(numEdges), edgeLabel, startNode, endNode, (String)DirectionComboBox.getSelectedItem(), (String)EdgeDesignComboBox.getSelectedItem(), false);
 			// Set the font
 			newEdge.mSetFont(Font.decode((String)LabelFontComboBox.getSelectedItem()));
 			// Set the Colors
@@ -445,8 +445,8 @@ public class AddEdgePanel extends JPanel {
 	private JComboBox EdgeDesignComboBox;
 	private JLabel EdgeDesignLabel;
 	private JLabel EdgeSubtitleLabel;
-	private JComboBox EndShapeComboBox;
-	private JLabel EndShapeLabel;
+	private JComboBox DirectionComboBox;
+	private JLabel DirectionLabel;
 	private JButton LabelColorBtn;
 	private JLabel LabelColorLabel;
 	private JComboBox LabelFontComboBox;
