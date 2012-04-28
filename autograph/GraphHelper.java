@@ -937,6 +937,7 @@ public class GraphHelper {
 	 * @see     Node
 	 */
 	public static void mDrawNode(Graphics g, Node n){
+		Graphics newG = g.create();
 		// make the assumption that no object's width should be 0
 		if(n.mGetWidth() != 0){
 			int upperLeftX = n.mGetUpperLeftX();
@@ -946,8 +947,8 @@ public class GraphHelper {
 			//           as the beginning coordinates of the graph.
 			// We now need to calculate the optimal position of the lower left portion of the string 
 			// so that the string is centered within the bounds of the circle.
-			g.setFont(n.mGetFont());
-			FontMetrics fm = g.getFontMetrics();
+			newG.setFont(n.mGetFont());
+			FontMetrics fm = newG.getFontMetrics();
 			int labelWidth = fm.stringWidth(n.mGetLabel());
 			int labelHeight = fm.getHeight();
 			int widthDifference = n.mGetWidth() - labelWidth;
@@ -974,7 +975,7 @@ public class GraphHelper {
 			case CIRCLE:
 			case OVAL:
 				//KMW Note: Graphics2D has antialiasing that renders the pictures much clearer.
-				Graphics2D g2 = (Graphics2D)g;
+				Graphics2D g2 = (Graphics2D)newG;
 				g2.setStroke(new BasicStroke());
 				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 				//draw shape first so label is not overwritten
@@ -995,14 +996,14 @@ public class GraphHelper {
 			case RECTANGLE:
 				//KMW Note: don't need to antialias for squares/rectangles. They look fine as is.
 				//draw shape first so label is not overwritten
-				g.setColor(n.mGetFillColor());
-				g.fillRect(upperLeftX, upperLeftY, n.mGetWidth(), n.mGetHeight());
-				g.setColor(n.mGetBorderColor());
-				g.drawRect(upperLeftX, upperLeftY, n.mGetWidth(), n.mGetHeight());
+				newG.setColor(n.mGetFillColor());
+				newG.fillRect(upperLeftX, upperLeftY, n.mGetWidth(), n.mGetHeight());
+				newG.setColor(n.mGetBorderColor());
+				newG.drawRect(upperLeftX, upperLeftY, n.mGetWidth(), n.mGetHeight());
 
 				//draw the label
-				g.setColor(n.mGetLabelColor());
-				g.drawString(n.mGetLabel(), labelLeftX, labelLeftY);
+				newG.setColor(n.mGetLabelColor());
+				newG.drawString(n.mGetLabel(), labelLeftX, labelLeftY);
 				break;
 			case TRIANGLE:
 				//TODO: recalculate label location to fit in the triangle.
@@ -1016,16 +1017,17 @@ public class GraphHelper {
 				y[1] = upperLeftY + n.mGetHeight(); //right point y coordinate
 				y[2] = upperLeftY; //middle point y coordinate
 
-				g.setColor(n.mGetFillColor());
-				g.fillPolygon(x, y, 3);
-				g.setColor(n.mGetBorderColor());
-				g.drawPolygon(x, y, 3);
+				newG.setColor(n.mGetFillColor());
+				newG.fillPolygon(x, y, 3);
+				newG.setColor(n.mGetBorderColor());
+				newG.drawPolygon(x, y, 3);
 
-				g.setColor(n.mGetLabelColor());
-				g.drawString(n.mGetLabel(), labelLeftX, labelLeftY);
+				newG.setColor(n.mGetLabelColor());
+				newG.drawString(n.mGetLabel(), labelLeftX, labelLeftY);
 				break;
 			}
 		}
+		newG.dispose();
 	}
 	
 	/**
@@ -1041,8 +1043,8 @@ public class GraphHelper {
 		//TODO: figure out how we want to handle the case where the edge label is longer than the edge 
 		//      (if we need to recalculate node position etc.)
 		//TODO: account for triangle nodes (edges currently do not intersect at correct locations for triangles)
-
-	   EdgeDrawer edgeDrawer = new EdgeDrawer(g, e);
+		Graphics newG = (Graphics)g.create();
+	   EdgeDrawer edgeDrawer = new EdgeDrawer(newG, e);
 		
 		Node startNode = e.mGetStartNode();
 		Node endNode = e.mGetEndNode();
@@ -1053,6 +1055,7 @@ public class GraphHelper {
 		else{
 		   edgeDrawer.mDrawEdgeToSelf(startNode);
 		}
+		newG.dispose();
 
 	}
 
