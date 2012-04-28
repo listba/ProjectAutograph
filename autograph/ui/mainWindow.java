@@ -615,6 +615,7 @@ public class mainWindow extends JFrame {
 	public static void setSidePanel(String selected) {
 		if(selected == "Node") {
 			SidePanelScrollPane.setViewportView(editNodePanel);
+			editNodePanel.updateFields();
 		}
 		else if(selected == "Edge") {
 			SidePanelScrollPane.setViewportView(editEdgePanel);
@@ -631,7 +632,7 @@ public class mainWindow extends JFrame {
 	}
 	
 	public static void resetSidePane() {
-		SidePanelScrollPane.setViewportView(EditPanel);
+		SidePanelScrollPane.setViewportView(addNodePanel);
 	}
 
 	public static boolean isAutoLabelNodes() {

@@ -5,10 +5,15 @@
 package autograph.ui;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.MouseEvent;
 
 import javax.swing.*;
+
+import autograph.Graph;
+import autograph.GraphPanel;
+import autograph.Node;
 
 public class EditNodePanel extends JPanel {
 
@@ -246,8 +251,99 @@ public class EditNodePanel extends JPanel {
 
 	// The Save Button is clicked
 	protected void SaveBtnActionPerformed(MouseEvent evt) {
-		// TODO Auto-generated method stub
+		// Graph/Window pointers
+		mainWindowTabbedPane = mainWindow.getMainWindowPane();
+		JScrollPane currentPane = (JScrollPane)mainWindowTabbedPane.getSelectedComponent();
+		GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
+		Graph currentGraph = currentPanel.mGetGraph();
+
+		// If more than 1 node is selected
+		if(currentGraph.vSelectedItems.mGetSelectedNodes().size() > 1) {
+			Node currentNode;
+
+			for(int i = 0; i < currentGraph.vSelectedItems.mGetSelectedNodes().size(); i++) {
+
+				// Get the current node
+				currentNode = currentGraph.vSelectedItems.mGetSelectedNodes().get(i);
+
+				// Set the node's new attributes
+				currentNode.mSetBorderColor(borderColor);
+				currentNode.mSetFillColor(fillColor);
+				currentNode.mSetLabelColor(labelColor);
+				currentNode.mSetFont(Font.decode((String)LabelFontComboBox.getSelectedItem()));
+				currentNode.mSetShape((String)NodeShapeComboBox.getSelectedItem());
+
+				// If auto Label Nodes is on
+				if(mainWindow.isAutoLabelNodes()) {
+					// Make a Node Label
+					if(LabelTextField.getText().isEmpty()) {
+						nodeLabel = "Node" + currentNode.mGetId();
+					}
+					// Retrieve the node label
+					else {
+						nodeLabel = LabelTextField.getText();
+					}
+				}
+				// Otherwise...
+				else {
+					// They need to enter a Node Label
+					if(LabelTextField.getText().isEmpty()) {
+						nodeLabel = null;
+						//JOptionPane.showMessageDialog(AddNodePanel.this, "Please specify a Node Label!", "Attention!", JOptionPane.WARNING_MESSAGE);
+						//return;
+					}
+					// Retrieve the node label
+					else {
+						nodeLabel = LabelTextField.getText();
+					}
+				}
+
+				currentNode.mSetLabel(nodeLabel);
+			}
+		}
+		// Otherwise only 1 node is selected
+		else {
+			// Get the current node
+			Node currentNode = currentGraph.vSelectedItems.mGetSelectedNodes().get(0);
+
+			// Set the node's new attributes
+			currentNode.mSetBorderColor(borderColor);
+			currentNode.mSetFillColor(fillColor);
+			currentNode.mSetLabelColor(labelColor);
+			currentNode.mSetFont(Font.decode((String)LabelFontComboBox.getSelectedItem()));
+			currentNode.mSetShape((String)NodeShapeComboBox.getSelectedItem());
+
+			// If auto Label Nodes is on
+			if(mainWindow.isAutoLabelNodes()) {
+				// Make a Node Label
+				if(LabelTextField.getText().isEmpty()) {
+					nodeLabel = "Node" + currentNode.mGetId();
+				}
+				// Retrieve the node label
+				else {
+					nodeLabel = LabelTextField.getText();
+				}
+			}
+			// Otherwise...
+			else {
+				// They need to enter a Node Label
+				if(LabelTextField.getText().isEmpty()) {
+					nodeLabel = null;
+					//JOptionPane.showMessageDialog(AddNodePanel.this, "Please specify a Node Label!", "Attention!", JOptionPane.WARNING_MESSAGE);
+					//return;
+				}
+				// Retrieve the node label
+				else {
+					nodeLabel = LabelTextField.getText();
+				}
+			}
+
+			currentNode.mSetLabel(nodeLabel);
+		}
 		
+		currentGraph.vSelectedItems.mClearSelectedItems();
+		mainWindow.resetSidePane();
+		currentPanel.repaint();
 	}
 
 	/*
@@ -283,6 +379,35 @@ public class EditNodePanel extends JPanel {
 		}
 	}
 
+	protected void updateFields() {
+		// Graph/Window pointers
+		mainWindowTabbedPane = mainWindow.getMainWindowPane();
+		JScrollPane currentPane = (JScrollPane)mainWindowTabbedPane.getSelectedComponent();
+		GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
+		Graph currentGraph = currentPanel.mGetGraph();
+
+		// If there is more than 1 node selected
+		if(currentGraph.vSelectedItems.mGetSelectedNodes().size() > 1) {
+
+			// Set the values to defaults, as multiple nodes are selected
+			LabelTextField.setText("");
+			labelColor = Color.BLACK;
+			fillColor = Color.WHITE;
+			borderColor = Color.BLACK;
+			LabelFontComboBox.setSelectedItem("Courier");
+			NodeShapeComboBox.setSelectedItem("Circle");
+		}
+		// Otherwise... (only one node is selected)
+		else {
+			Node selectedNode = currentGraph.vSelectedItems.mGetSelectedNodes().get(0); 
+			LabelTextField.setText(selectedNode.mGetLabel());
+			labelColor = selectedNode.mGetLabelColor();
+			fillColor = selectedNode.mGetFillColor();
+			borderColor = selectedNode.mGetBorderColor();
+			NodeShapeComboBox.setSelectedItem(selectedNode.mGetShape().toString());
+		}
+	}
+
 	// Variables declarations
 	private JPanel EditNodePanel;
 	private JLabel EditNodeTitleLabel;
@@ -303,6 +428,12 @@ public class EditNodePanel extends JPanel {
 	private Box.Filler panelFiller;
 	private JButton SaveButton;
 	private JSeparator paneSeparator;
+
+	protected JTabbedPane mainWindowTabbedPane;
+	protected JScrollPane currentPane;
+	protected GraphPanel currentPanel;
+	protected Graph currentGraph;
+	protected String nodeLabel;
 
 	protected Color labelColor;
 	protected Color fillColor;

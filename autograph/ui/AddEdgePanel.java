@@ -420,7 +420,7 @@ public class AddEdgePanel extends JPanel {
 				e.printStackTrace();
 			}
 			
-			// Redraw the graph with the new node
+			// Redraw the graph with the new edge
 			GraphHelper.mDrawForceDirectedGraph(currentPanel);
 			currentPanel.repaint();
 			int newWidth = GraphHelper.mGetPreferredImageWidth(currentGraph);

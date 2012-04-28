@@ -38,52 +38,52 @@ public class AddNodePanel extends JPanel {
 		GraphicsEnvironment ge;
 		ge = GraphicsEnvironment.getLocalGraphicsEnvironment(); 
 		String[] fontNames = ge.getAvailableFontFamilyNames();
-		
+
 		setBackground(new java.awt.Color(255, 255, 255));
 		setMinimumSize(new java.awt.Dimension(200, 512));
 		setPreferredSize(new java.awt.Dimension(200, 512));
-		
+
 		// The Colors
 		labelColor = Color.BLACK;
 		fillColor = Color.WHITE;
 		borderColor = Color.BLACK;
-		
+
 		// Add Node Panel
 		AddNodePanel = new JPanel();
 		AddNodePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 		AddNodePanel.setPreferredSize(new java.awt.Dimension(200, 512));
-		
+
 		// Add Node Title Label
 		AddNodeTitleLabel = new JLabel();
 		AddNodeTitleLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); 
 		AddNodeTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 		AddNodeTitleLabel.setText("Add Node");
-		
+
 		// Label Subtitle Label
 		LabelSubtitleLabel = new JLabel();
 		LabelSubtitleLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); 
 		LabelSubtitleLabel.setText("Label");
-		
+
 		// Label Text Label
 		LabelTextLabel = new JLabel();
 		LabelTextLabel.setText("Label Text");
-		
+
 		// Label Text Field
 		LabelTextField = new JTextField();
-		
+
 		// Label Font Label
 		LabelFontLabel = new JLabel();
 		LabelFontLabel.setText("Label Font");
-		
+
 		// Label Font Combo Box
 		LabelFontComboBox = new JComboBox();
 		LabelFontComboBox.setModel(new DefaultComboBoxModel(fontNames));
 		LabelFontComboBox.setSelectedItem("Courier");
-		
+
 		// Label Color Label
 		LabelColorLabel = new JLabel();
 		LabelColorLabel.setText("Label Color");
-		
+
 		// Label Color Button
 		LabelColorBtn = new JButton();
 		LabelColorBtn.setText("Select Color");
@@ -93,24 +93,24 @@ public class AddNodePanel extends JPanel {
 				LabelColorBtnActionPerformed(evt);
 			}
 		});
-		
+
 		// Node Subtitle Label
 		NodeSubtitleLabel = new JLabel();
 		NodeSubtitleLabel.setFont(new java.awt.Font("Tahoma", 1, 11));
 		NodeSubtitleLabel.setText("Node");
-		
+
 		// Node Shape Label
 		NodeShapeLabel = new JLabel();
 		NodeShapeLabel.setText("Node Shape");
-		
+
 		// Border Color Label
 		BorderColorLabel = new JLabel();
 		BorderColorLabel.setText("Border Color");
-		
+
 		// Fill Color Label
 		FillColorLabel = new JLabel();
 		FillColorLabel.setText("Fill Color");
-		
+
 		// Fill Color Button
 		FillColorBtn = new JButton();
 		FillColorBtn.setText("Select Color");
@@ -120,11 +120,11 @@ public class AddNodePanel extends JPanel {
 				FillColorBtnActionPerformed(evt);
 			}
 		});
-		
+
 		// Node Shape Combo Box
 		NodeShapeComboBox = new JComboBox();
 		NodeShapeComboBox.setModel(new DefaultComboBoxModel(new String[] { "Circle", "Oval", "Square", "Rectangle", "Triangle" }));
-		
+
 		// Border Color Button
 		BorderColorBtn = new JButton();
 		BorderColorBtn.setText("Select Color");
@@ -134,10 +134,10 @@ public class AddNodePanel extends JPanel {
 				BorderColorBtnActionPerformed(evt);
 			}
 		});
-		
+
 		// Pane Separator
 		paneSeparator = new JSeparator();
-		
+
 		// Add Node Button
 		addButton = new JButton();
 		addButton.setText("Add Node");
@@ -146,10 +146,10 @@ public class AddNodePanel extends JPanel {
 				AddNodeBtnActionPerformed(evt);
 			}
 		});
-		
+
 		// Filler
 		filler1 = new Box.Filler(new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 32767));
-		
+
 		// Layout
 		javax.swing.GroupLayout AddNodePanelLayout = new GroupLayout(AddNodePanel);
 		AddNodePanel.setLayout(AddNodePanelLayout);
@@ -189,9 +189,9 @@ public class AddNodePanel extends JPanel {
 																												.addComponent(LabelColorLabel))
 																												.addGap(18, 18, 18)
 																												.addGroup(AddNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING))))
-																														.addGap(0, 0, Short.MAX_VALUE)))
-																														.addContainerGap())
-																
+																												.addGap(0, 0, Short.MAX_VALUE)))
+																												.addContainerGap())
+
 				);
 		AddNodePanelLayout.setVerticalGroup(
 				AddNodePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -252,13 +252,13 @@ public class AddNodePanel extends JPanel {
 						.addGap(0, 0, 0))
 				);
 	}
-	
+
 	/*
 	 * The Label Color Button was clicked
 	 */
 	protected void LabelColorBtnActionPerformed(MouseEvent evt) {
 		Color newColor = JColorChooser.showDialog(AddNodePanel.this, "Choose Label Color", labelColor);
-		
+
 		if (newColor != null) {
 			labelColor = newColor;
 		}
@@ -296,7 +296,7 @@ public class AddNodePanel extends JPanel {
 		GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
 		Graph currentGraph = currentPanel.mGetGraph();
 		int numNodes = currentGraph.mGetNodeList().size();	
-		
+
 		// If auto Label Nodes is on
 		if(mainWindow.isAutoLabelNodes()) {
 			// Make a Node Label
@@ -321,7 +321,7 @@ public class AddNodePanel extends JPanel {
 				nodeLabel = LabelTextField.getText();
 			}
 		}
-				
+
 		// Setup the new Node
 		Node newNode = new Node(Integer.toString(numNodes), nodeLabel, (String)NodeShapeComboBox.getSelectedItem(), null);
 		// Set the font
@@ -330,7 +330,7 @@ public class AddNodePanel extends JPanel {
 		newNode.mSetFillColor(fillColor);
 		newNode.mSetLabelColor(labelColor);
 		newNode.mSetBorderColor(borderColor);
-		
+
 		// Try to add the node
 		try {
 			currentGraph.mAddNode(newNode);
@@ -342,13 +342,13 @@ public class AddNodePanel extends JPanel {
 		// Add to the AddEdge lists
 		AddEdgePanel.SelectEndNodeComboBox.addItem(Integer.toString(numNodes) + " - " + nodeLabel);
 		AddEdgePanel.SelectStartNodeComboBox.addItem(Integer.toString(numNodes) + " - " + nodeLabel);
-		
+
 		// Redraw the graph with the new node
+		GraphHelper.mDrawForceDirectedGraph(currentPanel);
 		currentPanel.repaint();
 		int newWidth = GraphHelper.mGetPreferredImageWidth(currentGraph);
 		currentPanel.setPreferredSize(new Dimension(newWidth, newWidth));
 		currentPane.revalidate();
-		GraphHelper.mDrawForceDirectedGraph(currentPanel);
 		//mainWindow.resetSidePane();
 	}
 
@@ -378,7 +378,7 @@ public class AddNodePanel extends JPanel {
 	protected GraphPanel currentPanel;
 	protected Graph currentGraph;
 	protected String nodeLabel;
-	
+
 	protected Color labelColor;
 	protected Color fillColor;
 	protected Color borderColor;
