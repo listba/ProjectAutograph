@@ -383,12 +383,28 @@ public class EditEdgePanel extends JPanel {
 			LabelTextField.setText(selectedEdge.mGetLabel());
 			labelColor = selectedEdge.mGetLabelColor();
 			edgeColor = selectedEdge.mGetEdgeColor();
-			LabelFontComboBox.setSelectedItem(selectedEdge.mGetFont().toString());
-			DirectionComboBox.setSelectedItem(selectedEdge.mGetDirection().toString());
-			EdgeDesignComboBox.setSelectedItem(selectedEdge.mGetEdgeStyle().toString());
+			LabelFontComboBox.setSelectedItem(selectedEdge.mGetFont().getFontName());
+			DirectionComboBox.setSelectedItem(badCodeStuff(selectedEdge.mGetDirection().toString()));
+			EdgeDesignComboBox.setSelectedItem(makeRealWord(selectedEdge.mGetEdgeStyle().toString()));
 		}
 	}
 
+	private String makeRealWord(String fakeWord) {
+		String realWord = fakeWord.substring(0,1).toUpperCase();
+		realWord += fakeWord.substring(1).toLowerCase();
+		return realWord;
+	}
+	private String badCodeStuff(String derpString) {
+		if (derpString.equals("NODIRECTION")) {
+			return "NoDirection";
+		} else if (derpString.equals("StartDirection")) {
+			return "StartDirection";
+		} else if (derpString.equals("ENDDIRECTION")) {
+			return "EndDirection";
+		} else {
+			return "DoubleDirection";
+		}
+	}
 	// Variables declaration
 	private JPanel EditEdgePanel;
 	private JLabel EditEdgeTitleLabel;

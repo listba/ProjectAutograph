@@ -404,9 +404,18 @@ public class EditNodePanel extends JPanel {
 			labelColor = selectedNode.mGetLabelColor();
 			fillColor = selectedNode.mGetFillColor();
 			borderColor = selectedNode.mGetBorderColor();
-			NodeShapeComboBox.setSelectedItem(selectedNode.mGetShape().toString());
-			LabelFontComboBox.setSelectedItem(selectedNode.mGetFont().toString());
+			String temp = selectedNode.mGetShape().toString();
+			temp = makeRealWord(temp);
+			NodeShapeComboBox.setSelectedItem(temp);
+			LabelFontComboBox.setSelectedItem(selectedNode.mGetFont().getFontName());
+			NodeShapeComboBox.revalidate();
 		}
+	}
+
+	private String makeRealWord(String fakeWord) {
+		String realWord = fakeWord.substring(0,1).toUpperCase();
+		realWord += fakeWord.substring(1).toLowerCase();
+		return realWord;
 	}
 
 	// Variables declarations
