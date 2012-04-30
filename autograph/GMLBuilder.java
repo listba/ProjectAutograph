@@ -20,7 +20,7 @@ public class GMLBuilder {
     * @param graph - the graph to convert into GML
     */
    public void mBuildGML(Graph graph){
-      vGML.append("Creator \"ProjectAutograph\" \n");
+      vGML.append("Creator \"ProjectAG\" \n");
       vGML.append("Version 0.5 \n");
       if(graph != null){
          vGML.append("graph \n [\n");
