@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 
+import autograph.Node.NodeShape;
+
 public class EdgeDrawer {
    private static Graphics vGraphics;
    private static Edge vEdge;
@@ -88,28 +90,102 @@ public class EdgeDrawer {
    }
    
    /**
-    * Draws the arrow head given the coordinates for the starting and ending points of the line.
+    * Draws the arrow head given the coordinates for the center points of the start and end nodes.
     * @param g - the graphics object to draw with
     * @param startX - the beginning x coordinate
     * @param startY - the beginning y coordinate
     * @param endX - the ending x coordinate
     * @param endY - the ending y coordinate
+    * @param startNode - the node the arrow is pointing at.
+    * @param bDrawingToSelf - true edge starts and finishes at same node (is handled differently than other edges)
     */
-   private static void mDrawArrowHead(int startX, int startY, int endX, int endY){
-      Graphics2D g2 = (Graphics2D)(vGraphics);
-      double phi = Math.toRadians(40);
-      int barb = 10;
-      double dy = startY - endY;
-      double dx = startX - endX;
-      double theta = Math.atan2(dy, dx);
-      
-      double x, y, rho = theta + phi;
-      for(int j = 0; j < 2; j++){
-         x = startX - barb * Math.cos(rho);
-         y = startY - barb * Math.sin(rho);
-         g2.draw(new Line2D.Double(startX, startY, x, y));
-         rho = theta - phi;
-      }
+   private static void mDrawArrowHead(int startX, int startY, int endX, int endY, Node startNode, Boolean bDrawingToSelf){
+		double dy = startY - endY;
+		double dx = startX - endX;
+		double theta = Math.atan2(dy, dx);
+		
+		double newStartX = (double)startX;
+		double newStartY = (double)startY;
+	    //KMW Note: Because we are passing in the center points for the nodes, we need to calculate the
+	    //          the intersection of the edge and the node for each shape type and draw the arrow there.
+		if(!bDrawingToSelf){
+			
+			//change the startX and startY components to be the points where the edge intersects with the node.
+			double widthOffset = 0;
+			double heightOffset = 0;
+			int width = 0;
+			switch(startNode.mGetShape()){
+				case CIRCLE:
+				case OVAL:
+					width = startNode.mGetWidth();
+					widthOffset = (width/2) * Math.cos(theta);
+					heightOffset = (width/2) * Math.sin(theta);
+					newStartX = startX - widthOffset;
+					newStartY = startY - heightOffset;
+					break;
+				case SQUARE:
+				case RECTANGLE:
+					//KMW Note: We handle squares by looking for each edge and calculating
+					//          a vertical and horizontal offset for each.
+					width = startNode.mGetWidth();
+					double degTheta = Math.toDegrees(theta);
+				  	if((degTheta < 0 && degTheta >= -45) || (degTheta >= 0 && degTheta <= 45)){
+				  		//we are on the left edge
+				  		widthOffset = (width/2);
+				  		heightOffset = (width/2) * Math.tan(theta);
+				  		newStartX = startX - widthOffset;
+				  		newStartY = startY - heightOffset;
+				  	}
+				  	else if((degTheta <= - 135 && degTheta >= -180) || (degTheta <= 180 && degTheta >= 135)){
+				  		//we are on the right edge.
+				  		widthOffset = (width/2);
+				  		heightOffset = (width/2) * Math.tan(theta);
+				  		newStartX = startX + widthOffset;
+				  		newStartY = startY + heightOffset;
+				  	}
+				  	else if((degTheta < 135 && degTheta > 45)){
+				  		//we are on the top edge
+				  		heightOffset = (width/2);
+				  		widthOffset = (width/2)/Math.tan(theta);
+				  		newStartX = startX - widthOffset;
+				  		newStartY = startY - heightOffset;
+				  	}
+				  	else{
+				  		heightOffset = (width/2);
+				  		widthOffset = (width/2)/Math.tan(theta);
+				  		newStartX = startX + widthOffset;
+				  		newStartY = startY + heightOffset;
+				  	}
+					break;
+				  		
+				case TRIANGLE:
+					//blow up because I haven't done the trig to compute triangle stuff yet.
+					//(just doing circle stuff for now.)
+					width = startNode.mGetWidth();
+					widthOffset = (width/2) * Math.cos(theta);
+					heightOffset = (width/2) * Math.sin(theta);
+					newStartX = startX - widthOffset;
+					newStartY = startY - heightOffset;
+					break;
+				default:
+					break;
+			}
+		}
+	  //otherwise mDrawArrowHead has been called with the points of intersection already
+	  
+	  
+		Graphics2D g2 = (Graphics2D)(vGraphics);
+		double phi = Math.toRadians(40);
+		int barb = 20;
+		  
+		  
+		double x, y, rho = theta + phi;
+		for(int j = 0; j < 2; j++){
+		   x = newStartX - barb * Math.cos(rho);
+		   y = newStartY - barb * Math.sin(rho);
+		   g2.draw(new Line2D.Double(newStartX, newStartY, x, y));
+		   rho = theta - phi;
+		}
    }
    
    /**
@@ -120,112 +196,22 @@ public class EdgeDrawer {
     * @param g - the graphics object to do the drawing.
     */
    public void mDrawStraightEdge(Node startNode, Node endNode){
-      int startX;
-      int startY;
-      int endX;
-      int endY;
-      int differenceX;
-      int differenceY;
       
       int startNodeCenterX = startNode.mGetCenterX();
       int startNodeCenterY = startNode.mGetCenterY();
       int endNodeCenterX = endNode.mGetCenterX();
       int endNodeCenterY = endNode.mGetCenterY();
 
-      //first thing we do is calculate which of the 4 points we will draw the edge from on each node
-      if(startNodeCenterX - endNodeCenterX > 0){
-         //we will either use the left, top, or bottom point
-         differenceX = startNodeCenterX - endNodeCenterX;
-         if(startNodeCenterY - endNodeCenterY > 0){
-            //we will either user the left point or the top point
-            differenceY = startNodeCenterY - endNodeCenterY;
-            if (differenceX > differenceY){ 
-               //startNodeX > endNodeX && startNodeY > endNodeY && x difference is bigger.
+      vEdge.mSetStartCoordinates(startNodeCenterX, startNodeCenterY);
+      vEdge.mSetEndCoordinates(endNodeCenterX, endNodeCenterY);
 
-               //use the left point on the start node and right point on the end node
-               startX = startNodeCenterX - startNode.mGetWidth()/2;
-               startY = startNodeCenterY;
-               endX = endNodeCenterX + endNode.mGetWidth()/2;
-               endY = endNodeCenterY;
-            }
-            else { // startNodex > endNodeX && startNodeY > endNodeY && y difference is bigger
-               //use the top point on the start node and bottom point on the end node
-               startX = startNodeCenterX;
-               startY = startNodeCenterY - startNode.mGetHeight()/2;
-               endX = endNodeCenterX;
-               endY = endNodeCenterY + endNode.mGetHeight()/2;
-            }
-         }
-         else{ // startNodeX > endNodeX && endNodeY >= startNodeY
-            //we will either use the left point or the bottom point
-            differenceY = endNodeCenterY - startNodeCenterY;
-            if (differenceX > differenceY) {
-               //startNodeX > endNodeX && endNodeY >= startNodeY && differenceX > differenceY 
-
-               //use the left point on the start node and the right point on the end node
-               startX = startNodeCenterX - startNode.mGetWidth()/2;
-               startY = startNodeCenterY;
-               endX =  endNodeCenterX + endNode.mGetWidth()/2;
-               endY = endNodeCenterY;
-            }
-            else{
-               //use the bottom point on the start node and the top point on the end node
-               startX = startNodeCenterX;
-               startY = startNodeCenterY + startNode.mGetHeight()/2;
-               endX = endNodeCenterX;
-               endY = endNodeCenterY - endNode.mGetHeight()/2;
-            }
-         }
-      }
-      else{
-         //we will either use the right, top, or bottom point on the start node
-         differenceX = endNodeCenterX - startNodeCenterX;
-         if(startNodeCenterY - endNodeCenterY > 0){
-            //use either right point or top point
-            differenceY = startNodeCenterY - endNodeCenterY;
-            if(differenceX > differenceY){
-               //use the right point on the start node and the left point on the end node
-               startX = startNodeCenterX + startNode.mGetWidth()/2;
-               startY = startNodeCenterY;
-               endX = endNodeCenterX - endNode.mGetWidth()/2;
-               endY = endNodeCenterY;
-            }
-            else{
-               //use the top point on the start node and the bottom point on the end node
-               startX = startNodeCenterX;
-               startY = startNodeCenterY - startNode.mGetHeight()/2;
-               endX = endNodeCenterX;
-               endY = endNodeCenterY + endNode.mGetWidth()/2;
-            }
-         }
-         else{
-            //use either right point or bottom point
-            differenceY = endNodeCenterY - startNodeCenterY;
-            if(differenceX > differenceY){
-               //use right point on the start node and the left point on the end node
-               startX = startNodeCenterX + startNode.mGetWidth()/2;
-               startY = startNodeCenterY;
-               endX = endNodeCenterX - endNode.mGetWidth()/2;
-               endY = endNodeCenterY;
-            }
-            else{
-               //use bottom point on the start node and the top point on the end node
-               startX = startNodeCenterX;
-               startY = startNodeCenterY + startNode.mGetHeight()/2;
-               endX = endNodeCenterX;
-               endY = endNodeCenterY - endNode.mGetHeight()/2;
-            }
-         }
-      }
-      vEdge.mSetStartCoordinates(startX, startY);
-      vEdge.mSetEndCoordinates(endX, endY);
-
-      Graphics2D gr2 = (Graphics2D)vGraphics;
+      Graphics2D gr2 = (Graphics2D)vGraphics.create();
       mSetGraphicsStyle(gr2);
-      gr2.drawLine(startX, startY, endX, endY);
+      gr2.drawLine(startNodeCenterX, startNodeCenterY, endNodeCenterX, endNodeCenterY);
 
-      mDrawEdgeLabelForStraightEdge(startX, startY, endX, endY);
-
+      mDrawEdgeLabelForStraightEdge(startNodeCenterX, startNodeCenterY, endNodeCenterX, endNodeCenterY);
+      
+      vEdge.mSetDirection(Edge.Direction.DOUBLEDIRECTION);
       //KMW Note: for now we will only support one style of arrow. (a filled in triangle)
       //          at some point we will need to support the other types.
       switch(vEdge.mGetDirection()){
@@ -233,14 +219,14 @@ public class EdgeDrawer {
          //we are done. It will work
          break;
       case STARTDIRECTION:
-         mDrawArrowHead(startX, startY, endX, endY);
+         mDrawArrowHead(startNodeCenterX, startNodeCenterY, endNodeCenterX, endNodeCenterY, startNode, false);
          break;
       case ENDDIRECTION:
-         mDrawArrowHead(endX, endY, startX, startY);
+         mDrawArrowHead(endNodeCenterX, endNodeCenterY, startNodeCenterX, startNodeCenterY, endNode, false);
          break;
       case DOUBLEDIRECTION:
-         mDrawArrowHead(startX, startY, endX, endY);
-         mDrawArrowHead(endX, endY, startX, startY);
+         mDrawArrowHead(startNodeCenterX, startNodeCenterY, endNodeCenterX, endNodeCenterY, startNode, false);
+         mDrawArrowHead(endNodeCenterX, endNodeCenterY, startNodeCenterX, startNodeCenterY, endNode, false);
          break;
       }
    }
@@ -276,23 +262,22 @@ public class EdgeDrawer {
       gr2.drawArc(arcUpperLeftX, arcUpperLeftY, SELF_ARC_WIDTH, SELF_ARC_HEIGHT, 270, 270);
       
       mDrawEdgeLabelForSelf();
-      vEdge.mSetDirection(Edge.Direction.DOUBLEDIRECTION);
       switch(vEdge.mGetDirection()){
          case NODIRECTION:
             break;
          case STARTDIRECTION:
             //we are going to pretend that it is an arrow coming from the direct right 
             //and call mDrawArrowHead with data to indicate this.
-            mDrawArrowHead(vEdge.mGetStartX(), vEdge.mGetStartY(), vEdge.mGetStartX()+50, vEdge.mGetStartY());
+            mDrawArrowHead(vEdge.mGetStartX(), vEdge.mGetStartY(), vEdge.mGetStartX()+50, vEdge.mGetStartY(), startNode, true);
             break;
          case ENDDIRECTION:
             //we are going to pretend that it is an arrow coming from directly above 
             //and call mDrawArrowHead with data to indicate this.
-            mDrawArrowHead(vEdge.mGetEndX(), vEdge.mGetEndY(), vEdge.mGetEndX(), vEdge.mGetEndY()-50);
+            mDrawArrowHead(vEdge.mGetEndX(), vEdge.mGetEndY(), vEdge.mGetEndX(), vEdge.mGetEndY()-50, startNode, true);
             break;
          case DOUBLEDIRECTION:
-            mDrawArrowHead(vEdge.mGetStartX(), vEdge.mGetStartY(), vEdge.mGetStartX()+50, vEdge.mGetStartY());
-            mDrawArrowHead(vEdge.mGetEndX(), vEdge.mGetEndY(), vEdge.mGetEndX(), vEdge.mGetEndY()-50);
+            mDrawArrowHead(vEdge.mGetStartX(), vEdge.mGetStartY(), vEdge.mGetStartX()+50, vEdge.mGetStartY(), startNode, true);
+            mDrawArrowHead(vEdge.mGetEndX(), vEdge.mGetEndY(), vEdge.mGetEndX(), vEdge.mGetEndY()-50, startNode, true);
             break;
          default:
             break;
