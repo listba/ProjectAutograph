@@ -211,7 +211,6 @@ public class EdgeDrawer {
 
       mDrawEdgeLabelForStraightEdge(startNodeCenterX, startNodeCenterY, endNodeCenterX, endNodeCenterY);
       
-      vEdge.mSetDirection(Edge.Direction.DOUBLEDIRECTION);
       //KMW Note: for now we will only support one style of arrow. (a filled in triangle)
       //          at some point we will need to support the other types.
       switch(vEdge.mGetDirection()){
