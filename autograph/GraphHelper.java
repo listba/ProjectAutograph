@@ -2,7 +2,6 @@ package autograph;
 import java.awt.*;
 import autograph.GraphPanel;
 
-import java.awt.geom.Line2D;
 import java.awt.image.*;
 import java.io.*;
 
@@ -91,47 +90,6 @@ public class GraphHelper {
 		//tweak this as necessary
 		imageWidth = (numNodes/2)*maxNodeWidth+500;
 		return imageWidth;
-	}
-
-	/**
-	 * Use the circle drawing algorithm to layout the locations for the nodes/edges
-	 * @param graph - the graph object to draw
-	 * @param g - the graphics element to use for drawing
-	 * @param panel - the panel to draw on
-	 */
-	public static void mDrawGraphInCircle(GraphPanel panel){
-		Graph graph = panel.mGetGraph();
-		ArrayList<Node> nodes = graph.mGetNodeList();
-		int numNodes = nodes.size();
-		double currentAngle = 0;
-		double angleIncrement = 360/numNodes;
-
-		//use the center of the JPanel for the center of our circle.
-		int centerX = panel.getWidth()/2;
-		int centerY = panel.getHeight()/2;
-		//the circumference of the circle will be bounded by the panel, with 30 pixels of padding
-		int radius = Math.min(centerX, centerY) - 30;
-
-		for(int i = 0; i < numNodes; i++){
-			int nodeX;
-			int nodeY;
-			if(currentAngle <= 90 || currentAngle >= 270){
-				nodeX = (int)(Math.cos(currentAngle)*radius) + centerX;
-			}
-			else{
-				nodeX = centerX - (int)(Math.cos(currentAngle)*radius);
-			}
-
-			if(currentAngle <= 180){
-				nodeY = centerY - (int)(Math.sin(currentAngle)*radius);
-			}
-			else{
-				nodeY = (int)(Math.sin(currentAngle)*radius) + centerY;
-			}
-			//nodes.get(i).mSetCenterLocation(nodeX, nodeY);
-			//mDrawNode(g, nodes.get(i));
-			currentAngle = currentAngle+angleIncrement;
-		}
 	}
 
 	/**
@@ -310,33 +268,6 @@ public class GraphHelper {
 		for(int q = 0; q < numNodes; q++) {
 			Node v = nodes.get(q);
 			v.mSetCenterLocation(v.mGetCenterX() - totalX, v.mGetCenterY() - totalY);
-		}
-	}
-
-	/**
-	 * Draws the graph object in the most efficient way possible
-	 *
-	 * Note: Probably going to have a Java drawing return type, not sure on details of implementation yet.
-	 *
-	 * @param   graph    The Graph to be drawn
-	 * @see     Graph
-	 */
-	public static void mDrawGraph(Graph graph, Graphics g, GraphPanel panel) {
-		// TODO: This is a lot slower than it needs to be.. You should use a hash map with the node ID
-		// TODO: have user dynamically set width/height rather than hard coding it here. 
-		//      (Or dynamically calculate height/width based on label size)
-		//      At the momemnt the node size will be updated if the label does not 
-		//      fit in the node within the mDrawNode function.
-
-		// Set background color of graphics object to white
-		g.setColor(Color.WHITE);
-
-		mDrawGraphInCircle(panel);
-
-		// Draw edges
-		ArrayList<Edge> edges = graph.mGetEdgeList();
-		for (Edge edge : edges) {
-			mDrawEdge(g, edge);
 		}
 	}
 

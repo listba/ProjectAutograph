@@ -405,28 +405,40 @@ public class AddEdgePanel extends JPanel {
 		}
 		// If both nodes have been selected
 		if(!(((String)SelectStartNodeComboBox.getSelectedItem()).equals("")) && !(((String)SelectEndNodeComboBox.getSelectedItem()).equals(""))) {
-			// Create the new edge
-			Edge newEdge = new Edge(Integer.toString(numEdges), edgeLabel, startNode, endNode, (String)DirectionComboBox.getSelectedItem(), (String)EdgeDesignComboBox.getSelectedItem(), false);
-			// Set the font
-			newEdge.mSetFont(Font.decode((String)LabelFontComboBox.getSelectedItem()));
-			// Set the Colors
-			newEdge.mSetEdgeColor(edgeColor);
-			newEdge.mSetLabelColor(labelColor);
+			
 
-			// Try to add the node
+			// Try to add the edge
 			try {
-				currentGraph.mAddEdge(newEdge);
+			   //KMW Note: do all of this in the try, because if it fails to create the edge we don't want to
+			   //          add it to the edge list.
+			   Edge.mValidateEdge(Integer.toString(numEdges), startNode, endNode);
+			   // Create the new edge
+	         Edge newEdge = new Edge(Integer.toString(numEdges), edgeLabel, startNode, endNode, (String)DirectionComboBox.getSelectedItem(), (String)EdgeDesignComboBox.getSelectedItem(), false);
+	         if(newEdge != null){
+   	         // Set the font
+   	         newEdge.mSetFont(Font.decode((String)LabelFontComboBox.getSelectedItem()));
+   	         // Set the Colors
+   	         newEdge.mSetEdgeColor(edgeColor);
+   	         newEdge.mSetLabelColor(labelColor);
+   				currentGraph.mAddEdge(newEdge);
+   				
+   				//KMW Note: We should not attempt to draw the graph if we get a 
+   				//          CannotAddEdge exception.
+   			   // Redraw the graph with the new edge
+   	         GraphHelper.mDrawForceDirectedGraph(currentPanel);
+   	         currentPanel.repaint();
+   	         int newWidth = GraphHelper.mGetPreferredImageWidth(currentGraph);
+   	         currentPanel.setPreferredSize(new Dimension(newWidth, newWidth));
+   	         currentPane.revalidate();
+   	         //mainWindow.resetSidePane();
+	         }
 			} catch (CannotAddEdgeException e) {
+			   JOptionPane errorDialog = new JOptionPane();
+			   JOptionPane.showMessageDialog(errorDialog, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 			}
 			
-			// Redraw the graph with the new edge
-			GraphHelper.mDrawForceDirectedGraph(currentPanel);
-			currentPanel.repaint();
-			int newWidth = GraphHelper.mGetPreferredImageWidth(currentGraph);
-			currentPanel.setPreferredSize(new Dimension(newWidth, newWidth));
-			currentPane.revalidate();
-			//mainWindow.resetSidePane();
+			
 		}
 		else {
 			JOptionPane.showMessageDialog(AddEdgePanel.this, "Please select both nodes!", "Attention!", JOptionPane.WARNING_MESSAGE);

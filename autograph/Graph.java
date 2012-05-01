@@ -10,8 +10,8 @@ import autograph.exception.*;
  * @version 1.0
  */
 public class Graph implements Serializable {
-	private ArrayList<Node> vNodeList;
-	private ArrayList<Edge> vEdgeList;
+	private static ArrayList<Node> vNodeList;
+	private static ArrayList<Edge> vEdgeList;
 	private String vTitle;
 	public SelectedItems vSelectedItems;
 
@@ -193,10 +193,6 @@ public class Graph implements Serializable {
 	 * 
 	 */
 	public void mAddEdge(Edge edge) throws CannotAddEdgeException {
-		//TODO: link this function to the Add Edge button of the UI
-		//TODO: pass in or retrieve the graphics object in the JPanel,
-		//      clear the current image and call GraphHelper.mDrawGraph 
-		//      on the "this" object to rearrange the nodes with the new edge.
 		try {
 			vEdgeList.add(edge);
 		}
@@ -262,4 +258,63 @@ public class Graph implements Serializable {
 			throw new CannotRemoveNodeException("Error while removing node!", e);
 		}
 	}
+
+	/**
+	 * Checks the edge list for a twin to edge and resets the twin variables if a twin 
+	 * is found.
+	 * @param edge
+	 * @return
+	 */
+   public static Boolean mCheckForEdgeTwin(Edge edge){
+      Boolean hasTwin = false;
+      
+      for(int i = 0; i < vEdgeList.size(); i++){
+        if(vEdgeList.get(i) != edge){
+           if(vEdgeList.get(i).mGetEndNode() == edge.mGetEndNode() && vEdgeList.get(i).mGetStartNode() == edge.mGetStartNode()){
+              hasTwin = true;
+              vEdgeList.get(i).mSetTwinStatus(true);
+              vEdgeList.get(i).mSetTwin(edge);
+              edge.mSetTwin(vEdgeList.get(i));
+              break;
+           }
+           else if(vEdgeList.get(i).mGetEndNode() == edge.mGetStartNode() && vEdgeList.get(i).mGetStartNode() == edge.mGetEndNode()){
+              hasTwin = true;
+              vEdgeList.get(i).mSetTwinStatus(true);
+              vEdgeList.get(i).mSetTwin(edge);
+              edge.mSetTwin(edge);
+              break;
+           }
+        }
+      }
+      
+      return hasTwin;
+   }
+
+   /**
+    * Check if edgetToCheck already has two twins (we don't want three edges between the same nodes.)
+    * @param startNode - the startNode for that edge
+    * @param endNode - the end node for that edge.
+    * @return - true if it has multiple twins, false otherwise.
+    */
+   public static boolean mEdgeHasMultipleTwins(Node startNode, Node endNode) {
+      Boolean hasMultipleTwins = false;
+      
+      for(int i = 0; i < vEdgeList.size(); i++){
+         //Keep the edgeToCheck variable in case edgeToCheck has been added to vEdgeList at this point.
+         if(vEdgeList.get(i).mGetEndNode() == endNode && vEdgeList.get(i).mGetStartNode() == startNode){
+            if(vEdgeList.get(i).mGetTwinStatus() == true){
+               hasMultipleTwins = true;
+               break;
+            }
+         }
+         if(vEdgeList.get(i).mGetEndNode() == startNode && vEdgeList.get(i).mGetStartNode() == endNode){
+            if(vEdgeList.get(i).mGetTwinStatus() == true){
+               hasMultipleTwins = true;
+               break;
+            }
+         }
+      }
+      
+      return hasMultipleTwins;
+   }
 }

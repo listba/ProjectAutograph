@@ -48,13 +48,18 @@ public class Edge implements Serializable {
 	private Color vEdgeColor;
 	private Color vLabelColor;
 	private Font vFont;
+	private Boolean vHasTwin;
+	private Edge vTwin;
 
-	private void mValidateEdge(String id, Node startNode, Node endNode) throws CannotAddEdgeException{
+	public static void mValidateEdge(String id, Node startNode, Node endNode) throws CannotAddEdgeException{
 		if(id == null || id.isEmpty()){
 			throw new CannotAddEdgeException("Edge must contain valid id.");
 		}
 		else if(startNode == null || endNode == null){
 			throw new CannotAddEdgeException("Edge must have start and end node values.");
+		}
+		else if(Graph.mEdgeHasMultipleTwins(startNode, endNode)){
+		   throw new CannotAddEdgeException("Cannot have more than two edges between nodes");
 		}
 	}
 
@@ -71,14 +76,11 @@ public class Edge implements Serializable {
 	 */
 	public Edge(String id, String label, Node startNode, Node endNode,
 			String direction, String style, boolean bIgnoreValidation){
-		try{
-			if(!bIgnoreValidation){
-				mValidateEdge(id, startNode, endNode);
-			}
 			vId = id;
 			vLabel = label;
 			vStartNode = startNode;
 			vEndNode = endNode;
+			vTwin = null;
 
 			if(direction != null){
 				try {
@@ -105,11 +107,7 @@ public class Edge implements Serializable {
 			vEdgeColor = Color.black;
 			vLabelColor = Color.black;
 			vFont = new Font("Monospaced", 0, 10);
-		}
-		catch (CannotAddEdgeException e){
-			//TODO: This may need changed to an error file, etc
-			System.out.println("Error while trying to add edge: " + e.getError());
-		}
+			vHasTwin = Graph.mCheckForEdgeTwin(this);
 	}
 
 	/**
@@ -216,6 +214,37 @@ public class Edge implements Serializable {
 	 */
 	public void mSetEdgeStyle(EdgeStyle style){
 		vEdgeStyle = style;
+	}
+	
+	/**
+	 * Sets the twin status of the edge (true if it has a twin)
+	 * @param hasTwin
+	 */
+	public void mSetTwinStatus(Boolean hasTwin){
+	   vHasTwin = hasTwin;
+	}
+	
+	/**
+	 * Retrieves the twin status of the edge.
+	 */
+	public Boolean mGetTwinStatus(){
+	   return vHasTwin;
+	}
+	
+	/**
+	 * Sets sets the edge's twin.
+	 * @param twin
+	 */
+	public void mSetTwin(Edge twin){
+	   vTwin = twin;
+	}
+	
+	/**
+	 * Retrieves the edge's twin.
+	 * @return
+	 */
+	public Edge mGetTwin(){
+	   return vTwin;
 	}
 
 	/**
