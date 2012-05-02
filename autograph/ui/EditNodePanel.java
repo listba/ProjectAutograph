@@ -256,6 +256,7 @@ public class EditNodePanel extends JPanel {
 		JScrollPane currentPane = (JScrollPane)mainWindowTabbedPane.getSelectedComponent();
 		GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
 		Graph currentGraph = currentPanel.mGetGraph();
+		int numNodes = currentGraph.mGetNodeList().size();
 
 		// If more than 1 node is selected
 		if(currentGraph.vSelectedItems.mGetSelectedNodes().size() > 1) {
@@ -339,6 +340,17 @@ public class EditNodePanel extends JPanel {
 			}
 
 			currentNode.mSetLabel(nodeLabel);
+		}
+		
+		// Clear the old list
+		AddEdgePanel.SelectEndNodeComboBox.removeAllItems();
+		AddEdgePanel.SelectEndNodeComboBox.addItem("");
+		AddEdgePanel.SelectStartNodeComboBox.removeAllItems();
+		AddEdgePanel.SelectStartNodeComboBox.addItem("");
+		// Add to the AddEdge lists
+		for(int i = 0; i < numNodes; i++) {
+			AddEdgePanel.SelectEndNodeComboBox.addItem(currentGraph.mGetNodeList().get(i).mGetId() + " - " + currentGraph.mGetNodeList().get(i).mGetLabel());
+			AddEdgePanel.SelectStartNodeComboBox.addItem(currentGraph.mGetNodeList().get(i).mGetId() + " - " + currentGraph.mGetNodeList().get(i).mGetLabel());
 		}
 		
 		currentGraph.vSelectedItems.mClearSelectedItems();

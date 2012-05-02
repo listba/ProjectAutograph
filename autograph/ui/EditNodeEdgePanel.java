@@ -132,7 +132,7 @@ public class EditNodeEdgePanel extends JPanel {
 		
 		// Save Button
 		SaveButton = new JButton();
-		SaveButton.setLabel("Save Changes");
+		SaveButton.setText("Save Changes");
 		
 		// Panel Filler
 		filler1 = new Box.Filler(new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 32767));	
