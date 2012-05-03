@@ -44,12 +44,12 @@ public class EditEdgePanel extends JPanel {
 		labelColor = Color.BLACK;
 		edgeColor = Color.BLACK;
 
-		// Add Edge Panel
+		// Edit Edge Panel
 		EditEdgePanel = new JPanel();
 		EditEdgePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 		EditEdgePanel.setPreferredSize(new java.awt.Dimension(200, 512));
 
-		// Add Edge Title Label
+		// Edit Edge Title Label
 		EditEdgeTitleLabel = new JLabel();
 		EditEdgeTitleLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); 
 		EditEdgeTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -352,7 +352,7 @@ public class EditEdgePanel extends JPanel {
 
 	// If the Label Color Button is clicked
 	protected void LabelColorBtnActionPerformed(MouseEvent evt) {
-		Color newColor = JColorChooser.showDialog(EditEdgePanel.this, "Choose Border Color", labelColor);
+		Color newColor = JColorChooser.showDialog(EditEdgePanel.this, "Choose Label Color", labelColor);
 
 		if (newColor != null) {
 			labelColor = newColor;
@@ -369,7 +369,7 @@ public class EditEdgePanel extends JPanel {
 		// If there is more than 1 edge selected
 		if(currentGraph.vSelectedItems.mGetSelectedEdges().size() > 1) {
 
-			// Set the values to defaults, as multiple nodes are selected
+			// Set the values to defaults, as multiple edges are selected
 			LabelTextField.setText("");
 			labelColor = Color.BLACK;
 			edgeColor = Color.BLACK;
@@ -397,7 +397,7 @@ public class EditEdgePanel extends JPanel {
 	private String badCodeStuff(String derpString) {
 		if (derpString.equals("NODIRECTION")) {
 			return "NoDirection";
-		} else if (derpString.equals("StartDirection")) {
+		} else if (derpString.equals("STARTDIRECTION")) {
 			return "StartDirection";
 		} else if (derpString.equals("ENDDIRECTION")) {
 			return "EndDirection";

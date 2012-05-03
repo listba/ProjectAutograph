@@ -44,12 +44,12 @@ public class EditNodePanel extends JPanel {
 		fillColor = Color.WHITE;
 		borderColor = Color.BLACK;
 
-		// Add Node Panel
+		// Edit Node Panel
 		EditNodePanel = new JPanel();
 		EditNodePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 		EditNodePanel.setPreferredSize(new java.awt.Dimension(200, 512));
 
-		// Add Node Title Label
+		// Edit Node Title Label
 		EditNodeTitleLabel = new JLabel();
 		EditNodeTitleLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); 
 		EditNodeTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
