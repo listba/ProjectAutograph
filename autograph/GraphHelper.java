@@ -971,12 +971,14 @@ public class GraphHelper {
 	 * @param   e        The edge object to draw on g
 	 * @see     Edge
 	 */
-	public static void mDrawEdge(Graphics g, Edge e) {
+
+	public static void mDrawEdge(Graphics g, Edge e, Boolean selected) {
+		//TODO: implement for non-straight edges
 		//TODO: figure out how we want to handle the case where the edge label is longer than the edge 
 		//      (if we need to recalculate node position etc.)
 		//TODO: account for triangle nodes (edges currently do not intersect at correct locations for triangles)
 		Graphics newG = (Graphics)g.create();
-	   EdgeDrawer edgeDrawer = new EdgeDrawer(newG, e);
+	   EdgeDrawer edgeDrawer = new EdgeDrawer(newG, e, selected);
 		
 		Node startNode = e.mGetStartNode();
 		Node endNode = e.mGetEndNode();

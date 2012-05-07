@@ -623,6 +623,7 @@ public class mainWindow extends JFrame {
 		}
 		else if(selected == "Both") {
 			SidePanelScrollPane.setViewportView(editNodeEdgePanel);
+			editNodeEdgePanel.updateFields();
 		}
 		else if(selected == "Deselect") {
 			SidePanelScrollPane.setViewportView(addNodePanel);

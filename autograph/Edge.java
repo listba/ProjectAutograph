@@ -63,6 +63,7 @@ public class Edge implements Serializable {
 	public PairPosition vPairPosition;
 	//private Boolean vHasTwin;
 	private Edge vTwin;
+	private Boolean vDrawn = false;
 
 	public static void mValidateEdge(String id, Node startNode, Node endNode) throws CannotAddEdgeException{
 		if(id == null || id.isEmpty()){
@@ -387,6 +388,13 @@ public class Edge implements Serializable {
 		vFont = font;
 	}
 
+	public Boolean mGetDrawn(){
+		return vDrawn;
+	}
+
+	public void mSetDrawn(Boolean d) {
+		vDrawn = d;
+	}
 	/**
 	 * mContains - calculates the shortest distance between the input coordinates and
 	 *             any segment along the line, if this distance is within the "Click Buffer Range"
@@ -398,35 +406,56 @@ public class Edge implements Serializable {
 	public boolean mContains(int x, int y)
 	{
 		boolean contains = false;
-		int x1 = this.vStartX;
-		int y1 = this.vStartY;
-		int x2 = this.vEndX;
-		int y2 = this.vEndY;
+		if (this.vStartNode == this.vEndNode) {
+			System.out.println("SELF EDGE");
+			int nodeCenterX = vStartNode.mGetCenterX();
+      	int nodeUpperLeftY = vStartNode.mGetUpperLeftY();
 
-		double px = x2-x1;
-		double py = y2-y1;
-
-		double dot = (px*px) + (py*py);
-
-		double u =  ((x - x1) * px + (y - y1) * py) / dot;
-
-		if (u > 1){
-			u = 1;
-		} else if(u < 0) {
-			u = 0;
+      	int nX = nodeCenterX;
+	      int nY = nodeUpperLeftY - vStartNode.mGetHeight()/2;
+	      int lX = nodeCenterX + vStartNode.mGetWidth();
+	      int lY = nodeUpperLeftY + vStartNode.mGetHeight()/2;
+	      System.out.println(nX + " <= " + x + " <= " + lX);
+	      System.out.println(nY + " <= " + y + " <= " + lY);
+	      if ( (x >= nX && x <= lX) &&
+	           (y >= nY && y <= lY) ) {
+	         contains =  true;
+	      } else {
+	         contains = false;
+	      }
 		}
+		else 
+		{
+			int x1 = this.vStartX;
+			int y1 = this.vStartY;
+			int x2 = this.vEndX;
+			int y2 = this.vEndY;
 
-		double newX = x1 + u * px;
-		double newY = y1 + u * py;
+			double px = x2-x1;
+			double py = y2-y1;
 
-		double dx = newX - x;
-		double dy = newY - y;
+			double dot = (px*px) + (py*py);
 
-		double dist = Math.sqrt(dx*dx + dy*dy);
-		System.out.println("DISTANCE:"+dist);
-		if (dist <= CLICK_BUFFER_DISTANCE ) {
-			contains = true;
-		}
+			double u =  ((x - x1) * px + (y - y1) * py) / dot;
+
+			if (u > 1){
+				u = 1;
+			} else if(u < 0) {
+				u = 0;
+			}
+
+			double newX = x1 + u * px;
+			double newY = y1 + u * py;
+
+			double dx = newX - x;
+			double dy = newY - y;
+
+			double dist = Math.sqrt(dx*dx + dy*dy);
+			System.out.println("DISTANCE:"+dist);
+			if (dist <= CLICK_BUFFER_DISTANCE ) {
+				contains = true;
+			}
+		}	
 		return contains;
 	}
 }

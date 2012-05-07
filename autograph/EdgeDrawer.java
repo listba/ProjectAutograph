@@ -4,6 +4,7 @@ import java.awt.BasicStroke;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
+import java.awt.Color;
 
 import autograph.Node.NodeShape;
 
@@ -12,11 +13,13 @@ public class EdgeDrawer {
    private static Edge vEdge;
    private final int SELF_ARC_WIDTH = 50;
    private final int SELF_ARC_HEIGHT = 50;
+   private Boolean vSelected;
   
-   public EdgeDrawer(Graphics g, Edge e){
+   public EdgeDrawer(Graphics g, Edge e, Boolean s){
       vEdge = e;
       vGraphics = g;
-      vGraphics.setColor(vEdge.mGetEdgeColor());
+      vSelected = s;
+      //vGraphics.setColor(vEdge.mGetEdgeColor());
    }
    
    /**
@@ -24,6 +27,7 @@ public class EdgeDrawer {
     * @param gr2 - the graphics object that will do the drawing at some point.
     */
    public static void mSetGraphicsStyle(Graphics2D gr2){
+      gr2.setColor(vEdge.mGetEdgeColor());
       switch (vEdge.mGetEdgeStyle()){
       case DOTTED:
          BasicStroke dotted =  new BasicStroke(
@@ -48,6 +52,17 @@ public class EdgeDrawer {
       default:
          break;
       }
+   }
+
+   public static void mSetSelectedStyle(Graphics2D gr2){
+      float dash1[] = {10.0f};
+      BasicStroke dashed =
+            new BasicStroke(5.0f,
+                  BasicStroke.CAP_BUTT,
+                  BasicStroke.JOIN_MITER,
+                  10.0f, dash1, 0.0f);
+      gr2.setStroke(dashed);
+      gr2.setColor(Color.cyan);
    }
    
    /**
@@ -206,6 +221,13 @@ public class EdgeDrawer {
       vEdge.mSetEndCoordinates(endNodeCenterX, endNodeCenterY);
 
       Graphics2D gr2 = (Graphics2D)vGraphics.create();
+      if (vSelected)
+      {
+         mSetSelectedStyle(gr2);
+         gr2.drawLine(startNodeCenterX, startNodeCenterY, endNodeCenterX, endNodeCenterY);
+         gr2.dispose();
+      }
+      gr2 = (Graphics2D)vGraphics.create();
       mSetGraphicsStyle(gr2);
       gr2.drawLine(startNodeCenterX, startNodeCenterY, endNodeCenterX, endNodeCenterY);
 
@@ -252,12 +274,17 @@ public class EdgeDrawer {
       int arcUpperLeftX = nodeCenterX;
       int arcUpperLeftY = nodeUpperLeftY - startNode.mGetHeight()/2;
       
-      Graphics2D gr2 = (Graphics2D)vGraphics;
-      mSetGraphicsStyle(gr2);
-      
+      Graphics2D gr2 = (Graphics2D)vGraphics.create();
       vEdge.mSetStartCoordinates(nodeCenterX + startNode.mGetWidth()/2, startNode.mGetCenterY());
       vEdge.mSetEndCoordinates(nodeCenterX, startNode.mGetCenterY() - startNode.mGetHeight()/2);
-      
+      if(vSelected)
+      {
+         mSetSelectedStyle(gr2);
+         gr2.drawArc(arcUpperLeftX, arcUpperLeftY, SELF_ARC_WIDTH, SELF_ARC_HEIGHT, 270, 270);
+         gr2.dispose();
+         gr2 = (Graphics2D)vGraphics.create();
+      }
+      mSetGraphicsStyle(gr2);
       gr2.drawArc(arcUpperLeftX, arcUpperLeftY, SELF_ARC_WIDTH, SELF_ARC_HEIGHT, 270, 270);
       
       mDrawEdgeLabelForSelf();
