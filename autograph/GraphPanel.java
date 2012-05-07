@@ -63,14 +63,22 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
       ArrayList<Node> sNodes = graph.vSelectedItems.mGetSelectedNodes();
       ArrayList<Edge> sEdges = graph.vSelectedItems.mGetSelectedEdges();
       try{
+         for(int i = 0; i < sEdges.size(); i++) {
+            GraphHelper.mDrawEdge(g, sEdges.get(i), true);
+            sEdges.get(i).mSetDrawn(true);
+         }
          // Draw the edges
          for(int i = 0; i < edges.size(); i++) {
-            GraphHelper.mDrawEdge(g, edges.get(i));
+            if(!edges.get(i).mGetDrawn()) {
+               GraphHelper.mDrawEdge(g, edges.get(i), false);
+            }
+            edges.get(i).mSetDrawn(false);
          }
          // Draw the nodes
          for(int i = 0; i < nodes.size(); i++) {
             Node n = nodes.get(i);
             GraphHelper.mDrawNode(g, n);
+            // Check to make sure no nodes are outside the viewport
             int width = n.mGetCenterX()+n.mGetWidth();
             int height = n.mGetCenterY()+n.mGetHeight();
             if (width > maxWidth) {maxWidth = width;}
@@ -80,9 +88,6 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
          }
          for(int i = 0; i < sNodes.size(); i++) {
             GraphHelper.mDrawSelectedNode(g, sNodes.get(i));
-         }
-         for(int i = 0; i < sEdges.size(); i++) {
-            GraphHelper.mDrawSelectedEdge(g, sEdges.get(i));
          }
          if (drawBox)
          {
@@ -149,7 +154,7 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
             } else if (e.isShiftDown()) {
                graph.vSelectedItems.mSelectAllEdges(edges);
             } else {
-               graph.vSelectedItems.mClearSelectedItems();
+               graph.vSelectedItems.mClearSelectedEdges();
                graph.vSelectedItems.mSelectEdge(edges.get(i));
             }
             itemSelected = true;
@@ -190,7 +195,6 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
       {
          drawBox = false;
          nodesToDrag = null;
-         graph.vSelectedItems.mClearSelectedItems();
          // TODO: Add Nodes and Edges to selection Box
          this.repaint();
       }
@@ -267,6 +271,53 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
          endX = e.getX();
          endY = e.getY();
          drawBox = true;
+         int x1 = startX;
+         int x2 = endX;
+         int y1 = startY;
+         int y2 = endY;
+         int temp;
+         if(x1 > x2)
+         {
+            temp = x1;
+            x1 = x2;
+            x2 = temp;
+         }
+         if(y1 > y2)
+         {
+            temp = y1;
+            y1 = y2;
+            y2 = temp;
+         }
+         ArrayList<Node> nodes = graph.mGetNodeList();
+         ArrayList<Edge> edges = graph.mGetEdgeList();
+         graph.vSelectedItems.mClearSelectedItems();
+         if (!e.isControlDown()) {
+            for(int i = 0; i < nodes.size(); i++) {
+               Node n = nodes.get(i);
+               int x = n.mGetUpperLeftX();
+               int y = n.mGetUpperLeftY();
+               if ( (x >= x1 && x <= x2) &&
+                    (y >= y1 && y <= y2) ) {
+                  graph.vSelectedItems.mAppendNode(n);
+               }
+            }
+         }
+         if(!e.isShiftDown()) {
+            for(int i = 0; i < edges.size(); i++) {
+               Edge eg = edges.get(i);
+               int ex1 = eg.mGetStartX();
+               int ex2 = eg.mGetEndX();
+               int ey1 = eg.mGetStartY();
+               int ey2 = eg.mGetEndY();
+               if ( 
+                     ((ex1 >= x1 && ex1 <= x2) && (ey1 >= y1 && ey1 <= y2))
+                     ||
+                     ((ex2 >= x1 && ex2 <= x2) && (ey2 >= y1 && ey2 <= y2)) 
+                  ) {
+                  graph.vSelectedItems.mAppendEdge(eg);
+               }
+            }
+         }
       }
       this.repaint();
    }
