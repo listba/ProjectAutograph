@@ -33,6 +33,18 @@ public class Edge implements Serializable {
 		DOTTED,
 		DASHED
 	};
+	
+	/**
+	 * This enum is used to determine whether or not the edge has a twin, and which
+	 * edge it is if it has a twin.
+	 * 
+	 */
+	public enum PairPosition{
+	  UNPAIRED,
+	  FIRST,
+	  SECOND
+	};
+	
 	// This stores the allowed ditance frome dge to be considered a valid selection click
 	private final static double CLICK_BUFFER_DISTANCE = 5.0;
 	private String vId;
@@ -48,7 +60,8 @@ public class Edge implements Serializable {
 	private Color vEdgeColor;
 	private Color vLabelColor;
 	private Font vFont;
-	private Boolean vHasTwin;
+	public PairPosition vPairPosition;
+	//private Boolean vHasTwin;
 	private Edge vTwin;
 
 	public static void mValidateEdge(String id, Node startNode, Node endNode) throws CannotAddEdgeException{
@@ -107,7 +120,7 @@ public class Edge implements Serializable {
 			vEdgeColor = Color.black;
 			vLabelColor = Color.black;
 			vFont = new Font("Monospaced", 0, 10);
-			vHasTwin = Graph.mCheckForEdgeTwin(this);
+			vPairPosition = Graph.mCheckForEdgeTwin(this);
 	}
 
 	/**
@@ -220,15 +233,15 @@ public class Edge implements Serializable {
 	 * Sets the twin status of the edge (true if it has a twin)
 	 * @param hasTwin
 	 */
-	public void mSetTwinStatus(Boolean hasTwin){
-	   vHasTwin = hasTwin;
+	public void mSetPairPosition(PairPosition position){
+	   vPairPosition = position;
 	}
 	
 	/**
 	 * Retrieves the twin status of the edge.
 	 */
-	public Boolean mGetTwinStatus(){
-	   return vHasTwin;
+	public PairPosition mGetPairPosition(){
+	   return vPairPosition;
 	}
 	
 	/**

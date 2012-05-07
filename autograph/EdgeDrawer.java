@@ -306,5 +306,42 @@ public class EdgeDrawer {
       
       vGraphics.drawString(vEdge.mGetLabel(), labelX, labelY);
    }
+
+   /**
+    * Draws a paired (twin) edge based on the value of the vPairPosition of the Edge.
+    * @param e - the edge to draw
+    */
+   public void mDrawPairedEdge(Edge e) {
+      int startCenterX = e.mGetStartX();
+      int startCenterY = e.mGetStartY();
+      int endCenterX = e.mGetEndX();
+      int endCenterY = e.mGetEndY();
+      
+      int newStartX = 0;
+      int newStartY = 0;
+      int newEndX = 0;
+      int newEndY = 0;
+            
+      switch(e.mGetPairPosition()){
+         case FIRST:
+            //we will move the points to the left and up for each node for the first edge.
+            newStartX = startCenterX - e.mGetStartNode().mGetWidth()/4;
+            newStartY = startCenterY - e.mGetStartNode().mGetHeight()/4;
+            newEndX = endCenterX - e.mGetEndNode().mGetWidth()/4;
+            newEndY = endCenterY - e.mGetEndNode().mGetHeight()/4;
+            break;
+         case SECOND:
+            //we will move the points to the right and down for each node for the second edge
+            newStartX = startCenterX + e.mGetStartNode().mGetWidth()/4;
+            newStartY = startCenterY + e.mGetStartNode().mGetHeight()/4;
+            newEndX = endCenterX + e.mGetEndNode().mGetWidth()/4;
+            newEndY = endCenterY + e.mGetEndNode().mGetHeight()/4;
+            break;
+         case UNPAIRED:
+            break;
+      }
+      
+      vGraphics.drawLine(newStartX, newStartY, newEndX, newEndY);
+   }
    
 }

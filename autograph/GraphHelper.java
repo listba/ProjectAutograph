@@ -1,5 +1,7 @@
 package autograph;
 import java.awt.*;
+
+import autograph.Edge.PairPosition;
 import autograph.GraphPanel;
 
 import java.awt.image.*;
@@ -970,7 +972,6 @@ public class GraphHelper {
 	 * @see     Edge
 	 */
 	public static void mDrawEdge(Graphics g, Edge e) {
-		//TODO: implement for non-straight edges
 		//TODO: figure out how we want to handle the case where the edge label is longer than the edge 
 		//      (if we need to recalculate node position etc.)
 		//TODO: account for triangle nodes (edges currently do not intersect at correct locations for triangles)
@@ -981,7 +982,12 @@ public class GraphHelper {
 		Node endNode = e.mGetEndNode();
 		
 		if(startNode != endNode){
-   		edgeDrawer.mDrawStraightEdge(startNode, endNode);
+		   if(e.mGetPairPosition() == PairPosition.UNPAIRED){
+		      edgeDrawer.mDrawStraightEdge(startNode, endNode);
+		   }
+		   else{
+		      edgeDrawer.mDrawPairedEdge(e);
+		   }
 		}
 		else{
 		   edgeDrawer.mDrawEdgeToSelf(startNode);

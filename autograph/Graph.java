@@ -2,6 +2,8 @@ package autograph;
 import java.util.ArrayList;
 import java.util.Random;
 import java.io.Serializable;
+
+import autograph.Edge.PairPosition;
 import autograph.exception.*;
 /**
  * Graph contains the data and functionality for building graph objects to be represented by Autograph
@@ -265,21 +267,21 @@ public class Graph implements Serializable {
 	 * @param edge
 	 * @return
 	 */
-   public static Boolean mCheckForEdgeTwin(Edge edge){
-      Boolean hasTwin = false;
+   public static PairPosition mCheckForEdgeTwin(Edge edge){
+      PairPosition position = PairPosition.UNPAIRED;
       
       for(int i = 0; i < vEdgeList.size(); i++){
         if(vEdgeList.get(i) != edge){
            if(vEdgeList.get(i).mGetEndNode() == edge.mGetEndNode() && vEdgeList.get(i).mGetStartNode() == edge.mGetStartNode()){
-              hasTwin = true;
-              vEdgeList.get(i).mSetTwinStatus(true);
+              position = PairPosition.SECOND;
+              vEdgeList.get(i).mSetPairPosition(PairPosition.FIRST);
               vEdgeList.get(i).mSetTwin(edge);
               edge.mSetTwin(vEdgeList.get(i));
               break;
            }
            else if(vEdgeList.get(i).mGetEndNode() == edge.mGetStartNode() && vEdgeList.get(i).mGetStartNode() == edge.mGetEndNode()){
-              hasTwin = true;
-              vEdgeList.get(i).mSetTwinStatus(true);
+              position = PairPosition.SECOND;
+              vEdgeList.get(i).mSetPairPosition(PairPosition.FIRST);
               vEdgeList.get(i).mSetTwin(edge);
               edge.mSetTwin(edge);
               break;
@@ -287,7 +289,7 @@ public class Graph implements Serializable {
         }
       }
       
-      return hasTwin;
+      return position;
    }
 
    /**
@@ -302,13 +304,13 @@ public class Graph implements Serializable {
       for(int i = 0; i < vEdgeList.size(); i++){
          //Keep the edgeToCheck variable in case edgeToCheck has been added to vEdgeList at this point.
          if(vEdgeList.get(i).mGetEndNode() == endNode && vEdgeList.get(i).mGetStartNode() == startNode){
-            if(vEdgeList.get(i).mGetTwinStatus() == true){
+            if(vEdgeList.get(i).mGetPairPosition()!= PairPosition.UNPAIRED){
                hasMultipleTwins = true;
                break;
             }
          }
          if(vEdgeList.get(i).mGetEndNode() == startNode && vEdgeList.get(i).mGetStartNode() == endNode){
-            if(vEdgeList.get(i).mGetTwinStatus() == true){
+            if(vEdgeList.get(i).mGetPairPosition() != PairPosition.UNPAIRED){
                hasMultipleTwins = true;
                break;
             }
