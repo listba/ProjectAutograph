@@ -367,8 +367,10 @@ public class EdgeDrawer {
          case UNPAIRED:
             break;
       }
-      
-      vGraphics.drawLine(newStartX, newStartY, newEndX, newEndY);
+      Graphics2D g2d = (Graphics2D)vGraphics.create();
+      mSetGraphicsStyle(g2d);
+      g2d.drawLine(newStartX, newStartY, newEndX, newEndY);
+      g2d.dispose();
    }
    
 }
