@@ -64,15 +64,16 @@ public class Edge implements Serializable {
 	//private Boolean vHasTwin;
 	private Edge vTwin;
 	private Boolean vDrawn = false;
+	private Graph vGraph;
 
-	public static void mValidateEdge(String id, Node startNode, Node endNode) throws CannotAddEdgeException{
+	public static void mValidateEdge(String id, Node startNode, Node endNode, Graph graph) throws CannotAddEdgeException{
 		if(id == null || id.isEmpty()){
 			throw new CannotAddEdgeException("Edge must contain valid id.");
 		}
 		else if(startNode == null || endNode == null){
 			throw new CannotAddEdgeException("Edge must have start and end node values.");
 		}
-		else if(Graph.mEdgeHasMultipleTwins(startNode, endNode)){
+		else if(graph.mEdgeHasMultipleTwins(startNode, endNode)){
 		   throw new CannotAddEdgeException("Cannot have more than two edges between nodes");
 		}
 	}
@@ -89,7 +90,7 @@ public class Edge implements Serializable {
 	 * @see Direction
 	 */
 	public Edge(String id, String label, Node startNode, Node endNode,
-			String direction, String style, boolean bIgnoreValidation){
+			String direction, String style){
 			vId = id;
 			vLabel = label;
 			vStartNode = startNode;
@@ -121,7 +122,8 @@ public class Edge implements Serializable {
 			vEdgeColor = Color.black;
 			vLabelColor = Color.black;
 			vFont = new Font("Monospaced", 0, 10);
-			vPairPosition = Graph.mCheckForEdgeTwin(this);
+			vPairPosition = PairPosition.UNPAIRED;
+			//vPairPosition = graph.mCheckForEdgeTwin(this);
 	}
 
 	/**

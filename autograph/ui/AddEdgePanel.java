@@ -411,9 +411,10 @@ public class AddEdgePanel extends JPanel {
 			try {
 			   //KMW Note: do all of this in the try, because if it fails to create the edge we don't want to
 			   //          add it to the edge list.
-			   Edge.mValidateEdge(Integer.toString(numEdges), startNode, endNode);
+			   Edge.mValidateEdge(Integer.toString(numEdges), startNode, endNode, currentGraph);
 			   // Create the new edge
-	         Edge newEdge = new Edge(Integer.toString(numEdges), edgeLabel, startNode, endNode, (String)DirectionComboBox.getSelectedItem(), (String)EdgeDesignComboBox.getSelectedItem(), false);
+	         Edge newEdge = new Edge(Integer.toString(numEdges), edgeLabel, startNode, endNode, (String)DirectionComboBox.getSelectedItem(), (String)EdgeDesignComboBox.getSelectedItem());
+	         newEdge.mSetPairPosition(currentGraph.mCheckForEdgeTwin(newEdge));
 	         if(newEdge != null){
    	         // Set the font
    	         newEdge.mSetFont(Font.decode((String)LabelFontComboBox.getSelectedItem()));

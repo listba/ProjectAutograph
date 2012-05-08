@@ -264,7 +264,7 @@ public class GMLParser {
     */
    private Edge mGetEdgeAttributesGML(Graph g, Stack<String> graphLoc) throws CannotLoadGraph{
       //initialize a new edge to all null values.
-      Edge edge = new Edge(" ", null, null, null, null, null, true);
+      Edge edge = new Edge(" ", null, null, null, null, null);
       if(graphLoc.peek() == "edge"){
          String nextAttribute = "";
          while(!nextAttribute.equals("]")){

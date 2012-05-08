@@ -815,7 +815,7 @@ public class GraphHelper {
 		Node endNode = graph.mGetNodeById(el.getAttribute("endNode"));
 		if (!id.isEmpty() && startNode != null && endNode != null) {
 			edge = new Edge(id, el.getAttribute("label"), startNode, endNode, 
-					el.getAttribute("direction"), el.getAttribute("edgeStyle"), false);
+					el.getAttribute("direction"), el.getAttribute("edgeStyle"));
 			// Get the rest of the attributes
 			NamedNodeMap attributes = el.getAttributes();
 			for (int i = 0; i < attributes.getLength(); i++) {

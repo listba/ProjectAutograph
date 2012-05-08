@@ -339,10 +339,10 @@ public class EdgeDrawer {
     * @param e - the edge to draw
     */
    public void mDrawPairedEdge(Edge e) {
-      int startCenterX = e.mGetStartX();
-      int startCenterY = e.mGetStartY();
-      int endCenterX = e.mGetEndX();
-      int endCenterY = e.mGetEndY();
+      int startCenterX = e.mGetStartNode().mGetCenterX();
+      int startCenterY = e.mGetStartNode().mGetCenterY();
+      int endCenterX = e.mGetEndNode().mGetCenterX();
+      int endCenterY = e.mGetEndNode().mGetCenterY();
       
       int newStartX = 0;
       int newStartY = 0;

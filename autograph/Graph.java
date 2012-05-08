@@ -12,8 +12,8 @@ import autograph.exception.*;
  * @version 1.0
  */
 public class Graph implements Serializable {
-	private static ArrayList<Node> vNodeList;
-	private static ArrayList<Edge> vEdgeList;
+	private ArrayList<Node> vNodeList;
+	private ArrayList<Edge> vEdgeList;
 	private String vTitle;
 	public SelectedItems vSelectedItems;
 
@@ -267,7 +267,7 @@ public class Graph implements Serializable {
 	 * @param edge
 	 * @return
 	 */
-   public static PairPosition mCheckForEdgeTwin(Edge edge){
+   public PairPosition mCheckForEdgeTwin(Edge edge){
       PairPosition position = PairPosition.UNPAIRED;
       
       for(int i = 0; i < vEdgeList.size(); i++){
@@ -298,7 +298,7 @@ public class Graph implements Serializable {
     * @param endNode - the end node for that edge.
     * @return - true if it has multiple twins, false otherwise.
     */
-   public static boolean mEdgeHasMultipleTwins(Node startNode, Node endNode) {
+   public boolean mEdgeHasMultipleTwins(Node startNode, Node endNode) {
       Boolean hasMultipleTwins = false;
       
       for(int i = 0; i < vEdgeList.size(); i++){
