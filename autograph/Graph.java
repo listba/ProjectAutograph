@@ -319,4 +319,40 @@ public class Graph implements Serializable {
       
       return hasMultipleTwins;
    }
+
+   public void mDeleteSelectedItems() {
+   	mDeleteSelectedEdges();
+   	mDeleteSelectedNodes();
+   }
+
+   public void mDeleteSelectedEdges() {
+   	ArrayList<Edge> sEdges = this.vSelectedItems.mGetSelectedEdges();
+   	for(int i = 0; i < sEdges.size(); i++) {
+   		Edge e = sEdges.get(i);
+   		e.mSetTwin(null);
+   		this.vEdgeList.remove(this.vEdgeList.indexOf(e));
+   		sEdges.remove(i);
+			i--;
+   	}
+   }
+
+   public void mDeleteSelectedNodes() {
+   	ArrayList<Node> sNodes = this.vSelectedItems.mGetSelectedNodes();
+   	ArrayList<Edge> sEdges = this.vSelectedItems.mGetSelectedEdges();
+   	for(int i = 0; i < sNodes.size(); i++) {
+   		Node n = sNodes.get(i);
+   		for (int j = 0; j < vEdgeList.size(); j++) {
+   			Edge e = this.vEdgeList.get(j);
+   			if ( (e.mGetStartNode() == n) || (e.mGetEndNode() == n) ) {
+   				this.vEdgeList.remove(j);
+   				j--;
+   				sEdges.remove(sEdges.indexOf(e));
+   			}
+   		}
+   		//System.out.println("Removed Node: " + this.vNodeList.indexOf(n));
+   		this.vNodeList.remove(this.vNodeList.indexOf(n));
+   		sNodes.remove(i);
+   		i--;
+   	}
+   }
 }

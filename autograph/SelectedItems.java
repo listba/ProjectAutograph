@@ -161,7 +161,6 @@ public class SelectedItems implements Serializable {
     */
    public void mClearSelectedNodes() {
       vSelectedNodes.clear();
-
    }
 
    /**

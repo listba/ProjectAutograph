@@ -227,6 +227,16 @@ public class mainWindow extends JFrame {
 		DeselectMenuItem = new JMenuItem("Deselect All");
 		DeselectMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
 		EditDropdownMenu.add(DeselectMenuItem);
+
+		DeleteSelectedMenuItem = new JMenuItem("Delete Selected");
+		DeleteSelectedMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
+		EditDropdownMenu.add(DeleteSelectedMenuItem);
+
+		DeleteSelectedNodesMenuItem = new JMenuItem("Delete Selected Nodes");
+		EditDropdownMenu.add(DeleteSelectedNodesMenuItem);
+
+		DeleteSelectedEdgesMenuItem = new JMenuItem("Delete Selected Edges");
+		EditDropdownMenu.add(DeleteSelectedEdgesMenuItem);
 		
 		ViewDropdownMenu = new JMenu("View");
 		MainWindowMenuBar.add(ViewDropdownMenu);
@@ -303,18 +313,8 @@ public class mainWindow extends JFrame {
 					JScrollPane currentPane = (JScrollPane)pane.getSelectedComponent();
 					GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
 					Graph currentGraph = currentPanel.mGetGraph();
-					int numNodes = currentGraph.mGetNodeList().size();	
-
-					// Clear the old list
-					AddEdgePanel.SelectEndNodeComboBox.removeAllItems();
-					AddEdgePanel.SelectEndNodeComboBox.addItem("");
-					AddEdgePanel.SelectStartNodeComboBox.removeAllItems();
-					AddEdgePanel.SelectStartNodeComboBox.addItem("");
-					// Add to the AddEdge lists
-					for(int i = 0; i < numNodes; i++) {
-						AddEdgePanel.SelectEndNodeComboBox.addItem(currentGraph.mGetNodeList().get(i).mGetId() + " - " + currentGraph.mGetNodeList().get(i).mGetLabel());
-						AddEdgePanel.SelectStartNodeComboBox.addItem(currentGraph.mGetNodeList().get(i).mGetId() + " - " + currentGraph.mGetNodeList().get(i).mGetLabel());
-					}
+					// Update the AddEdge lists
+					AddEdgePanel.updateNodeList(currentGraph.mGetNodeList());
 				}
 				else {
 					return;
@@ -369,6 +369,24 @@ public class mainWindow extends JFrame {
 		DeselectMenuItem.addActionListener( new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				DeselectMenuItemActionPerformed(evt);
+			}
+		});
+
+		DeleteSelectedMenuItem.addActionListener( new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				DeleteSelectedMenuItemActionPerformed(evt);
+			}
+		});
+
+		DeleteSelectedNodesMenuItem.addActionListener( new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				DeleteSelectedNodesMenuItemActionPerformed(evt);
+			}
+		});
+
+		DeleteSelectedEdgesMenuItem.addActionListener( new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				DeleteSelectedEdgesMenuItemActionPerformed(evt);
 			}
 		});
 		CloseTabMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -495,6 +513,32 @@ public class mainWindow extends JFrame {
 		GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
 		Graph currentGraph = currentPanel.mGetGraph();
 		currentGraph.vSelectedItems.mClearSelectedItems();
+		currentPanel.repaint();
+	}
+
+	private void DeleteSelectedMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		JScrollPane currentPane = (JScrollPane)MainWindowTabbedPane.getSelectedComponent();
+		GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
+		Graph currentGraph = currentPanel.mGetGraph();
+		currentGraph.mDeleteSelectedItems();
+		AddEdgePanel.updateNodeList(currentGraph.mGetNodeList());
+		currentPanel.repaint();
+	}
+
+	private void DeleteSelectedNodesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		JScrollPane currentPane = (JScrollPane)MainWindowTabbedPane.getSelectedComponent();
+		GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
+		Graph currentGraph = currentPanel.mGetGraph();
+		currentGraph.mDeleteSelectedNodes();
+		AddEdgePanel.updateNodeList(currentGraph.mGetNodeList());
+		currentPanel.repaint();
+	}
+
+	private void DeleteSelectedEdgesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		JScrollPane currentPane = (JScrollPane)MainWindowTabbedPane.getSelectedComponent();
+		GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
+		Graph currentGraph = currentPanel.mGetGraph();
+		currentGraph.mDeleteSelectedEdges();
 		currentPanel.repaint();
 	}
 
@@ -680,6 +724,9 @@ public class mainWindow extends JFrame {
 	protected JMenuItem SelectAllNodesMenuItem;
 	protected JMenuItem SelectAllEdgesMenuItem;
 	protected JMenuItem DeselectMenuItem;
+	protected JMenuItem DeleteSelectedMenuItem;
+	protected JMenuItem DeleteSelectedNodesMenuItem;
+	protected JMenuItem DeleteSelectedEdgesMenuItem;
 	// View Menu
 	protected JMenu ViewDropdownMenu;
 	protected JMenuItem CloseTabMenuItem;

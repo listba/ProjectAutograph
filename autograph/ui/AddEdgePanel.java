@@ -4,6 +4,7 @@
  */
 package autograph.ui;
 
+import java.util.ArrayList;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -448,6 +449,16 @@ public class AddEdgePanel extends JPanel {
 		SelectStartNodeComboBox.setSelectedItem("");
 		SelectEndNodeComboBox.setSelectedItem("");
 		currentGraph.vSelectedItems.mClearSelectedItems();	
+	}
+	public static void updateNodeList(ArrayList<Node> nodes) {
+		SelectEndNodeComboBox.removeAllItems();
+		SelectEndNodeComboBox.addItem("");
+		SelectStartNodeComboBox.removeAllItems();
+		SelectStartNodeComboBox.addItem("");
+		for(int i = 0; i < nodes.size(); i++) {
+			SelectEndNodeComboBox.addItem(nodes.get(i).mGetId() + " - " + nodes.get(i).mGetLabel());
+			SelectStartNodeComboBox.addItem(nodes.get(i).mGetId() + " - " + nodes.get(i).mGetLabel());
+		}
 	}
 
 	// Variables declaration
