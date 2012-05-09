@@ -69,35 +69,43 @@ public class EdgeDrawer {
     * @param endY - the end point of the edge's y coordinate
     */
    public static void mDrawStraightEdgeLabel(Graphics g, Edge e, int startX, int startY, int endX, int endY){
-      Graphics2D g2d = (Graphics2D)g.create();
-      g2d.setColor(e.mGetLabelColor());
-
-      //calculate the label position.
-      //KMW Note: this is not working correctly yet. Somtimes the edge labels are going through the middle
-      //          of the edge.
-      int labelX;
-      int labelY;
-
-      if(startX < endX){
-         labelX = (startX + endX)/2 + 5;
-         if(startY > endY){
-            labelY = (startY + endY)/2 + 5;
-         }
-         else{
-            labelY = (startY + endY)/2 - 5;
-         }
-      }
-      else{
-         labelX = (startX + endX)/2 - 5;
-         if(startY > endY){
-            labelY = (startY + endY)/2 + 5;
-         }
-         else{
-            labelY = (startY + endY)/2 - 5;
-         }
-      }
-      g2d.drawString(e.mGetLabel(), labelX, labelY);
-      g2d.dispose();
+	   if(e.mGetLabel() != null && !e.mGetLabel().isEmpty() && g != null){
+	      Graphics2D g2d = (Graphics2D)g.create();
+	      g2d.setColor(e.mGetLabelColor());
+	      g2d.setFont(e.mGetFont());
+	      double dy = startY - endY;
+	      double dx = startX - endX;
+	      double theta = Math.atan2(dy, dx);
+      
+	      //calculate the label position.
+      
+    	  //rotate the text so the edge label is printed parallel with the edge
+    	  if(Math.toDegrees(theta) < 90 && Math.toDegrees(theta) > 0){
+    		  //first quadrant
+    		  //rotate by theta so the text will be readable
+    		  g2d.rotate(theta,  ((startX + endX)/2)+2, ((startY + endY)/2)-2);
+	    	  g2d.drawString(e.mGetLabel(), ((startX + endX)/2)+2, ((startY + endY)/2)-2);
+    	  }
+    	  else if(Math.toDegrees(theta) <=0 && Math.toDegrees(theta)>-90){
+    		  //fourth quadrant
+    		  //rotate by theta so the text will be readable
+    		  g2d.rotate(theta,  ((startX + endX)/2)-2, ((startY + endY)/2)-2);
+	    	  g2d.drawString(e.mGetLabel(), ((startX + endX)/2)-2, ((startY + endY)/2)-2);
+    	  }
+    	  else if(Math.toDegrees(theta)<=-90){
+    		  //third quadrant
+    		//rotate by theta + 180 so the text won't be upside down.
+    		  g2d.rotate(theta + Math.toRadians(180),  ((startX + endX)/2)+2, ((startY + endY)/2)-2);
+	    	  g2d.drawString(e.mGetLabel(), ((startX + endX)/2)+2, ((startY + endY)/2)-2);
+    	  }
+    	  else{
+    		  //second quadrant
+    		  //rotate by theta + 180 so the text won't be upside down.
+    		  g2d.rotate(theta + Math.toRadians(180),  ((startX + endX)/2)-2, ((startY + endY)/2)-2);
+    		  g2d.drawString(e.mGetLabel(), ((startX + endX)/2)-2, ((startY + endY)/2)-2);
+    	  }
+    	  g2d.dispose();
+      } 
    }
    
    /**
@@ -311,38 +319,48 @@ public class EdgeDrawer {
    
    /**
     * Draws an edge label assuming the edge is connecting a node to itself.
+    * @param g - the graphics object for drawing
+    * @param e - the edge to draw the label for.
     */
    private static void mDrawEdgeLabelForSelf(Graphics g, Edge e){
-      Graphics2D g2d = (Graphics2D)g.create();
-      g2d.setColor(e.mGetLabelColor());
-
-      //calculate the label position.
-      int labelX;
-      int labelY;
-      
-      Node startNode = e.mGetStartNode();
-      
-      //The center of the arc that makes up the edge is located at the upper right
-      //corner of the node. So we need to find that position.
-      
-      int upperRightX = startNode.mGetUpperLeftX() + startNode.mGetWidth();
-      int upperRightY = startNode.mGetUpperLeftY();
-      
-      labelX = upperRightX + SELF_ARC_WIDTH/2;
-      labelY = upperRightY - SELF_ARC_HEIGHT/2;
-      
-      g2d.drawString(e.mGetLabel(), labelX, labelY);
+	  if(e != null && e.mGetLabel().isEmpty()){
+	      Graphics2D g2d = (Graphics2D)g.create();
+	      g2d.setColor(e.mGetLabelColor());
+	      g2d.setFont(e.mGetFont());
+	      //calculate the label position.
+	      int labelX;
+	      int labelY;
+	      
+	      Node startNode = e.mGetStartNode();
+	      
+	      //The center of the arc that makes up the edge is located at the upper right
+	      //corner of the node. So we need to find that position.
+	      
+	      int upperRightX = startNode.mGetUpperLeftX() + startNode.mGetWidth();
+	      int upperRightY = startNode.mGetUpperLeftY();
+	      
+	      labelX = upperRightX + SELF_ARC_WIDTH/2;
+	      labelY = upperRightY - SELF_ARC_HEIGHT/2;
+	      
+	      g2d.drawString(e.mGetLabel(), labelX, labelY);
+	  }
    }
 
    /**
     * Draws a paired (twin) edge based on the value of the vPairPosition of the Edge.
+    * @param g - graphics object for drawing
     * @param e - the edge to draw
+    * @param selected - whether or not this edge is selected.
     */
    public static void mDrawPairedEdge(Graphics g, Edge e, Boolean selected) {
       int startCenterX = e.mGetStartNode().mGetCenterX();
       int startCenterY = e.mGetStartNode().mGetCenterY();
       int endCenterX = e.mGetEndNode().mGetCenterX();
       int endCenterY = e.mGetEndNode().mGetCenterY();
+      
+      double dy = startCenterY - endCenterY;
+      double dx = startCenterX - endCenterX;
+      double theta = Math.atan2(dy, dx);
       
       int newStartX = 0;
       int newStartY = 0;
@@ -351,18 +369,34 @@ public class EdgeDrawer {
             
       switch(e.mGetPairPosition()){
          case FIRST:
-            //we will move the points to the left and up for each node for the first edge.
-            newStartX = startCenterX - e.mGetStartNode().mGetWidth()/4;
-            newStartY = startCenterY - e.mGetStartNode().mGetHeight()/4;
-            newEndX = endCenterX - e.mGetEndNode().mGetWidth()/4;
-            newEndY = endCenterY - e.mGetEndNode().mGetHeight()/4;
+        	if((Math.toDegrees(theta) > 0 && Math.toDegrees(theta) < 90) || Math.toDegrees(theta) < -90){
+        		newStartX = startCenterX + e.mGetStartNode().mGetWidth()/4;
+	            newStartY = startCenterY - e.mGetStartNode().mGetHeight()/4;
+	            newEndX = endCenterX + e.mGetEndNode().mGetWidth()/4;
+	            newEndY = endCenterY - e.mGetEndNode().mGetHeight()/4;
+        	}
+        	else{
+	            //we will move the points to the left and up for each node for the first edge.
+	            newStartX = startCenterX - e.mGetStartNode().mGetWidth()/4;
+	            newStartY = startCenterY - e.mGetStartNode().mGetHeight()/4;
+	            newEndX = endCenterX - e.mGetEndNode().mGetWidth()/4;
+	            newEndY = endCenterY - e.mGetEndNode().mGetHeight()/4;
+        	}
             break;
          case SECOND:
-            //we will move the points to the right and down for each node for the second edge
-            newStartX = startCenterX + e.mGetStartNode().mGetWidth()/4;
-            newStartY = startCenterY + e.mGetStartNode().mGetHeight()/4;
-            newEndX = endCenterX + e.mGetEndNode().mGetWidth()/4;
-            newEndY = endCenterY + e.mGetEndNode().mGetHeight()/4;
+        	 if((Math.toDegrees(theta) > 0 && Math.toDegrees(theta) < 90) || Math.toDegrees(theta) < -90){
+         		newStartX = startCenterX - e.mGetStartNode().mGetWidth()/4;
+ 	            newStartY = startCenterY + e.mGetStartNode().mGetHeight()/4;
+ 	            newEndX = endCenterX - e.mGetEndNode().mGetWidth()/4;
+ 	            newEndY = endCenterY + e.mGetEndNode().mGetHeight()/4;
+         	}
+        	else{
+	            //we will move the points to the right and down for each node for the second edge
+	            newStartX = startCenterX + e.mGetStartNode().mGetWidth()/4;
+	            newStartY = startCenterY + e.mGetStartNode().mGetHeight()/4;
+	            newEndX = endCenterX + e.mGetEndNode().mGetWidth()/4;
+	            newEndY = endCenterY + e.mGetEndNode().mGetHeight()/4;
+         	}
             break;
          case UNPAIRED:
             break;
@@ -370,6 +404,9 @@ public class EdgeDrawer {
       Graphics2D g2d = (Graphics2D)g.create();
       mSetGraphicsStyle(g2d, e);
       g2d.drawLine(newStartX, newStartY, newEndX, newEndY);
+      
+      
+      mDrawStraightEdgeLabel(g, e, newStartX, newStartY, newEndX, newEndY);
       g2d.dispose();
    }
    
