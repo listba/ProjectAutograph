@@ -977,25 +977,17 @@ public class GraphHelper {
 		//TODO: figure out how we want to handle the case where the edge label is longer than the edge 
 		//      (if we need to recalculate node position etc.)
 		//TODO: account for triangle nodes (edges currently do not intersect at correct locations for triangles)
-		Graphics newG = (Graphics)g.create();
-	   EdgeDrawer edgeDrawer = new EdgeDrawer(newG, e, selected);
-		
-		Node startNode = e.mGetStartNode();
-		Node endNode = e.mGetEndNode();
-		
-		if(startNode != endNode){
+		if(e.mGetStartNode() != e.mGetEndNode()){
 		   if(e.mGetPairPosition() == PairPosition.UNPAIRED){
-		      edgeDrawer.mDrawStraightEdge(startNode, endNode);
+		      EdgeDrawer.mDrawStraightEdge(g, e, selected);
 		   }
 		   else{
-		      edgeDrawer.mDrawPairedEdge(e);
+		      EdgeDrawer.mDrawPairedEdge(g, e, selected);
 		   }
 		}
 		else{
-		   edgeDrawer.mDrawEdgeToSelf(startNode);
+		   EdgeDrawer.mDrawEdgeToSelf(g, e, selected);
 		}
-		newG.dispose();
-
 	}
 
 	/**

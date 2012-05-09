@@ -9,26 +9,20 @@ import java.awt.Color;
 import autograph.Node.NodeShape;
 
 public class EdgeDrawer {
-   private static Graphics vGraphics;
-   private static Edge vEdge;
-   private final int SELF_ARC_WIDTH = 50;
-   private final int SELF_ARC_HEIGHT = 50;
-   private Boolean vSelected;
+   private final static int SELF_ARC_WIDTH = 50;
+   private final static int SELF_ARC_HEIGHT = 50;
+
   
-   public EdgeDrawer(Graphics g, Edge e, Boolean s){
-      vEdge = e;
-      vGraphics = g;
-      vSelected = s;
-      //vGraphics.setColor(vEdge.mGetEdgeColor());
+   public EdgeDrawer(){
    }
    
    /**
     * Takes a graphics object and sets its style based on the edge's style
     * @param gr2 - the graphics object that will do the drawing at some point.
     */
-   public static void mSetGraphicsStyle(Graphics2D gr2){
-      gr2.setColor(vEdge.mGetEdgeColor());
-      switch (vEdge.mGetEdgeStyle()){
+   public static void mSetGraphicsStyle(Graphics2D gr2, Edge e){
+      gr2.setColor(e.mGetEdgeColor());
+      switch (e.mGetEdgeStyle()){
       case DOTTED:
          BasicStroke dotted =  new BasicStroke(
                1f, 
@@ -74,8 +68,9 @@ public class EdgeDrawer {
     * @param endX - the end point of the edge's x coordinate
     * @param endY - the end point of the edge's y coordinate
     */
-   public static void mDrawEdgeLabelForStraightEdge(int startX, int startY, int endX, int endY){
-      vGraphics.setColor(vEdge.mGetLabelColor());
+   public static void mDrawStraightEdgeLabel(Graphics g, Edge e, int startX, int startY, int endX, int endY){
+      Graphics2D g2d = (Graphics2D)g.create();
+      g2d.setColor(e.mGetLabelColor());
 
       //calculate the label position.
       //KMW Note: this is not working correctly yet. Somtimes the edge labels are going through the middle
@@ -101,7 +96,8 @@ public class EdgeDrawer {
             labelY = (startY + endY)/2 - 5;
          }
       }
-      vGraphics.drawString(vEdge.mGetLabel(), labelX, labelY);
+      g2d.drawString(e.mGetLabel(), labelX, labelY);
+      g2d.dispose();
    }
    
    /**
@@ -114,7 +110,7 @@ public class EdgeDrawer {
     * @param startNode - the node the arrow is pointing at.
     * @param bDrawingToSelf - true edge starts and finishes at same node (is handled differently than other edges)
     */
-   private static void mDrawArrowHead(int startX, int startY, int endX, int endY, Node startNode, Boolean bDrawingToSelf){
+   private static void mDrawArrowHead(Graphics2D g2d, int startX, int startY, int endX, int endY, Node startNode, Boolean bDrawingToSelf){
 		double dy = startY - endY;
 		double dx = startX - endX;
 		double theta = Math.atan2(dy, dx);
@@ -188,8 +184,6 @@ public class EdgeDrawer {
 		}
 	  //otherwise mDrawArrowHead has been called with the points of intersection already
 	  
-	  
-		Graphics2D g2 = (Graphics2D)(vGraphics);
 		double phi = Math.toRadians(40);
 		int barb = 20;
 		  
@@ -198,7 +192,8 @@ public class EdgeDrawer {
 		for(int j = 0; j < 2; j++){
 		   x = newStartX - barb * Math.cos(rho);
 		   y = newStartY - barb * Math.sin(rho);
-		   g2.draw(new Line2D.Double(newStartX, newStartY, x, y));
+		   g2d.draw(new Line2D.Double(newStartX, newStartY, x, y));
+         System.out.println("Drawing arrow");
 		   rho = theta - phi;
 		}
    }
@@ -210,53 +205,57 @@ public class EdgeDrawer {
     * @param endNode - the end node
     * @param g - the graphics object to do the drawing.
     */
-   public void mDrawStraightEdge(Node startNode, Node endNode){
+   public static void mDrawStraightEdge(Graphics g, Edge e, Boolean selected) {
+      Node startNode = e.mGetStartNode();
+      Node endNode = e.mGetEndNode();
       
-      int startNodeCenterX = startNode.mGetCenterX();
-      int startNodeCenterY = startNode.mGetCenterY();
-      int endNodeCenterX = endNode.mGetCenterX();
-      int endNodeCenterY = endNode.mGetCenterY();
+      int sNodeX = startNode.mGetCenterX();
+      int sNodeY = startNode.mGetCenterY();
+      int eNodeX = endNode.mGetCenterX();
+      int eNodeY = endNode.mGetCenterY();
 
-      vEdge.mSetStartCoordinates(startNodeCenterX, startNodeCenterY);
-      vEdge.mSetEndCoordinates(endNodeCenterX, endNodeCenterY);
+      e.mSetStartCoordinates(sNodeX, sNodeY);
+      e.mSetEndCoordinates(eNodeX, eNodeY);
 
-      Graphics2D gr2 = (Graphics2D)vGraphics.create();
-      if (vSelected)
+      Graphics2D g2d = (Graphics2D)g.create();
+      if (selected)
       {
-         mSetSelectedStyle(gr2);
-         gr2.drawLine(startNodeCenterX, startNodeCenterY, endNodeCenterX, endNodeCenterY);
-         gr2.dispose();
+         mSetSelectedStyle(g2d);
+         g2d.drawLine(sNodeX, sNodeY, eNodeX, eNodeY);
+         g2d.dispose();
       }
-      gr2 = (Graphics2D)vGraphics.create();
-      mSetGraphicsStyle(gr2);
-      gr2.drawLine(startNodeCenterX, startNodeCenterY, endNodeCenterX, endNodeCenterY);
+      g2d = (Graphics2D)g.create();
+      mSetGraphicsStyle(g2d, e);
+      g2d.drawLine(sNodeX, sNodeY, eNodeX, eNodeY);
 
-      mDrawEdgeLabelForStraightEdge(startNodeCenterX, startNodeCenterY, endNodeCenterX, endNodeCenterY);
+      mDrawStraightEdgeLabel(g, e, sNodeX, sNodeY, eNodeX, eNodeY);
       
       //KMW Note: for now we will only support one style of arrow. (a filled in triangle)
       //          at some point we will need to support the other types.
-      switch(vEdge.mGetDirection()){
+      switch(e.mGetDirection()){
       case NODIRECTION:
          //we are done. It will work
          break;
       case STARTDIRECTION:
-         mDrawArrowHead(startNodeCenterX, startNodeCenterY, endNodeCenterX, endNodeCenterY, startNode, false);
+         mDrawArrowHead(g2d, sNodeX, sNodeY, eNodeX, eNodeY, startNode, false);
          break;
       case ENDDIRECTION:
-         mDrawArrowHead(endNodeCenterX, endNodeCenterY, startNodeCenterX, startNodeCenterY, endNode, false);
+         mDrawArrowHead(g2d, eNodeX, eNodeY, sNodeX, sNodeY, endNode, false);
          break;
       case DOUBLEDIRECTION:
-         mDrawArrowHead(startNodeCenterX, startNodeCenterY, endNodeCenterX, endNodeCenterY, startNode, false);
-         mDrawArrowHead(endNodeCenterX, endNodeCenterY, startNodeCenterX, startNodeCenterY, endNode, false);
+         mDrawArrowHead(g2d, sNodeX, sNodeY, eNodeX, eNodeY, startNode, false);
+         mDrawArrowHead(g2d, eNodeX, eNodeY, sNodeX, sNodeY, endNode, false);
          break;
       }
+      g2d.dispose();
    }
    
    /**
     * Draws a curved edge from the right point on the node to the top point on the same node.
     * startNode - the node this edge is connected to.
     */
-   public void mDrawEdgeToSelf(Node startNode) {
+   public static void mDrawEdgeToSelf(Graphics g, Edge e, Boolean selected) {
+      Node startNode = e.mGetStartNode();
       int nodeCenterX = startNode.mGetCenterX();
       int nodeUpperLeftY = startNode.mGetUpperLeftY();
       
@@ -274,53 +273,54 @@ public class EdgeDrawer {
       int arcUpperLeftX = nodeCenterX;
       int arcUpperLeftY = nodeUpperLeftY - startNode.mGetHeight()/2;
       
-      Graphics2D gr2 = (Graphics2D)vGraphics.create();
-      vEdge.mSetStartCoordinates(nodeCenterX + startNode.mGetWidth()/2, startNode.mGetCenterY());
-      vEdge.mSetEndCoordinates(nodeCenterX, startNode.mGetCenterY() - startNode.mGetHeight()/2);
-      if(vSelected)
+      Graphics2D g2d = (Graphics2D)g.create();
+      e.mSetStartCoordinates(nodeCenterX + startNode.mGetWidth()/2, startNode.mGetCenterY());
+      e.mSetEndCoordinates(nodeCenterX, startNode.mGetCenterY() - startNode.mGetHeight()/2);
+      if(selected)
       {
-         mSetSelectedStyle(gr2);
-         gr2.drawArc(arcUpperLeftX, arcUpperLeftY, SELF_ARC_WIDTH, SELF_ARC_HEIGHT, 270, 270);
-         gr2.dispose();
-         gr2 = (Graphics2D)vGraphics.create();
+         mSetSelectedStyle(g2d);
+         g2d.drawArc(arcUpperLeftX, arcUpperLeftY, SELF_ARC_WIDTH, SELF_ARC_HEIGHT, 270, 270);
+         g2d.dispose();
+         g2d = (Graphics2D)g.create();
       }
-      mSetGraphicsStyle(gr2);
-      gr2.drawArc(arcUpperLeftX, arcUpperLeftY, SELF_ARC_WIDTH, SELF_ARC_HEIGHT, 270, 270);
-      
-      mDrawEdgeLabelForSelf();
-      switch(vEdge.mGetDirection()){
+      mSetGraphicsStyle(g2d, e);
+      g2d.drawArc(arcUpperLeftX, arcUpperLeftY, SELF_ARC_WIDTH, SELF_ARC_HEIGHT, 270, 270);
+      mDrawEdgeLabelForSelf(g, e);
+      switch(e.mGetDirection()){
          case NODIRECTION:
             break;
          case STARTDIRECTION:
             //we are going to pretend that it is an arrow coming from the direct right 
             //and call mDrawArrowHead with data to indicate this.
-            mDrawArrowHead(vEdge.mGetStartX(), vEdge.mGetStartY(), vEdge.mGetStartX()+50, vEdge.mGetStartY(), startNode, true);
+            mDrawArrowHead(g2d, e.mGetStartX(), e.mGetStartY(), e.mGetStartX()+50, e.mGetStartY(), startNode, true);
             break;
          case ENDDIRECTION:
             //we are going to pretend that it is an arrow coming from directly above 
             //and call mDrawArrowHead with data to indicate this.
-            mDrawArrowHead(vEdge.mGetEndX(), vEdge.mGetEndY(), vEdge.mGetEndX(), vEdge.mGetEndY()-50, startNode, true);
+            mDrawArrowHead(g2d, e.mGetEndX(), e.mGetEndY(), e.mGetEndX(), e.mGetEndY()-50, startNode, true);
             break;
          case DOUBLEDIRECTION:
-            mDrawArrowHead(vEdge.mGetStartX(), vEdge.mGetStartY(), vEdge.mGetStartX()+50, vEdge.mGetStartY(), startNode, true);
-            mDrawArrowHead(vEdge.mGetEndX(), vEdge.mGetEndY(), vEdge.mGetEndX(), vEdge.mGetEndY()-50, startNode, true);
+            mDrawArrowHead(g2d, e.mGetStartX(), e.mGetStartY(), e.mGetStartX()+50, e.mGetStartY(), startNode, true);
+            mDrawArrowHead(g2d, e.mGetEndX(), e.mGetEndY(), e.mGetEndX(), e.mGetEndY()-50, startNode, true);
             break;
          default:
             break;
       }
+      g2d.dispose();
    }
    
    /**
     * Draws an edge label assuming the edge is connecting a node to itself.
     */
-   private void mDrawEdgeLabelForSelf(){
-      vGraphics.setColor(vEdge.mGetLabelColor());
+   private static void mDrawEdgeLabelForSelf(Graphics g, Edge e){
+      Graphics2D g2d = (Graphics2D)g.create();
+      g2d.setColor(e.mGetLabelColor());
 
       //calculate the label position.
       int labelX;
       int labelY;
       
-      Node startNode = vEdge.mGetStartNode();
+      Node startNode = e.mGetStartNode();
       
       //The center of the arc that makes up the edge is located at the upper right
       //corner of the node. So we need to find that position.
@@ -331,14 +331,14 @@ public class EdgeDrawer {
       labelX = upperRightX + SELF_ARC_WIDTH/2;
       labelY = upperRightY - SELF_ARC_HEIGHT/2;
       
-      vGraphics.drawString(vEdge.mGetLabel(), labelX, labelY);
+      g2d.drawString(e.mGetLabel(), labelX, labelY);
    }
 
    /**
     * Draws a paired (twin) edge based on the value of the vPairPosition of the Edge.
     * @param e - the edge to draw
     */
-   public void mDrawPairedEdge(Edge e) {
+   public static void mDrawPairedEdge(Graphics g, Edge e, Boolean selected) {
       int startCenterX = e.mGetStartNode().mGetCenterX();
       int startCenterY = e.mGetStartNode().mGetCenterY();
       int endCenterX = e.mGetEndNode().mGetCenterX();
@@ -367,8 +367,8 @@ public class EdgeDrawer {
          case UNPAIRED:
             break;
       }
-      Graphics2D g2d = (Graphics2D)vGraphics.create();
-      mSetGraphicsStyle(g2d);
+      Graphics2D g2d = (Graphics2D)g.create();
+      mSetGraphicsStyle(g2d, e);
       g2d.drawLine(newStartX, newStartY, newEndX, newEndY);
       g2d.dispose();
    }
