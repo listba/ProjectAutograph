@@ -462,7 +462,6 @@ public class mainWindow extends JFrame {
 		//KMW Note: We are simply creating a new blank tab right now. We do not need to worry
 		//          about drawing any graphs in this function.
 		Graph newGraph = new Graph(newTitle);
-		//GraphHelper.mImportGraphFromXML("Graph.xml");
 		JScrollPane newPane = new JScrollPane();
 		GraphPanel newGraphPanel = new GraphPanel(newGraph);
 		newPane.setBorder(null);
@@ -475,6 +474,10 @@ public class mainWindow extends JFrame {
 
 		MainWindowTabbedPane.addTab(newTitle, newPane);
 		MainWindowTabbedPane.setTabComponentAt(MainWindowTabbedPane.indexOfComponent(newPane), new ButtonTabComponent(newTitle, MainWindowTabbedPane));
+		
+		//Set the new graph to the active tab and make the add node pane the active pane.
+		MainWindowTabbedPane.setSelectedIndex(MainWindowTabbedPane.getTabCount()-1);
+		SidePanelScrollPane.setViewportView(addNodePanel);
 	}
 
 	private void SelectAllMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
