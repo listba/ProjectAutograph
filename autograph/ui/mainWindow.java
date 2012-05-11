@@ -7,6 +7,9 @@ package autograph.ui;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.awt.EventQueue;
+import java.awt.Graphics2D;
+import java.awt.Graphics;
+
 import javax.swing.event.ChangeEvent;
 
 import autograph.Edge;
@@ -42,6 +45,7 @@ import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import javax.swing.KeyStroke;
 import java.awt.event.InputEvent;
+import java.awt.print.*;
 import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.JToggleButton;
@@ -80,14 +84,14 @@ public class mainWindow extends JFrame {
 		MainWindowComponent.setMinimumSize(new Dimension(800, 650));
 		MainWindowComponent.setBounds(100, 100, 575, 316);
 		MainWindowComponent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
 		MainWindowPanel = new JPanel();
 		MainWindowComponent.getContentPane().add(MainWindowPanel, BorderLayout.CENTER);
 		MainWindowPanel.setLayout(new BorderLayout(0, 0));
-		
+
 		MainWindowSplitPane = new JSplitPane();
 		MainWindowPanel.add(MainWindowSplitPane);
-		
+
 		MainWindowTabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		MainWindowTabbedPane.setBorder(UIManager.getBorder("TitledBorder.border"));
 		MainWindowSplitPane.setRightComponent(MainWindowTabbedPane);
@@ -96,13 +100,13 @@ public class mainWindow extends JFrame {
 		GraphPanel graphTabSubPane = new GraphPanel(graph);
 		graphTabSubPane.setBackground(new java.awt.Color(255, 255, 255));
 		//graphTabSubPane.setPreferredSize(new java.awt.Dimension(600, 400));
-		
+
 		JScrollPane graphTabPane = new JScrollPane();
 		graphTabPane.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		graphTabPane.setViewportView(graphTabSubPane);
 
 		MainWindowTabbedPane.addTab("New Graph", null, graphTabPane, null);
-		
+
 		// Add Node Panel
 		addNodePanel = new AddNodePanel();
 		//addNodePanel.setPreferredSize(new java.awt.Dimension(200, 512));
@@ -122,7 +126,7 @@ public class mainWindow extends JFrame {
 		// Edit Both Panel
 		editNodeEdgePanel = new EditNodeEdgePanel();
 		//editNodeEdgePanel.setPreferredSize(new java.awt.Dimension(200, 512));
-		
+
 		// Edit Panel
 		EditPanel = new JPanel();
 		//EditPanel.setPreferredSize(new java.awt.Dimension(200, 512));
@@ -132,11 +136,11 @@ public class mainWindow extends JFrame {
 		SidePanelScrollPane.setBackground(new java.awt.Color(255, 255, 255));
 		SidePanelScrollPane.setViewportView(addNodePanel);
 		MainWindowSplitPane.setLeftComponent(SidePanelScrollPane);
-		
+
 		MainWindowToolBar = new JToolBar();
 		MainWindowToolBar.setFloatable(false);
 		MainWindowPanel.add(MainWindowToolBar, BorderLayout.NORTH);
-		
+
 		AddNodeBtn = new JButton("Add Node");
 		AddNodeBtn.setFocusable(false);
 		MainWindowToolBar.add(AddNodeBtn);
@@ -144,7 +148,7 @@ public class mainWindow extends JFrame {
 		AddNodeBtn.setVerticalAlignment(SwingConstants.BOTTOM);
 		AddNodeBtn.setVerticalTextPosition(SwingConstants.BOTTOM);
 		AddNodeBtn.setIcon(new ImageIcon("resources/AddNode.png"));
-		
+
 		AddEdgeBtn = new JButton("Add Edge");
 		AddEdgeBtn.setFocusable(false);
 		MainWindowToolBar.add(AddEdgeBtn);
@@ -152,78 +156,75 @@ public class mainWindow extends JFrame {
 		AddEdgeBtn.setVerticalAlignment(SwingConstants.BOTTOM);
 		AddEdgeBtn.setVerticalTextPosition(SwingConstants.BOTTOM);
 		AddEdgeBtn.setIcon(new ImageIcon("resources/AddEdge.png"));
-		
+
 		// This is used for dynamic spcaing between the Add edge-Node buttons and the 
 		// Toggle Buttons - it will increase/descrease in size as necessary to push
 		// the buttons to the far left and far right
 		MainWindowToolBarHorizontalGlue = Box.createHorizontalGlue();
 		MainWindowToolBar.add(MainWindowToolBarHorizontalGlue);
-		
+
 		AutoLabelNodesTog = new JToggleButton("Auto-Label Nodes");
 		AutoLabelNodesTog.setSelectedIcon(new ImageIcon("resources/ToggleOn.png"));
 		AutoLabelNodesTog.setIcon(new ImageIcon("resources/ToggleOff.png"));
 		MainWindowToolBar.add(AutoLabelNodesTog);
-		
+
 		AutoLabelEdgesTog = new JToggleButton("Auto-Label Edges");
 		AutoLabelEdgesTog.setSelectedIcon(new ImageIcon("resources/ToggleOn.png"));
 		AutoLabelEdgesTog.setIcon(new ImageIcon("resources/ToggleOff.png"));
 		MainWindowToolBar.add(AutoLabelEdgesTog);
-		
+
 		AutoConnectNodesTog = new JToggleButton("Auto-Connect Nodes");
 		AutoConnectNodesTog.setSelectedIcon(new ImageIcon("resources/ToggleOn.png"));
 		AutoConnectNodesTog.setIcon(new ImageIcon("resources/ToggleOff.png"));
 		MainWindowToolBar.add(AutoConnectNodesTog);
-		
+
 		MainWindowMenuBar = new JMenuBar();
 		MainWindowMenuBar.setInheritsPopupMenu(true);
 		MainWindowComponent.getContentPane().add(MainWindowMenuBar, BorderLayout.NORTH);
-		
+
 		FileDropdownMenu = new JMenu("File");
 		MainWindowMenuBar.add(FileDropdownMenu);
-		
+
 		NewGraphMenuItem = new JMenuItem("New Graph...");
 		NewGraphMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
 		FileDropdownMenu.add(NewGraphMenuItem);
-		
+
 		OpenMenuItem = new JMenuItem("Open...");
 		OpenMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
 		FileDropdownMenu.add(OpenMenuItem);
-		
+
 		SaveMenuItem = new JMenuItem("Save");
 		SaveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
 		FileDropdownMenu.add(SaveMenuItem);
-		
+
 		SaveAsMenuItem = new JMenuItem("Save As...");
 		FileDropdownMenu.add(SaveAsMenuItem);
-		
+
 		PrintMenuItem = new JMenuItem("Print...");
 		PrintMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_MASK));
 		FileDropdownMenu.add(PrintMenuItem);
-		
-		PrintPreviewMenuItem = new JMenuItem("Print Preview");
-		FileDropdownMenu.add(PrintPreviewMenuItem);
-		
+
 		CloseGraphMenuItem = new JMenuItem("Close Graph");
 		CloseGraphMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, InputEvent.SHIFT_MASK));
 		FileDropdownMenu.add(CloseGraphMenuItem);
-		
+
 		ExitMenuItem = new JMenuItem("Exit");
 		ExitMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, InputEvent.ALT_MASK));
 		FileDropdownMenu.add(ExitMenuItem);
-		
+
 		EditDropdownMenu = new JMenu("Edit");
 		MainWindowMenuBar.add(EditDropdownMenu);
-		
+
 		SelectAllMenuItem = new JMenuItem("Select All");
 		SelectAllMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK));
 		EditDropdownMenu.add(SelectAllMenuItem);
-		
+
 		SelectAllNodesMenuItem = new JMenuItem("Select All Nodes");
 		EditDropdownMenu.add(SelectAllNodesMenuItem);
-		
+
 		SelectAllEdgesMenuItem = new JMenuItem("Select All Edges");
 		EditDropdownMenu.add(SelectAllEdgesMenuItem);
-		
+
 		DeselectMenuItem = new JMenuItem("Deselect All");
 		DeselectMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
 		EditDropdownMenu.add(DeselectMenuItem);
@@ -237,46 +238,46 @@ public class mainWindow extends JFrame {
 
 		DeleteSelectedEdgesMenuItem = new JMenuItem("Delete Selected Edges");
 		EditDropdownMenu.add(DeleteSelectedEdgesMenuItem);
-		
+
 		ViewDropdownMenu = new JMenu("View");
 		MainWindowMenuBar.add(ViewDropdownMenu);
-		
+
 		CloseTabMenuItem = new JMenuItem("Close Tab");
 		ViewDropdownMenu.add(CloseTabMenuItem);
-		
+
 		CloseAllOtherTabsMenuItem = new JMenuItem("Close All Other Tabs");
 		ViewDropdownMenu.add(CloseAllOtherTabsMenuItem);
-		
+
 		OpenAdvancedCodeViewMenuItem = new JMenuItem("Open Advanced Code View");
 		ViewDropdownMenu.add(OpenAdvancedCodeViewMenuItem);
-		
+
 		ChangeBGColorMenuItem = new JMenuItem("Change Background Color");
 		ViewDropdownMenu.add(ChangeBGColorMenuItem);
-		
+
 		ToolsDropdownMenu = new JMenu("Tools");
 		MainWindowMenuBar.add(ToolsDropdownMenu);
-		
+
 		AutoLabelNodesMenuItem = new JCheckBoxMenuItem("Auto-Label Nodes");
 		//AutoLabelNodesMenuItem.setSelected(true);
 		AutoLabelNodesMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK));
 		ToolsDropdownMenu.add(AutoLabelNodesMenuItem);
-		
+
 		AutoLabelEdgesMenuItem = new JCheckBoxMenuItem("Auto-Label Edges");
 		AutoLabelEdgesMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK));
 		ToolsDropdownMenu.add(AutoLabelEdgesMenuItem);
-		
+
 		AutoConnectNodesMenuItem = new JCheckBoxMenuItem("Auto-Connect Nodes");
 		ToolsDropdownMenu.add(AutoConnectNodesMenuItem);
-		
+
 		HelpDropdownMenu = new JMenu("Help");
 		MainWindowMenuBar.add(HelpDropdownMenu);
-		
+
 		UserGuideMenuItem = new JMenuItem("User Guide");
 		HelpDropdownMenu.add(UserGuideMenuItem);
-		
+
 		LaunchWebsiteMenuItem = new JMenuItem("Launch Website");
 		HelpDropdownMenu.add(LaunchWebsiteMenuItem);
-		
+
 		AboutAutographMenuItem = new JMenuItem("About Autograph");
 		HelpDropdownMenu.add(AboutAutographMenuItem);
 
@@ -332,13 +333,18 @@ public class mainWindow extends JFrame {
 			}
 		});
 		SaveMenuItem.addActionListener(new java.awt.event.ActionListener(){
-		   public void actionPerformed(java.awt.event.ActionEvent evt){
-		      SaveMenuItemActionPerformed(evt);
-		   }
+			public void actionPerformed(java.awt.event.ActionEvent evt){
+				SaveMenuItemActionPerformed(evt);
+			}
 		});
 		SaveAsMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				SaveAsMenuItemActionPerformed(evt);
+			}
+		});
+		PrintMenuItem.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				PrintMenuItemActionPerformed(evt);
 			}
 		});
 		CloseGraphMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -474,7 +480,7 @@ public class mainWindow extends JFrame {
 
 		MainWindowTabbedPane.addTab(newTitle, newPane);
 		MainWindowTabbedPane.setTabComponentAt(MainWindowTabbedPane.indexOfComponent(newPane), new ButtonTabComponent(newTitle, MainWindowTabbedPane));
-		
+
 		//Set the new graph to the active tab and make the add node pane the active pane.
 		MainWindowTabbedPane.setSelectedIndex(MainWindowTabbedPane.getTabCount()-1);
 		SidePanelScrollPane.setViewportView(addNodePanel);
@@ -572,56 +578,85 @@ public class mainWindow extends JFrame {
 	}
 
 	private void SaveMenuItemActionPerformed(java.awt.event.ActionEvent evt){
-	   int selectedIndex = MainWindowTabbedPane.getSelectedIndex();
-	   GraphPanel currentPanel = (GraphPanel)(((JScrollPane)MainWindowTabbedPane.getComponentAt(selectedIndex)).getViewport().getView());
-	   String filePath = currentPanel.mGetFilePath();
-	   if(filePath != null && !filePath.isEmpty()){
-	      //now we check the various extensions that we support and save accordingly.
-	      if(filePath.endsWith(".ag")){
-	         GraphHelper.mSaveGraphObject(currentPanel.mGetGraph(), filePath);
-	      }
-	      else if(filePath.endsWith(".xml")){
-	         GraphHelper.mExportGraphToXML(currentPanel.mGetGraph(), filePath);
-	      }
-	      else if(filePath.endsWith(".txt")){
-	         try{
-	            GraphHelper.mExportGraphToGML(currentPanel.mGetGraph(), filePath);
-	         }
-	         catch (Exception e){
-	            //TODO: implement error dialog
-	         }
-	      }
-	      else if(filePath.endsWith(".png")){
-	         GraphHelper.mSavePNG(currentPanel, filePath);
-	      }
-	      else if(filePath.endsWith(".bmp")){
-	         GraphHelper.mSaveBMP(currentPanel, filePath);
-	      }
-	      else if(filePath.endsWith(".jpg")){
-	         GraphHelper.mSaveJPG(currentPanel, filePath);
-	      }
-	      else if(filePath.endsWith(".gif")){
-	         GraphHelper.mSaveGIF(currentPanel, filePath);
-	      }
-	      else{
-	         //something is wrong. Open the filePickerDialog so the user can choose where
-	         //and how to open this object.
-	         FilePickerDialog saveDialog = new FilePickerDialog(this, true);
-	         saveDialog.mOpenSaveDialog(MainWindowTabbedPane);
-	      }
+		int selectedIndex = MainWindowTabbedPane.getSelectedIndex();
+		GraphPanel currentPanel = (GraphPanel)(((JScrollPane)MainWindowTabbedPane.getComponentAt(selectedIndex)).getViewport().getView());
+		String filePath = currentPanel.mGetFilePath();
+		if(filePath != null && !filePath.isEmpty()){
+			//now we check the various extensions that we support and save accordingly.
+			if(filePath.endsWith(".ag")){
+				GraphHelper.mSaveGraphObject(currentPanel.mGetGraph(), filePath);
+			}
+			else if(filePath.endsWith(".xml")){
+				GraphHelper.mExportGraphToXML(currentPanel.mGetGraph(), filePath);
+			}
+			else if(filePath.endsWith(".txt")){
+				try{
+					GraphHelper.mExportGraphToGML(currentPanel.mGetGraph(), filePath);
+				}
+				catch (Exception e){
+					//TODO: implement error dialog
+				}
+			}
+			else if(filePath.endsWith(".png")){
+				GraphHelper.mSavePNG(currentPanel, filePath);
+			}
+			else if(filePath.endsWith(".bmp")){
+				GraphHelper.mSaveBMP(currentPanel, filePath);
+			}
+			else if(filePath.endsWith(".jpg")){
+				GraphHelper.mSaveJPG(currentPanel, filePath);
+			}
+			else if(filePath.endsWith(".gif")){
+				GraphHelper.mSaveGIF(currentPanel, filePath);
+			}
+			else{
+				//something is wrong. Open the filePickerDialog so the user can choose where
+				//and how to open this object.
+				FilePickerDialog saveDialog = new FilePickerDialog(this, true);
+				saveDialog.mOpenSaveDialog(MainWindowTabbedPane);
+			}
 
-	   }
-	   else{
-	      //something is wrong. Open the filePickerDialog so the user can choose where
-	      //and how to save this object.
-	      FilePickerDialog saveDialog = new FilePickerDialog(this, true);
-	      saveDialog.mOpenSaveDialog(MainWindowTabbedPane);
-	   }
+		}
+		else{
+			//something is wrong. Open the filePickerDialog so the user can choose where
+			//and how to save this object.
+			FilePickerDialog saveDialog = new FilePickerDialog(this, true);
+			saveDialog.mOpenSaveDialog(MainWindowTabbedPane);
+		}
 	}
 
 	private void SaveAsMenuItemActionPerformed(java.awt.event.ActionEvent evt){
 		FilePickerDialog saveDialog = new FilePickerDialog(this, true);
 		saveDialog.mOpenSaveDialog(MainWindowTabbedPane);
+	}
+
+	protected void PrintMenuItemActionPerformed(ActionEvent evt) {
+		printJob = PrinterJob.getPrinterJob();
+		printJob.setJobName(" Print Current Graph ");
+
+		printJob.setPrintable (new Printable() {    
+			public int print(Graphics pg, PageFormat pf, int pageNum) {
+				if (pageNum > 0) {
+					return Printable.NO_SUCH_PAGE;
+				}
+
+				Graphics2D g2 = (Graphics2D) pg;
+				g2.translate(pf.getImageableX(), pf.getImageableY());
+				JScrollPane currentPane = (JScrollPane)MainWindowTabbedPane.getSelectedComponent();
+				GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
+				currentPanel.paint(g2);
+				return Printable.PAGE_EXISTS;
+			}
+		});
+		// Display the print dialog
+		if (printJob.printDialog() == false)
+			return;
+
+		try {
+			printJob.print();
+		} catch (PrinterException ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	/**
@@ -636,7 +671,7 @@ public class mainWindow extends JFrame {
 	protected void AutoLabelEdgesMenuItemActionPerformed(ActionEvent evt) {
 		AutoLabelEdgesTog.setSelected(!AutoLabelEdgesTog.isSelected());		
 	}
-	
+
 	private void AutoLabelNodesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		AutoLabelNodesTog.setSelected(!AutoLabelNodesTog.isSelected());
 	}
@@ -679,7 +714,7 @@ public class mainWindow extends JFrame {
 			System.out.println("Oops! - The string was wrong");
 		}
 	}
-	
+
 	public static void resetSidePane() {
 		SidePanelScrollPane.setViewportView(addNodePanel);
 	}
@@ -718,7 +753,6 @@ public class mainWindow extends JFrame {
 	protected JMenuItem SaveMenuItem;
 	protected JMenuItem SaveAsMenuItem;
 	protected JMenuItem PrintMenuItem;
-	protected JMenuItem PrintPreviewMenuItem;
 	protected JMenuItem CloseGraphMenuItem;
 	protected JMenuItem ExitMenuItem;
 	// Edit Menu
@@ -754,6 +788,9 @@ public class mainWindow extends JFrame {
 	protected static JToggleButton AutoLabelNodesTog;
 	protected static JToggleButton AutoLabelEdgesTog;
 	protected static JToggleButton AutoConnectNodesTog;
+	// The Print Stuff
+	protected PrinterJob printJob;
+	protected PageFormat printFormat;
 }
 
 
