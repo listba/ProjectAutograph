@@ -42,50 +42,50 @@ public class AddEdgePanel extends JPanel {
 		GraphicsEnvironment ge;
 		ge = GraphicsEnvironment.getLocalGraphicsEnvironment(); 
 		String[] fontNames = ge.getAvailableFontFamilyNames();
-		
+
 		setBackground(new java.awt.Color(255, 255, 255));
 		setMinimumSize(new java.awt.Dimension(200, 512));
 		setPreferredSize(new java.awt.Dimension(200, 512));
-		
+
 		labelColor = Color.BLACK;
 		edgeColor = Color.BLACK;
-		
+
 		// Add Edge Panel
 		AddEdgePanel = new JPanel();
 		AddEdgePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 		AddEdgePanel.setPreferredSize(new java.awt.Dimension(200, 512));
-		
+
 		// Add Edge Title Label
 		AddEdgeTitleLabel = new JLabel();
 		AddEdgeTitleLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); 
 		AddEdgeTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 		AddEdgeTitleLabel.setText("Add Edge");
-		
+
 		// Label Subtitle Label
 		LabelSubtitleLabel = new JLabel();
 		LabelSubtitleLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); 
 		LabelSubtitleLabel.setText("Label");
-		
+
 		// Label Text Label
 		LabelTextLabel = new JLabel();
 		LabelTextLabel.setText("Label Text");
-		
+
 		// Label Text Field
 		LabelTextField = new JTextField();
-		
+
 		// Label Font Label
 		LabelFontLabel = new JLabel();
 		LabelFontLabel.setText("Label Font");
-		
+
 		// Label Font Combo Box
 		LabelFontComboBox = new JComboBox();
 		LabelFontComboBox.setModel(new DefaultComboBoxModel(fontNames));
 		LabelFontComboBox.setSelectedItem("Courier");
-		
+
 		// Label Color Label
 		LabelColorLabel = new JLabel();
 		LabelColorLabel.setText("Label Color");
-		
+
 		// Label Color Button
 		LabelColorBtn = new JButton();
 		LabelColorBtn.setText("Select Color");
@@ -95,24 +95,24 @@ public class AddEdgePanel extends JPanel {
 				LabelColorBtnActionPerformed(evt);
 			}
 		});
-		
+
 		// Edge Subtitle Label
 		EdgeSubtitleLabel = new JLabel();
 		EdgeSubtitleLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); 
 		EdgeSubtitleLabel.setText("Edge");
-		
+
 		// Edge Design Label
 		EdgeDesignLabel = new JLabel();
 		EdgeDesignLabel.setText("Edge Design");
-		
+
 		// Direction Label
 		DirectionLabel = new JLabel();
 		DirectionLabel.setText("Direction");
-		
+
 		// Edge Color Label
 		EdgeColorLabel = new JLabel();
 		EdgeColorLabel.setText("Edge Color");
-		
+
 		// Edge Color Button
 		EdgeColorBtn = new JButton();
 		EdgeColorBtn.setText("Select Color");
@@ -122,18 +122,18 @@ public class AddEdgePanel extends JPanel {
 				EdgeColorBtnActionPerformed(evt);
 			}
 		});
-		
+
 		// Edge Design Combo Box
 		EdgeDesignComboBox = new JComboBox();
 		EdgeDesignComboBox.setModel(new DefaultComboBoxModel(new String[] {"Solid", "Dotted", "Dashed"}));
-		
+
 		// Direction Combo Box
 		DirectionComboBox = new JComboBox();
 		DirectionComboBox.setModel(new DefaultComboBoxModel(new String[] {"NoDirection", "StartDirection", "EndDirection", "DoubleDirection"}));
-		
+
 		// Panel Separator
 		panelSeperator = new JSeparator();
-		
+
 		// Ok Button
 		OkBtn = new JButton();
 		OkBtn.setText("Add Edge");
@@ -142,11 +142,11 @@ public class AddEdgePanel extends JPanel {
 				OkBtnActionPerformed(evt);
 			}
 		});
-		
+
 		// Source Node Label
 		StartNodeLabel = new JLabel();
 		StartNodeLabel.setText("Start Node");
-		
+
 		// Select Source Node Combo Box
 		SelectStartNodeComboBox = new JComboBox(getNodeList());
 		//SelectStartNodeComboBox.setModel(new DefaultComboBoxModel(getNodeList()));
@@ -155,11 +155,11 @@ public class AddEdgePanel extends JPanel {
 				StartNodeSelectItemChanged(evt);
 			}
 		});
-		
+
 		// Destination Node Label
 		EndNodeLabel = new JLabel();
 		EndNodeLabel.setText("End Node");
-		
+
 		// Select Destination Combo Box
 		SelectEndNodeComboBox = new JComboBox(getNodeList());
 		//SelectEndNodeComboBox.setModel(new DefaultComboBoxModel(getNodeList()));
@@ -168,7 +168,7 @@ public class AddEdgePanel extends JPanel {
 				EndNodeSelectItemChanged(evt);
 			}
 		});
-		
+
 		// Panel Filler
 		panelFiller = new Box.Filler(new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 0), new java.awt.Dimension(200, 32767));
 
@@ -216,8 +216,8 @@ public class AddEdgePanel extends JPanel {
 																												.addComponent(LabelColorLabel))
 																												.addGap(18, 18, 18)
 																												.addGroup(AddEdgePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING))))
-																														.addGap(0, 0, Short.MAX_VALUE)))
-																														.addContainerGap())
+																												.addGap(0, 0, Short.MAX_VALUE)))
+																												.addContainerGap())
 				);
 		AddEdgePanelLayout.setVerticalGroup(
 				AddEdgePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -321,11 +321,11 @@ public class AddEdgePanel extends JPanel {
 			GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
 			Graph currentGraph = currentPanel.mGetGraph();
 			//int numNodes = currentGraph.mGetNodeList().size();
-			
+
 			// Get the new selected Node's ID
 			String selectedItem = (String)SelectStartNodeComboBox.getSelectedItem();
 			String[] splitItem = selectedItem.split(" - ");
-			
+
 			// Set the local Node pointer
 			startNode = currentGraph.mGetNodeById(splitItem[0]);
 			currentGraph.vSelectedItems.mAppendNode(startNode);
@@ -377,23 +377,22 @@ public class AddEdgePanel extends JPanel {
 		JScrollPane currentPane = (JScrollPane)mainWindowTabbedPane.getSelectedComponent();
 		GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
 		Graph currentGraph = currentPanel.mGetGraph();
-		//int numNodes = currentGraph.mGetNodeList().size();
 		int numEdges = currentGraph.mGetEdgeList().size();
 
 		// If auto Label Edges is on
 		if(mainWindow.isAutoLabelEdges()) {
-			// Make a Node Label
+			// Make a edge Label
 			if(LabelTextField.getText().isEmpty()) {
 				edgeLabel = "Edge" + Integer.toString(numEdges + 1);
 			}
-			// Retrieve the node label
+			// Retrieve the edge label
 			else {
 				edgeLabel = LabelTextField.getText();
 			}
 		}
 		// Otherwise...
 		else {
-			// They need to enter a Node Label
+			// No Label!
 			if(LabelTextField.getText().isEmpty()) {
 				edgeLabel = "";
 				//JOptionPane.showMessageDialog(AddEdgePanel.this, "Please specify an Edge Label!", "Attention!", JOptionPane.WARNING_MESSAGE);
@@ -406,46 +405,42 @@ public class AddEdgePanel extends JPanel {
 		}
 		// If both nodes have been selected
 		if(!(((String)SelectStartNodeComboBox.getSelectedItem()).equals("")) && !(((String)SelectEndNodeComboBox.getSelectedItem()).equals(""))) {
-			
 
 			// Try to add the edge
 			try {
-			   //KMW Note: do all of this in the try, because if it fails to create the edge we don't want to
-			   //          add it to the edge list.
-			   Edge.mValidateEdge(Integer.toString(numEdges), startNode, endNode, currentGraph);
-			   // Create the new edge
-	         Edge newEdge = new Edge(Integer.toString(numEdges), edgeLabel, startNode, endNode, (String)DirectionComboBox.getSelectedItem(), (String)EdgeDesignComboBox.getSelectedItem());
-	         newEdge.mSetPairPosition(currentGraph.mCheckForEdgeTwin(newEdge));
-	         if(newEdge != null){
-   	         // Set the font
-   	         newEdge.mSetFont(Font.decode((String)LabelFontComboBox.getSelectedItem()));
-   	         // Set the Colors
-   	         newEdge.mSetEdgeColor(edgeColor);
-   	         newEdge.mSetLabelColor(labelColor);
-   				currentGraph.mAddEdge(newEdge);
-   				
-   				//KMW Note: We should not attempt to draw the graph if we get a 
-   				//          CannotAddEdge exception.
-   			   // Redraw the graph with the new edge
-   	         GraphHelper.mDrawForceDirectedGraph(currentPanel);
-   	         currentPanel.repaint();
-   	         int newWidth = GraphHelper.mGetPreferredImageWidth(currentGraph);
-   	         currentPanel.setPreferredSize(new Dimension(newWidth, newWidth));
-   	         currentPane.revalidate();
-   	         //mainWindow.resetSidePane();
-	         }
+				//KMW Note: do all of this in the try, because if it fails to create the edge we don't want to
+				//          add it to the edge list.
+				Edge.mValidateEdge(Integer.toString(numEdges), startNode, endNode, currentGraph);
+				// Create the new edge
+				Edge newEdge = new Edge(Integer.toString(numEdges), edgeLabel, startNode, endNode, (String)DirectionComboBox.getSelectedItem(), (String)EdgeDesignComboBox.getSelectedItem());
+				newEdge.mSetPairPosition(currentGraph.mCheckForEdgeTwin(newEdge));
+				if(newEdge != null){
+					// Set the font
+					newEdge.mSetFont(Font.decode((String)LabelFontComboBox.getSelectedItem()));
+					// Set the Colors
+					newEdge.mSetEdgeColor(edgeColor);
+					newEdge.mSetLabelColor(labelColor);
+					currentGraph.mAddEdge(newEdge);
+
+					//KMW Note: We should not attempt to draw the graph if we get a 
+					//          CannotAddEdge exception.
+					// Redraw the graph with the new edge
+					GraphHelper.mDrawForceDirectedGraph(currentPanel);
+					currentPanel.repaint();
+					int newWidth = GraphHelper.mGetPreferredImageWidth(currentGraph);
+					currentPanel.setPreferredSize(new Dimension(newWidth, newWidth));
+					currentPane.revalidate();
+				}
 			} catch (CannotAddEdgeException e) {
-			   JOptionPane errorDialog = new JOptionPane();
-			   JOptionPane.showMessageDialog(errorDialog, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane errorDialog = new JOptionPane();
+				JOptionPane.showMessageDialog(errorDialog, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 			}
-			
-			
 		}
 		else {
 			JOptionPane.showMessageDialog(AddEdgePanel.this, "Please select both nodes!", "Attention!", JOptionPane.WARNING_MESSAGE);
 		}
-		
+
 		SelectStartNodeComboBox.setSelectedItem("");
 		SelectEndNodeComboBox.setSelectedItem("");
 		currentGraph.vSelectedItems.mClearSelectedItems();	
@@ -485,18 +480,18 @@ public class AddEdgePanel extends JPanel {
 	protected static JComboBox SelectStartNodeComboBox;
 	private Box.Filler panelFiller;
 	private JSeparator panelSeperator;
-	
+
 	protected JTabbedPane mainWindowTabbedPane;
 	protected JScrollPane currentPane;
 	protected GraphPanel currentPanel;
 	protected Graph currentGraph;
 	protected String edgeLabel;
-	
+
 	protected Color labelColor;
 	protected Color edgeColor;
-	
+
 	protected String deSelectedItem;
-	
+
 	protected Node startNode;
 	protected Node endNode;
 }

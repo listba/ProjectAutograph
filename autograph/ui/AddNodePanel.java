@@ -13,10 +13,12 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+import autograph.Edge;
 import autograph.Graph;
 import autograph.GraphHelper;
 import autograph.GraphPanel;
 import autograph.Node;
+import autograph.exception.CannotAddEdgeException;
 import autograph.exception.CannotAddNodeException;
 
 public class AddNodePanel extends JPanel {
@@ -295,7 +297,8 @@ public class AddNodePanel extends JPanel {
 		JScrollPane currentPane = (JScrollPane)mainWindowTabbedPane.getSelectedComponent();
 		GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
 		Graph currentGraph = currentPanel.mGetGraph();
-		int numNodes = currentGraph.mGetNodeList().size();	
+		int numNodes = currentGraph.mGetNodeList().size();
+		int numEdges = currentGraph.mGetEdgeList().size();
 
 		// If auto Label Nodes is on
 		if(mainWindow.isAutoLabelNodes()) {
@@ -338,6 +341,41 @@ public class AddNodePanel extends JPanel {
 			e.printStackTrace();
 		}
 
+		// If the user wants to Auto Connect Nodes - Connect the nodes!
+		if(mainWindow.isAutoConnectNodes()) {
+			// Make sure there was a node previous to the one being added
+			if(numNodes > 0) {
+				// If auto Label Edges is on
+				if(mainWindow.isAutoLabelEdges()) {
+					// Make a Edge Label
+					edgeLabel = "Edge" + Integer.toString(numEdges + 1);
+				}
+				// Otherwise...
+				else {
+					// No label!
+					edgeLabel = "";
+				}
+
+				// Try to add the edge
+				try {
+					//KMW Note: do all of this in the try, because if it fails to create the edge we don't want to
+					//          add it to the edge list.
+					Edge.mValidateEdge(Integer.toString(numEdges), currentGraph.mGetNodeList().get(numNodes - 1), newNode, currentGraph);
+					// Create the new edge
+					Edge newEdge = new Edge(Integer.toString(numEdges), edgeLabel, currentGraph.mGetNodeList().get(numNodes - 1), newNode, "NODIRECTION", "SOLID");
+					newEdge.mSetPairPosition(currentGraph.mCheckForEdgeTwin(newEdge));
+					
+					if(newEdge != null) {
+						currentGraph.mAddEdge(newEdge);
+					}
+				} catch (CannotAddEdgeException e) {
+					JOptionPane errorDialog = new JOptionPane();
+					JOptionPane.showMessageDialog(errorDialog, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+					e.printStackTrace();
+				}
+			}
+		}
+
 		if(nodeLabel == null) nodeLabel = "No Label";
 		// Add to the AddEdge lists
 		AddEdgePanel.SelectEndNodeComboBox.addItem(Integer.toString(numNodes) + " - " + nodeLabel);
@@ -378,6 +416,7 @@ public class AddNodePanel extends JPanel {
 	protected GraphPanel currentPanel;
 	protected Graph currentGraph;
 	protected String nodeLabel;
+	protected String edgeLabel;
 
 	protected Color labelColor;
 	protected Color fillColor;
