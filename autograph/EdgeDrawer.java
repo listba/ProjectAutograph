@@ -201,7 +201,6 @@ public class EdgeDrawer {
 		   x = newStartX - barb * Math.cos(rho);
 		   y = newStartY - barb * Math.sin(rho);
 		   g2d.draw(new Line2D.Double(newStartX, newStartY, x, y));
-         System.out.println("Drawing arrow");
 		   rho = theta - phi;
 		}
    }
@@ -405,9 +404,111 @@ public class EdgeDrawer {
       mSetGraphicsStyle(g2d, e);
       g2d.drawLine(newStartX, newStartY, newEndX, newEndY);
       
+      e.mSetStartCoordinates(newStartX, newStartY);
+      e.mSetEndCoordinates(newEndX, newEndY);
       
       mDrawStraightEdgeLabel(g, e, newStartX, newStartY, newEndX, newEndY);
+      switch (e.mGetDirection()){
+      case STARTDIRECTION:
+         mDrawPairedArrowHead(g, e, e.mGetStartNode());
+         break;
+      case ENDDIRECTION:
+         mDrawPairedArrowHead(g, e, e.mGetEndNode());
+         break;
+      case DOUBLEDIRECTION:
+         mDrawPairedArrowHead(g, e, e.mGetStartNode());
+         mDrawPairedArrowHead(g, e, e.mGetEndNode());
+         break;
+      }
       g2d.dispose();
    }
-   
+
+   private static void mDrawPairedArrowHead(Graphics g, Edge e, Node arrowNode){
+      
+      Graphics2D g2d = (Graphics2D)g.create();
+      mSetGraphicsStyle(g2d, e);
+      //for circles we need to calculate the location where the line and the circle intersect.
+      //Circle formula: (x - a)^2 (y - c)^2 = r^2
+      //Expanded Circle:  x^2 -2ax + a^2 + y^2 - 2yc + c^2 - r^2 = 0
+      //Line formula: y = mx + b
+      //
+      //Plug Line y into Expaned Circle: 
+      //
+      //               : x^2 - 2ax + a^2 + (mx + b)^2 - 2(mx + b)c + c^2 - r^2
+      //               : x^2 - 2ax + a^2 + (m^2x^2 + 2mxb + b^2) - 2mxc - 2bc + c^2 - r^2 = 0
+      //               : x^2 + (m^2)x^2 - 2ax - 2mxc +2mxb + a^2 + b^2 - 2bc + c^2 - r^2 = 0
+      //               : (m^2 + 1)x^2 + (-2a - 2mc + 2mb)x + (a^2 + b^2 - 2bc + c^2 - r^2) = 0
+      //
+      //               : quadA = (2m^2 + 1)
+      //               : quadB = (-2a - 2mc + 2mb)
+      //               : quadC = (a^2 + b^2 - 2bc + c^2 - r^2)
+      //
+      //
+      // and 
+      //    m = slope of line
+      //    a = centerX loc of node
+      //    c = centerY loc of node
+      //    b = y intercept of line
+      //    r = radius of node
+      
+      double c = (double)arrowNode.mGetCenterY();
+      double a = (double)arrowNode.mGetCenterX();
+      double dy;
+      double dx;
+      if(arrowNode == e.mGetStartNode()){
+         dy = (double)e.mGetStartY() - (double)e.mGetEndY();
+         dx = (double)e.mGetStartX() - (double)e.mGetEndX();
+      }
+      else{
+         dy = (double)e.mGetEndY() - (double)e.mGetStartY();
+         dx = (double)e.mGetEndX() - (double)e.mGetStartX();
+      }
+      double m = dy/dx;
+      double b = e.mGetStartY() - (e.mGetStartX() * m);
+      double r = arrowNode.mGetWidth()/2;
+      double theta = Math.atan2(dy, dx);
+      //if(arrowNode == e.mGetEndNode()){
+         //theta = theta + Math.PI;
+      //}
+      
+      
+      double quadB = (-2 * a) + (2 * b * m) - (2 * c * m);
+      double quadA = 1 + (m * m);
+      double quadC = (a*a) + (b*b) - 2*b*c + c*c - r*r;
+      
+      double bSquared = quadB * quadB;
+      double fourAC = 4 * quadA * quadC;
+      double sqrRtBSquaredFourAC = Math.sqrt(bSquared - fourAC);
+      double twoA = 2 * quadA;
+      
+      double posX = (-quadB + Math.sqrt((quadB * quadB) - (4 * quadA * quadC)))/(2* quadA);
+      double posY = m*posX + b;
+      
+      double negX = (-quadB - Math.sqrt((quadB * quadB) - (4 * quadA * quadC)))/(2* quadA);
+      double negY = m*negX + b;
+      
+      double arrowX;
+      double arrowY;
+      
+      double phi = Math.toRadians(40);
+      int barb = 20;
+      
+      if(Math.toDegrees(theta) > 90 || Math.toDegrees(theta) < -90){
+         arrowX = posX;
+         arrowY = posY;
+      }
+      else{
+         arrowX = negX;
+         arrowY = negY;
+      }
+      
+      double x, y, rho = theta + phi;
+      for(int j = 0; j < 2; j++){
+         x = arrowX - barb * Math.cos(rho);
+         y = arrowY - barb * Math.sin(rho);
+         g2d.draw(new Line2D.Double(arrowX, arrowY, x, y));
+         rho = theta - phi;
+      }
+      g2d.dispose();
+   }
 }

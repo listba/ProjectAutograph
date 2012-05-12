@@ -978,10 +978,11 @@ public class GraphHelper {
 		//      (if we need to recalculate node position etc.)
 		//TODO: account for triangle nodes (edges currently do not intersect at correct locations for triangles)
 		if(e.mGetStartNode() != e.mGetEndNode()){
-		   if(e.mGetPairPosition() == PairPosition.UNPAIRED){
+		   if(e.mGetTwin() == null){
 		      EdgeDrawer.mDrawStraightEdge(g, e, selected);
 		   }
 		   else{
+		      
 		      EdgeDrawer.mDrawPairedEdge(g, e, selected);
 		   }
 		}
