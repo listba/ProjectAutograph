@@ -5,6 +5,14 @@ import java.io.Serializable;
 
 import autograph.Edge.PairPosition;
 import autograph.exception.*;
+import autograph.undo.*;
+
+import javax.swing.event.UndoableEditEvent;
+import javax.swing.event.UndoableEditListener;
+import javax.swing.undo.AbstractUndoableEdit;
+import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
+import javax.swing.undo.UndoManager;
 /**
  * Graph contains the data and functionality for building graph objects to be represented by Autograph
  *
@@ -16,7 +24,13 @@ public class Graph implements Serializable {
 	private ArrayList<Edge> vEdgeList;
 	private String vTitle;
 	public SelectedItems vSelectedItems;
+	public UndoManager vUndoManager;
 
+	public enum DeleteAction{
+      BOTH,
+      NODES,
+      EDGES
+   };
 	/**
 	 * ValidateGraph - ensures valid data is passed to the graph constructor
 	 *
@@ -31,6 +45,7 @@ public class Graph implements Serializable {
 	public Graph(String title){
 		try{
 			mValidateGraph(title);
+			vUndoManager = new UndoManager();
 			vNodeList = new ArrayList<Node>();
 			vEdgeList = new ArrayList<Edge>();
 			vSelectedItems = new SelectedItems();
@@ -197,31 +212,13 @@ public class Graph implements Serializable {
 	public void mAddEdge(Edge edge) throws CannotAddEdgeException {
 		try {
 			vEdgeList.add(edge);
+			vUndoManager.addEdit( new AddEdgeEdit(edge, this.vEdgeList) );
 		}
 		catch (Exception e) {
 			throw new CannotAddEdgeException("Error while adding edge!", e);
 		}
 	}
 
-	/**
-	 * RemoveEdge - removes an edge from the edge list for the graph
-	 *
-	 * @param edge - edge to be removed from the edge list
-	 * @see Edge
-	 * 
-	 */
-	public void mRemoveEdge(Edge edge) throws CannotRemoveEdgeException {
-		//TODO: link this function to the delete functionality of the UI
-		//TODO: pass in or retrieve the graphics object in the JPanel,
-		//      clear the current image and call GraphHelper.mDrawGraph 
-		//      on the "this" object after the edge is removed.
-		try {
-			vEdgeList.remove(edge);
-		}
-		catch (Exception e) {
-			throw new CannotRemoveEdgeException("Error while removing edge!", e);
-		}
-	}
 
 	/**
 	 * AddNode - adds a node to the node list
@@ -234,32 +231,13 @@ public class Graph implements Serializable {
 	public void mAddNode(Node node) throws CannotAddNodeException {
 		try {
 			vNodeList.add(node);
+			vUndoManager.addEdit( new AddNodeEdit(node, this.vNodeList) );
 		}
 		catch (Exception e) {
 			throw new CannotAddNodeException("Error while adding node!", e);
 		}
 	}
 
-	/**
-	 * RemoveNode - removes a node from the node list
-	 *
-	 * @param node - node to remove from the node list for the graph
-	 * @see Node
-	 * 
-	 */
-	public void mRemoveNode(Node node) throws CannotRemoveNodeException {
-		//TODO: link this function to the delete node functionality of the UI
-		//TODO: pass in or retrieve the graphics object in the JPanel,
-		//      clear the current image and call GraphHelper.mDrawGraph 
-		//      on the "this" object after the node is removed.
-		//TODO: remove any edges currently associated with this node.
-		try {
-			vNodeList.remove(node);
-		}
-		catch (Exception e) {
-			throw new CannotRemoveNodeException("Error while removing node!", e);
-		}
-	}
 
 	/**
 	 * Checks the edge list for a twin to edge and resets the twin variables if a twin 
@@ -320,39 +298,68 @@ public class Graph implements Serializable {
       return hasMultipleTwins;
    }
 
-   public void mDeleteSelectedItems() {
-   	mDeleteSelectedEdges();
-   	mDeleteSelectedNodes();
+   public void mDeleteSelectedItems(DeleteAction deleteAction) {
+   	ArrayList<Edge> undoableEdges = new ArrayList<Edge>();
+   	ArrayList<Node> undoableNodes = new ArrayList<Node>();
+   	switch(deleteAction) {
+   		case BOTH:
+   			undoableEdges = mDeleteSelectedEdges();
+   			undoableNodes = mDeleteSelectedNodes(undoableEdges);
+   			break;
+			case NODES:
+				undoableNodes = mDeleteSelectedNodes(undoableEdges);
+				break;
+			case EDGES:
+				undoableEdges = mDeleteSelectedEdges();
+				break;
+   	}
+   	vUndoManager.addEdit(new DeleteNodeEdgeEdit(undoableNodes, this.vNodeList, 
+   															  undoableEdges, this.vEdgeList));
    }
 
-   public void mDeleteSelectedEdges() {
+   private ArrayList<Edge> mDeleteSelectedEdges() {
    	ArrayList<Edge> sEdges = this.vSelectedItems.mGetSelectedEdges();
+   	ArrayList<Edge> undoableEdges = new ArrayList<Edge>();
    	for(int i = 0; i < sEdges.size(); i++) {
    		Edge e = sEdges.get(i);
-   		e.mSetTwin(null);
+   		Edge eTwin = e.mGetTwin();
+   		if(eTwin != null) {
+   			eTwin.mSetTwin(null);
+   		}
+   		undoableEdges.add(e);
    		this.vEdgeList.remove(this.vEdgeList.indexOf(e));
    		sEdges.remove(i);
 			i--;
    	}
+   	return undoableEdges;
    }
 
-   public void mDeleteSelectedNodes() {
+   private ArrayList<Node> mDeleteSelectedNodes(ArrayList<Edge> undoableEdges) {
    	ArrayList<Node> sNodes = this.vSelectedItems.mGetSelectedNodes();
    	ArrayList<Edge> sEdges = this.vSelectedItems.mGetSelectedEdges();
+   	ArrayList<Node> undoableNodes = new ArrayList<Node>();
+   	vUndoManager.addEdit(new DeleteNodeEdit(sNodes, this.vNodeList));
    	for(int i = 0; i < sNodes.size(); i++) {
    		Node n = sNodes.get(i);
    		for (int j = 0; j < vEdgeList.size(); j++) {
    			Edge e = this.vEdgeList.get(j);
    			if ( (e.mGetStartNode() == n) || (e.mGetEndNode() == n) ) {
+   				undoableEdges.add(e);
    				this.vEdgeList.remove(j);
    				j--;
-   				sEdges.remove(sEdges.indexOf(e));
+   				int eIndex = sEdges.indexOf(e);
+   				if (eIndex >= 0)
+   				{
+   					sEdges.remove(eIndex);
+					}
    			}
    		}
    		//System.out.println("Removed Node: " + this.vNodeList.indexOf(n));
+   		undoableNodes.add(n);
    		this.vNodeList.remove(this.vNodeList.indexOf(n));
    		sNodes.remove(i);
    		i--;
    	}
+   	return undoableNodes;
    }
 }

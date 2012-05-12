@@ -51,6 +51,9 @@ import javax.swing.Box;
 import javax.swing.JToggleButton;
 import javax.swing.border.TitledBorder;
 
+import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
+
 public class mainWindow extends JFrame {
 
 	/**
@@ -215,6 +218,14 @@ public class mainWindow extends JFrame {
 		EditDropdownMenu = new JMenu("Edit");
 		MainWindowMenuBar.add(EditDropdownMenu);
 
+		UndoMenuItem = new JMenuItem("Undo");
+		UndoMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_MASK));
+		EditDropdownMenu.add(UndoMenuItem);
+
+		RedoMenuItem = new JMenuItem("Redo");
+		RedoMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_MASK));
+		EditDropdownMenu.add(RedoMenuItem);
+
 		SelectAllMenuItem = new JMenuItem("Select All");
 		SelectAllMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK));
 		EditDropdownMenu.add(SelectAllMenuItem);
@@ -357,6 +368,16 @@ public class mainWindow extends JFrame {
 				ExitMenuItemActionPerformed(evt);
 			}
 		});
+		UndoMenuItem.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				UndoMenuItemActionPerformed(evt);
+			}
+		});
+		RedoMenuItem.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				RedoMenuItemActionPerformed(evt);
+			}
+		});
 		SelectAllMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				SelectAllMenuItemActionPerformed(evt);
@@ -486,6 +507,29 @@ public class mainWindow extends JFrame {
 		SidePanelScrollPane.setViewportView(addNodePanel);
 	}
 
+	private void UndoMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		JScrollPane currentPane = (JScrollPane)MainWindowTabbedPane.getSelectedComponent();
+		GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
+		Graph currentGraph = currentPanel.mGetGraph();
+		try {
+			currentGraph.vUndoManager.undo();
+		} catch (CannotUndoException e) {
+			System.out.println("There are no more actions to undo");
+		}
+		currentPanel.repaint();
+	}
+
+	private void RedoMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		JScrollPane currentPane = (JScrollPane)MainWindowTabbedPane.getSelectedComponent();
+		GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
+		Graph currentGraph = currentPanel.mGetGraph();
+		try {
+			currentGraph.vUndoManager.redo();
+		} catch (CannotRedoException e) {
+			System.out.println("There are no more actions to redo");
+		}
+		currentPanel.repaint();
+	}
 	private void SelectAllMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		JScrollPane currentPane = (JScrollPane)MainWindowTabbedPane.getSelectedComponent();
 		GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
@@ -529,7 +573,7 @@ public class mainWindow extends JFrame {
 		JScrollPane currentPane = (JScrollPane)MainWindowTabbedPane.getSelectedComponent();
 		GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
 		Graph currentGraph = currentPanel.mGetGraph();
-		currentGraph.mDeleteSelectedItems();
+		currentGraph.mDeleteSelectedItems(Graph.DeleteAction.BOTH);
 		AddEdgePanel.updateNodeList(currentGraph.mGetNodeList());
 		currentPanel.repaint();
 	}
@@ -538,7 +582,7 @@ public class mainWindow extends JFrame {
 		JScrollPane currentPane = (JScrollPane)MainWindowTabbedPane.getSelectedComponent();
 		GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
 		Graph currentGraph = currentPanel.mGetGraph();
-		currentGraph.mDeleteSelectedNodes();
+		currentGraph.mDeleteSelectedItems(Graph.DeleteAction.NODES);
 		AddEdgePanel.updateNodeList(currentGraph.mGetNodeList());
 		currentPanel.repaint();
 	}
@@ -547,7 +591,7 @@ public class mainWindow extends JFrame {
 		JScrollPane currentPane = (JScrollPane)MainWindowTabbedPane.getSelectedComponent();
 		GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
 		Graph currentGraph = currentPanel.mGetGraph();
-		currentGraph.mDeleteSelectedEdges();
+		currentGraph.mDeleteSelectedItems(Graph.DeleteAction.EDGES);
 		currentPanel.repaint();
 	}
 
@@ -757,6 +801,8 @@ public class mainWindow extends JFrame {
 	protected JMenuItem ExitMenuItem;
 	// Edit Menu
 	protected JMenu EditDropdownMenu;
+	protected JMenuItem UndoMenuItem;
+	protected JMenuItem RedoMenuItem;
 	protected JMenuItem SelectAllMenuItem;
 	protected JMenuItem SelectAllNodesMenuItem;
 	protected JMenuItem SelectAllEdgesMenuItem;
