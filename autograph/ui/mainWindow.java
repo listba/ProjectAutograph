@@ -316,6 +316,13 @@ public class mainWindow extends JFrame {
 					Graph currentGraph = currentPanel.mGetGraph();
 					// Update the AddEdge lists
 					AddEdgePanel.updateNodeList(currentGraph.mGetNodeList());
+					
+					//if we switch tabs with an edit panel open we default back to the add node panel
+					if(SidePanelScrollPane.getViewport().getView() == EditPanel ||
+					      SidePanelScrollPane.getViewport().getView() == editNodePanel ||
+					      SidePanelScrollPane.getViewport().getView() == editEdgePanel){
+					   SidePanelScrollPane.setViewportView(addNodePanel);
+					}
 				}
 				else {
 					return;
