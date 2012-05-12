@@ -338,7 +338,6 @@ public class Graph implements Serializable {
    	ArrayList<Node> sNodes = this.vSelectedItems.mGetSelectedNodes();
    	ArrayList<Edge> sEdges = this.vSelectedItems.mGetSelectedEdges();
    	ArrayList<Node> undoableNodes = new ArrayList<Node>();
-   	vUndoManager.addEdit(new DeleteNodeEdit(sNodes, this.vNodeList));
    	for(int i = 0; i < sNodes.size(); i++) {
    		Node n = sNodes.get(i);
    		for (int j = 0; j < vEdgeList.size(); j++) {
