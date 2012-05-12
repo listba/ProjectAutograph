@@ -401,6 +401,13 @@ public class EdgeDrawer {
             break;
       }
       Graphics2D g2d = (Graphics2D)g.create();
+      if(selected)
+      {
+        mSetSelectedStyle(g2d);
+        g2d.drawLine(newStartX, newStartY, newEndX, newEndY);
+        g2d.dispose();
+        g2d = (Graphics2D)g.create();
+      }
       mSetGraphicsStyle(g2d, e);
       g2d.drawLine(newStartX, newStartY, newEndX, newEndY);
       

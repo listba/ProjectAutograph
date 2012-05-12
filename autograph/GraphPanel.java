@@ -147,18 +147,20 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
             break;
          }
       }
-      for (int i = 0; i < edges.size(); i++) {
-         if (edges.get(i).mContains(e.getX(), e.getY())) {
-            if (e.isControlDown()) {
-               graph.vSelectedItems.mAppendEdge(edges.get(i));
-            } else if (e.isShiftDown()) {
-               graph.vSelectedItems.mSelectAllEdges(edges);
-            } else {
-               graph.vSelectedItems.mClearSelectedEdges();
-               graph.vSelectedItems.mSelectEdge(edges.get(i));
+      if (!itemSelected) {
+         for (int i = 0; i < edges.size(); i++) {
+            if (edges.get(i).mContains(e.getX(), e.getY())) {
+               if (e.isControlDown()) {
+                  graph.vSelectedItems.mAppendEdge(edges.get(i));
+               } else if (e.isShiftDown()) {
+                  graph.vSelectedItems.mSelectAllEdges(edges);
+               } else {
+                  graph.vSelectedItems.mClearSelectedEdges();
+                  graph.vSelectedItems.mSelectEdge(edges.get(i));
+               }
+               itemSelected = true;
+               break;
             }
-            itemSelected = true;
-            break;
          }
       }
       if (!itemSelected) {
