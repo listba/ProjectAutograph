@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package autograph.ui;
 
 import java.awt.event.ActionEvent;
@@ -207,6 +203,9 @@ public class mainWindow extends JFrame {
 		PrintMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_MASK));
 		FileDropdownMenu.add(PrintMenuItem);
 
+		PrintPreviewMenuItem = new JMenuItem("Print Preview");
+		FileDropdownMenu.add(PrintPreviewMenuItem);
+
 		CloseGraphMenuItem = new JMenuItem("Close Graph");
 		CloseGraphMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, InputEvent.SHIFT_MASK));
 		FileDropdownMenu.add(CloseGraphMenuItem);
@@ -327,12 +326,12 @@ public class mainWindow extends JFrame {
 					Graph currentGraph = currentPanel.mGetGraph();
 					// Update the AddEdge lists
 					AddEdgePanel.updateNodeList(currentGraph.mGetNodeList());
-					
+
 					//if we switch tabs with an edit panel open we default back to the add node panel
 					if(SidePanelScrollPane.getViewport().getView() == EditPanel ||
-					      SidePanelScrollPane.getViewport().getView() == editNodePanel ||
-					      SidePanelScrollPane.getViewport().getView() == editEdgePanel){
-					   SidePanelScrollPane.setViewportView(addNodePanel);
+							SidePanelScrollPane.getViewport().getView() == editNodePanel ||
+							SidePanelScrollPane.getViewport().getView() == editEdgePanel){
+						SidePanelScrollPane.setViewportView(addNodePanel);
 					}
 				}
 				else {
@@ -363,6 +362,11 @@ public class mainWindow extends JFrame {
 		PrintMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				PrintMenuItemActionPerformed(evt);
+			}
+		});
+		PrintPreviewMenuItem.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				PrintPreviewMenuItemActionPerformed(evt);
 			}
 		});
 		CloseGraphMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -682,10 +686,15 @@ public class mainWindow extends JFrame {
 	}
 
 	protected void PrintMenuItemActionPerformed(ActionEvent evt) {
-		printJob = PrinterJob.getPrinterJob();
-		printJob.setJobName(" Print Current Graph ");
+		this.printWindow();
+	}
 
-		printJob.setPrintable (new Printable() {    
+	/**
+	 * Print Preview
+	 * @param evt
+	 */
+	protected void PrintPreviewMenuItemActionPerformed(java.awt.event.ActionEvent evt) {	
+		Printable pageToPrint = new Printable() {    
 			public int print(Graphics pg, PageFormat pf, int pageNum) {
 				if (pageNum > 0) {
 					return Printable.NO_SUCH_PAGE;
@@ -698,16 +707,8 @@ public class mainWindow extends JFrame {
 				currentPanel.paint(g2);
 				return Printable.PAGE_EXISTS;
 			}
-		});
-		// Display the print dialog
-		if (printJob.printDialog() == false)
-			return;
-
-		try {
-			printJob.print();
-		} catch (PrinterException ex) {
-			ex.printStackTrace();
-		}
+		};
+		new PrintPreview(null, pageToPrint);
 	}
 
 	/**
@@ -781,6 +782,35 @@ public class mainWindow extends JFrame {
 	public static boolean isAutoConnectNodes() {
 		return AutoConnectNodesTog.isSelected();
 	}
+	
+	public static void printWindow() {
+		printJob = PrinterJob.getPrinterJob();
+		printJob.setJobName(" Print Current Graph ");
+
+		printJob.setPrintable (new Printable() {    
+			public int print(Graphics pg, PageFormat pf, int pageNum) {
+				if (pageNum > 0) {
+					return Printable.NO_SUCH_PAGE;
+				}
+
+				Graphics2D g2 = (Graphics2D) pg;
+				g2.translate(pf.getImageableX(), pf.getImageableY());
+				JScrollPane currentPane = (JScrollPane)MainWindowTabbedPane.getSelectedComponent();
+				GraphPanel currentPanel = (GraphPanel)currentPane.getViewport().getView();
+				currentPanel.paint(g2);
+				return Printable.PAGE_EXISTS;
+			}
+		});
+		// Display the print dialog
+		if (printJob.printDialog() == false)
+			return;
+
+		try {
+			printJob.print();
+		} catch (PrinterException ex) {
+			ex.printStackTrace();
+		}
+	}
 
 	// The Panels
 	protected JFrame MainWindowComponent;
@@ -804,6 +834,7 @@ public class mainWindow extends JFrame {
 	protected JMenuItem SaveMenuItem;
 	protected JMenuItem SaveAsMenuItem;
 	protected JMenuItem PrintMenuItem;
+	protected JMenuItem PrintPreviewMenuItem;
 	protected JMenuItem CloseGraphMenuItem;
 	protected JMenuItem ExitMenuItem;
 	// Edit Menu
@@ -842,7 +873,7 @@ public class mainWindow extends JFrame {
 	protected static JToggleButton AutoLabelEdgesTog;
 	protected static JToggleButton AutoConnectNodesTog;
 	// The Print Stuff
-	protected PrinterJob printJob;
+	protected static PrinterJob printJob;
 	protected PageFormat printFormat;
 }
 
