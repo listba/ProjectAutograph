@@ -178,13 +178,108 @@ public class EdgeDrawer {
 					break;
 				  		
 				case TRIANGLE:
-					//blow up because I haven't done the trig to compute triangle stuff yet.
-					//(just doing circle stuff for now.)
-					width = startNode.mGetWidth();
-					widthOffset = (width/2) * Math.cos(theta);
-					heightOffset = (width/2) * Math.sin(theta);
-					newStartX = startX - widthOffset;
-					newStartY = startY - heightOffset;
+					// We are going to do something slightly different to calculate the intersection point for the triangle.
+				   // We know 3 points on the triangle and using those points we can calculate line equations for each of the
+				   // lines of the triangle. We also know two points of the edge, so we can calculate the point of line equation
+				   // for that line. Then calculate the point of intersection for that line and the other three, determine which
+				   // intersection points are valid, and pick the closest one to the opposite end of the edge.
+				   
+				   // yEdge = mEdge(x) + bEdge
+				   // yLine = mLine(x) + bLine
+				   // 
+				   // mLine(x) + bLine = mEdge(x) + bEdge
+				   // (mLine - mEdge)(x) = bEdge - bLine
+				   //
+				   // x = (bEdge - bLine)/(mLine - mEdge)
+				   // yLine = mLine((bEdge-bLine)/(mLine - mEdge)) + bLine
+				   //
+				   // Intersection Point = (x, yLine)
+				   
+				   double intersection1X = 0;
+               double intersection1Y = 0;
+               double intersection2X = 0;
+               double intersection2Y = 0;
+               double intersection3X = 0;
+               double intersection3Y = 0;
+				   
+				   //slope and intersect of the edge.
+				   double mEdge = dy/dx;
+			      double bEdge = startY - (startX * mEdge);
+			      
+			      double topX = startNode.mGetCenterX();
+			      double topY = startNode.mGetCenterY() - startNode.mGetHeight()/2;
+			      
+			      double bottomRightX = startNode.mGetCenterX() + startNode.mGetWidth()/2;
+			      double bottomRightY = startNode.mGetCenterY() + startNode.mGetHeight()/2;
+			      
+			      double bottomLeftX = startNode.mGetCenterX() - startNode.mGetWidth()/2;
+			      double bottomLeftY = startNode.mGetCenterY() + startNode.mGetHeight()/2;
+			      
+			      double mRight = (topY - bottomRightY)/(topX - bottomRightX);
+			      double bRight = topY - (topX * mRight);
+			      
+			      double mLeft = (topY - bottomLeftY)/(topX - bottomLeftX);
+			      double bLeft = topY - (topX * mLeft);
+			      
+			      intersection1X = (bEdge - bRight)/(mRight - mEdge);
+			      intersection1Y = (mRight * intersection1X) + bRight;
+			      
+			      intersection2X = (bEdge - bLeft)/(mLeft - mEdge);
+			      intersection2Y = (mLeft * intersection2X) + bLeft;
+			      
+			      // for bottom, y = bottomLeftY = bottomRightY;
+               // yEdge = mEdge(x) + bEdge
+               // (bottomLeftY - bEdge)/mEdge = x
+			      intersection3X = (bottomLeftY - bEdge)/mEdge;
+			      intersection3Y = bottomLeftY;
+			      
+			      double valid1X = 0;
+			      double valid1Y = 0;
+			      double valid2X = 0;
+			      double valid2Y = 0;
+			     
+			      //we have 3 intersection points, only 2 should be valid...figure out which ones
+			      
+			      if(intersection1X >= bottomLeftX && intersection1X <= bottomRightX 
+			            && intersection1Y >= topY && intersection1Y <= bottomLeftY){
+			         valid1X = intersection1X;
+			         valid1Y = intersection1Y;
+			      }
+			      if(intersection2X >= bottomLeftX && intersection2X <= bottomRightX
+			            && intersection2Y >= topY && intersection2Y <= bottomLeftY){
+			         if(!(valid1X == 0 && valid1Y == 0)){
+			            valid2X = intersection2X;
+			            valid2Y = intersection2Y;
+			         }
+			         else{
+			            valid1X = intersection2X;
+			            valid1Y = intersection2Y;
+			         }
+			      }
+			      if(intersection3X >= bottomLeftX && intersection3X <= bottomRightX
+			            && intersection3Y >= topY && intersection3Y <= bottomLeftY){
+			         if(valid1X == 0 && valid1Y ==0){
+			            System.out.println("Ooops, at least one should be valid by now");
+			         }
+			         else if(valid2Y == 0 && valid2X == 0){
+			            valid2X = intersection3X;
+			            valid2Y = intersection3Y;
+			         }
+			         //It will theoretically have 3 valid points if it is at a corner, but we don't
+			         //care about that because it will just choose one of the two valid corner points.
+			      }
+			      
+			      double distance1 = mCalculateDistanceBetweenPoints(endX, endY, valid1X, valid1Y);
+			      double distance2 = mCalculateDistanceBetweenPoints(endX, endY, valid2X, valid2Y);
+			      
+			      if(distance1 < distance2){
+			         newStartX = valid1X;
+			         newStartY = valid1Y;
+			      }
+			      else{
+			         newStartX = valid2X;
+			         newStartY = valid2Y;
+			      }
 					break;
 				default:
 					break;
