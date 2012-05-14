@@ -16,6 +16,7 @@ import javax.swing.filechooser.FileFilter;
 import autograph.Graph;
 import autograph.GraphHelper;
 import autograph.GraphPanel;
+import autograph.Node;
 import autograph.Utils;
 
 public class FilePickerDialog extends javax.swing.JDialog {
@@ -96,14 +97,29 @@ public class FilePickerDialog extends javax.swing.JDialog {
 					loadedGraph = GraphHelper.mImportGraphFromGML(selectedFile.getPath(), null);
 				}
 				
+				Boolean allNodesHaveCoordinates = true;
+				ArrayList<Node> nodeList = loadedGraph.mGetNodeList();
+				for(int i = 0; i < nodeList.size(); i ++){
+				   if(!(nodeList.get(i).mGetCenterX() > 0 && nodeList.get(i).mGetCenterY() > 0)){
+				      allNodesHaveCoordinates = false;
+				      break;
+				   }
+				}
+				
 				GraphPanel newGraphPanel = new GraphPanel(loadedGraph);
 				newGraphPanel.mSetFilePath(selectedFile.getPath());
 				JScrollPane newPane = new javax.swing.JScrollPane(newGraphPanel);
 				newPane.setBorder(null);
 
 				int imageWidth = GraphHelper.mGetPreferredImageWidth(newGraphPanel.mGetGraph());
-				newGraphPanel.setPreferredSize(new Dimension(imageWidth, imageWidth));  
-				GraphHelper.mDrawForceDirectedGraph(newGraphPanel);
+				newGraphPanel.setPreferredSize(new Dimension(imageWidth, imageWidth));
+				
+				//we only want to apply the force drawing algorithm if we cannot find coordinates for all 
+				//nodes.
+				if(!allNodesHaveCoordinates){
+				   GraphHelper.mDrawForceDirectedGraph(newGraphPanel);
+				}
+
 				
 				//giving the tab the file's name.
 				int extensionStart = fileName.lastIndexOf('.');
@@ -227,7 +243,9 @@ public class FilePickerDialog extends javax.swing.JDialog {
 				if(fileName != null && !fileName.isEmpty()){
 				   currentPanel.mSetFilePath(filePath);
 				   int extensionStart = fileName.lastIndexOf('.');
-				   MainWindowTabbedPane.setTitleAt(selectedIndex, fileName.substring(0, extensionStart));
+				   String tabName = fileName.substring(0, extensionStart);
+				   MainWindowTabbedPane.setTabComponentAt(selectedIndex, new ButtonTabComponent(tabName, MainWindowTabbedPane));
+				   MainWindowTabbedPane.setTitleAt(selectedIndex, tabName);
 				}
 			}
 			else{

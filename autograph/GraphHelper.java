@@ -571,7 +571,6 @@ public class GraphHelper {
 				e1.printStackTrace();
 			}
 			StringBuilder fileText = new StringBuilder();
-			//String NL = System.getProperty("line.separator");
 
 			if(scanner != null){
 				//Read in all of the text into a StringBuilder.
@@ -973,10 +972,6 @@ public class GraphHelper {
 	 */
 
 	public static void mDrawEdge(Graphics g, Edge e, Boolean selected) {
-		//TODO: implement for non-straight edges
-		//TODO: figure out how we want to handle the case where the edge label is longer than the edge 
-		//      (if we need to recalculate node position etc.)
-		//TODO: account for triangle nodes (edges currently do not intersect at correct locations for triangles)
 		if(e.mGetStartNode() != e.mGetEndNode()){
 		   if(e.mGetTwin() == null){
 		      EdgeDrawer.mDrawStraightEdge(g, e, selected);

@@ -31,6 +31,8 @@ public class GMLParser {
    }
    
    private static enum nodeGraphicsAttributesGML{
+      X,
+      Y,
       W,
       H,
       TYPE,
@@ -358,7 +360,7 @@ public class GMLParser {
                      }
                      break;
                   case FONTNAME:
-                     fontName = mGetNextWord();
+                     //fontName = mGetNextWord();
                      break;
                   case COLOR:
                      //TODO: write code to parse the color from #RRGGBB format
@@ -389,6 +391,8 @@ public class GMLParser {
    private void mGetNodeGraphicsAttributesGML(Node node, Stack<String> graphLoc) throws CannotLoadGraph{
       if(graphLoc.peek() == "nodeGraphics"){
          String nextAttribute = "";
+         int newX = 0;
+         int newY = 0;
          while(!nextAttribute.equals("]")){
             nextAttribute = mGetNextWord();
             try{
@@ -423,6 +427,12 @@ public class GMLParser {
                         node.mSetShape("CIRCLE");
                      }
                      break;
+                  case X:
+                     newX = Integer.parseInt(mGetNextWord());
+                     break;
+                  case Y:
+                     newY = Integer.parseInt(mGetNextWord());
+                     break;
                   case FILL:
                      //TODO: write code to parse color data out of #RRGGBB format
                      break;
@@ -439,6 +449,7 @@ public class GMLParser {
                
             }
          }
+         node.mSetCenterLocation(newX, newY);
          graphLoc.pop();
       }
       else{
