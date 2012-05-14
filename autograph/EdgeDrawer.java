@@ -237,8 +237,8 @@ public class EdgeDrawer {
 
       mDrawStraightEdgeLabel(g, e, sNodeX, sNodeY, eNodeX, eNodeY);
       
-      //KMW Note: for now we will only support one style of arrow. (a filled in triangle)
-      //          at some point we will need to support the other types.
+      //KMW Note: for now we will only support one style of arrow. 
+      //          at some point we may want to support the other types.
       switch(e.mGetDirection()){
       case NODIRECTION:
          //we are done. It will work
@@ -434,32 +434,11 @@ public class EdgeDrawer {
       
       Graphics2D g2d = (Graphics2D)g.create();
       mSetGraphicsStyle(g2d, e);
-      //for circles we need to calculate the location where the line and the circle intersect.
-      //Circle formula: (x - a)^2 (y - c)^2 = r^2
-      //Expanded Circle:  x^2 -2ax + a^2 + y^2 - 2yc + c^2 - r^2 = 0
-      //Line formula: y = mx + b
-      //
-      //Plug Line y into Expaned Circle: 
-      //
-      //               : x^2 - 2ax + a^2 + (mx + b)^2 - 2(mx + b)c + c^2 - r^2
-      //               : x^2 - 2ax + a^2 + (m^2x^2 + 2mxb + b^2) - 2mxc - 2bc + c^2 - r^2 = 0
-      //               : x^2 + (m^2)x^2 - 2ax - 2mxc +2mxb + a^2 + b^2 - 2bc + c^2 - r^2 = 0
-      //               : (m^2 + 1)x^2 + (-2a - 2mc + 2mb)x + (a^2 + b^2 - 2bc + c^2 - r^2) = 0
-      //
-      //               : quadA = (2m^2 + 1)
-      //               : quadB = (-2a - 2mc + 2mb)
-      //               : quadC = (a^2 + b^2 - 2bc + c^2 - r^2)
-      //
-      //
-      // and 
-      //    m = slope of line
-      //    a = centerX loc of node
-      //    c = centerY loc of node
-      //    b = y intercept of line
-      //    r = radius of node
       
-      double c = (double)arrowNode.mGetCenterY();
-      double a = (double)arrowNode.mGetCenterX();
+      double arrowX = 0;
+      double arrowY = 0;
+      
+      //values for the line equation
       double dy;
       double dx;
       if(arrowNode == e.mGetStartNode()){
@@ -470,45 +449,188 @@ public class EdgeDrawer {
          dy = (double)e.mGetEndY() - (double)e.mGetStartY();
          dx = (double)e.mGetEndX() - (double)e.mGetStartX();
       }
+      double theta = Math.atan2(dy, dx);
       double m = dy/dx;
       double b = e.mGetStartY() - (e.mGetStartX() * m);
-      double r = arrowNode.mGetWidth()/2;
-      double theta = Math.atan2(dy, dx);
-      //if(arrowNode == e.mGetEndNode()){
-         //theta = theta + Math.PI;
-      //}
       
-      
-      double quadB = (-2 * a) + (2 * b * m) - (2 * c * m);
-      double quadA = 1 + (m * m);
-      double quadC = (a*a) + (b*b) - 2*b*c + c*c - r*r;
-      
-      double bSquared = quadB * quadB;
-      double fourAC = 4 * quadA * quadC;
-      double sqrRtBSquaredFourAC = Math.sqrt(bSquared - fourAC);
-      double twoA = 2 * quadA;
-      
-      double posX = (-quadB + Math.sqrt((quadB * quadB) - (4 * quadA * quadC)))/(2* quadA);
-      double posY = m*posX + b;
-      
-      double negX = (-quadB - Math.sqrt((quadB * quadB) - (4 * quadA * quadC)))/(2* quadA);
-      double negY = m*negX + b;
-      
-      double arrowX;
-      double arrowY;
+      switch(arrowNode.mGetShape()){
+         case CIRCLE:
+            //for circles we need to calculate the location where the line and the circle intersect.
+            //Circle formula: (x - a)^2 (y - c)^2 = r^2
+            //Expanded Circle:  x^2 -2ax + a^2 + y^2 - 2yc + c^2 - r^2 = 0
+            //Line formula: y = mx + b
+            //
+            //Plug Line y into Expaned Circle: 
+            //
+            //               : x^2 - 2ax + a^2 + (mx + b)^2 - 2(mx + b)c + c^2 - r^2
+            //               : x^2 - 2ax + a^2 + (m^2x^2 + 2mxb + b^2) - 2mxc - 2bc + c^2 - r^2 = 0
+            //               : x^2 + (m^2)x^2 - 2ax - 2mxc +2mxb + a^2 + b^2 - 2bc + c^2 - r^2 = 0
+            //               : (m^2 + 1)x^2 + (-2a - 2mc + 2mb)x + (a^2 + b^2 - 2bc + c^2 - r^2) = 0
+            //
+            //               : quadA = (2m^2 + 1)
+            //               : quadB = (-2a - 2mc + 2mb)
+            //               : quadC = (a^2 + b^2 - 2bc + c^2 - r^2)
+            //
+            //
+            // and 
+            //    m = slope of line
+            //    a = centerX loc of node
+            //    c = centerY loc of node
+            //    b = y intercept of line
+            //    r = radius of node
+            
+            double c = (double)arrowNode.mGetCenterY();
+            double a = (double)arrowNode.mGetCenterX();
+            
+            double r = arrowNode.mGetWidth()/2;
+            
+            
+            double quadB = (-2 * a) + (2 * b * m) - (2 * c * m);
+            double quadA = 1 + (m * m);
+            double quadC = (a*a) + (b*b) - 2*b*c + c*c - r*r;
+            
+            double posX = (-quadB + Math.sqrt((quadB * quadB) - (4 * quadA * quadC)))/(2* quadA);
+            double posY = m*posX + b;
+            
+            double negX = (-quadB - Math.sqrt((quadB * quadB) - (4 * quadA * quadC)))/(2* quadA);
+            double negY = m*negX + b;
+            
+            if(Math.toDegrees(theta) > 90 || Math.toDegrees(theta) < -90){
+               arrowX = posX;
+               arrowY = posY;
+            }
+            else{
+               arrowX = negX;
+               arrowY = negY;
+            }
+            
+            break;
+         case SQUARE:
+            // for squares we need to calculate the points of intersection between the edge's line, and 
+            // the line on the square that is the first to be intersected by the line
+            // Furthermore, for every square we should have exactly 2 valid intersection points,
+            // so we will need to calculate which one is the more appropriate one to use.
+            // We know that the line equation is:
+            //
+            //     y = mx + b
+            //
+            // and we have already calculated m and b above.
+            // We also know that the equations for the square can be summed up as:
+            //    
+            //    y1 = centerY - height/2; (s.t. x1 <= x <= x2)
+            //    y2 = centerY + height/2; (s.t. x1 <= x <= x2)
+            //    x1 = centerX - width/2;  (s.t. y1 <= y <= y2)
+            //    x2 = centerX + width/2;  (s.t. y1 <= y <= y2)
+            //
+            // So now we need to plug in the values of y1, y2, x1, and x2 into the line equation
+            // and determine which of the intersections works best for our arrow placement.
+            
+               double centerY = arrowNode.mGetCenterY();
+               double centerX = arrowNode.mGetCenterX();
+               double y1 = centerY - (arrowNode.mGetHeight()/2);
+               double y2 = centerY + (arrowNode.mGetHeight()/2);
+               double x1 = centerX - (arrowNode.mGetWidth()/2);
+               double x2 = centerX + (arrowNode.mGetWidth()/2);
+               
+               double actualIntersect1X = 0;
+               double actualIntersect1Y = 0;
+               double actualIntersect2X = 0;
+               double actualIntersect2Y = 0;
+               
+               double xIntersect1 = (y1 - b)/m; //this is point (xIntersect1, y1)
+               double xIntersect2 = (y2 - b)/m; //this is point (xIntersect2, y1)
+               
+               double yIntersect1 = (m*x1) + b; //this is point (x1, yIntersect1)
+               double yIntersect2 = (m*x2) + b; //this is point (x2, yIntersect2)
+               
+               if(xIntersect1 >= x1 && xIntersect1 <= x2){
+                  //we have a valid line intersection point
+                  actualIntersect1X = xIntersect1;
+                  actualIntersect1Y = y1;
+               }
+               if(xIntersect2 >= x1 && xIntersect2 <=x2){
+                  //we have a valid line intersection point
+                  if(actualIntersect1X == 0 && actualIntersect1Y ==0){
+                     //we haven't found a valid intersect yet, so populate the first point data.
+                     actualIntersect1X = xIntersect2;
+                     actualIntersect1Y = y2;
+                  }
+                  else{
+                     //we have found a valid intersect already, so populate the second point's data.
+                     actualIntersect2X = xIntersect2;
+                     actualIntersect2Y = y2;
+                  }
+               }
+               if(yIntersect1 >= y1 && yIntersect1 <= y2){
+                  //we have a valid intersection point
+                  if(actualIntersect1X == 0 && actualIntersect1Y == 0){
+                     //we have not had a valid intersection point yet, so populate the first point data
+                     actualIntersect1X = x1;
+                     actualIntersect1Y = yIntersect1;
+                  }
+                  else if(actualIntersect2X == 0 && actualIntersect2Y == 0){
+                     //we have already had a valid intersection point, but haven't had 2 of them, so populate the 
+                     //second point's data.
+                     actualIntersect2X = x1;
+                     actualIntersect2Y = yIntersect1;
+                  }
+                  else{
+                     //it thinks we have already had 2 valid intersection points, and that this one is a third. 
+                     //This should not happen
+                     System.out.println("Ooops...something borked.");
+                  }
+               }
+               if(yIntersect2 >= y1 && yIntersect2 <= y2){
+                  if(actualIntersect1X == 0 && actualIntersect1Y == 0){
+                     System.out.println("Something borked, this should not be 0s");
+                  }
+                  else if(actualIntersect2X == 0 && actualIntersect2Y == 0){
+                     actualIntersect2X = x2;
+                     actualIntersect2Y = yIntersect2;
+                  }
+                  else{
+                     System.out.println("Oops...something new borked.");
+                  }
+               }
+            
+               //ok, now we have our two potential points, and we need to select the appropriate one.
+               
+               if(arrowNode == e.mGetStartNode()){
+                  //we are drawing in the start direction, so pick the point closest to the end point of the edge
+                  double distance1 = mCalculateDistanceBetweenPoints(e.mGetEndX(), e.mGetEndY(), actualIntersect1X, actualIntersect1Y);
+                  double distance2 = mCalculateDistanceBetweenPoints(e.mGetEndX(), e.mGetEndY(), actualIntersect2X, actualIntersect2Y);
+                  
+                  if(distance1 <= distance2){
+                     arrowX = actualIntersect1X;
+                     arrowY = actualIntersect1Y;
+                  }
+                  else{
+                     arrowX = actualIntersect2X;
+                     arrowY = actualIntersect2Y;
+                  }
+               }
+               else{
+                  //we are drawing in the end direction, so pick the point closest to the start point of the edge.
+                  double distance1 = mCalculateDistanceBetweenPoints(e.mGetStartX(), e.mGetStartY(), actualIntersect1X, actualIntersect1Y);
+                  double distance2 = mCalculateDistanceBetweenPoints(e.mGetStartX(), e.mGetStartY(), actualIntersect2X, actualIntersect2Y);
+                  
+                  if(distance1 <= distance2){
+                     arrowX = actualIntersect1X;
+                     arrowY = actualIntersect1Y;
+                  }
+                  else{
+                     arrowX = actualIntersect2X;
+                     arrowY = actualIntersect2Y;
+                  }
+               }
+               
+            break;
+         case TRIANGLE:
+            break;
+      }
       
       double phi = Math.toRadians(40);
       int barb = 20;
-      
-      if(Math.toDegrees(theta) > 90 || Math.toDegrees(theta) < -90){
-         arrowX = posX;
-         arrowY = posY;
-      }
-      else{
-         arrowX = negX;
-         arrowY = negY;
-      }
-      
       double x, y, rho = theta + phi;
       for(int j = 0; j < 2; j++){
          x = arrowX - barb * Math.cos(rho);
@@ -518,4 +640,25 @@ public class EdgeDrawer {
       }
       g2d.dispose();
    }
+   
+   /**
+    * This function uses the Pythagorean theorem to calculate the distance between two points.
+    * @param x1 - first point's x coordinate
+    * @param y1 - first point's y coordinate
+    * @param x2 - second point's x coordinate
+    * @param y2 - second point's y coordinate
+    * @return - distance between these points
+    */
+   private static double mCalculateDistanceBetweenPoints(double x1, double y1, double x2, double y2){
+      double distance = 0;
+      
+      double dx = Math.abs(x1 - x2);
+      double dy = Math.abs(y1 - y2);
+      
+      distance = Math.sqrt((dx*dx) + (dy*dy));
+      
+      return distance;
+   }
 }
+
+

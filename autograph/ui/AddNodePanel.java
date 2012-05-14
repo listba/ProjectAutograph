@@ -125,7 +125,7 @@ public class AddNodePanel extends JPanel {
 
 		// Node Shape Combo Box
 		NodeShapeComboBox = new JComboBox();
-		NodeShapeComboBox.setModel(new DefaultComboBoxModel(new String[] { "Circle", "Oval", "Square", "Rectangle", "Triangle" }));
+		NodeShapeComboBox.setModel(new DefaultComboBoxModel(new String[] { "Circle", "Square", "Triangle" }));
 
 		// Border Color Button
 		BorderColorBtn = new JButton();
