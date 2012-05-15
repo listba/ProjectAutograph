@@ -81,8 +81,9 @@ public class EditEdgePanel extends JPanel {
 		LabelColorLabel.setText("Label Color");
 
 		// Label Color Button
-		LabelColorBtn = new JButton();
-		LabelColorBtn.setText("Select Color");
+		LabelColorBtn = new ColorPickerButton();
+		LabelColorBtn.setText("   ");
+		LabelColorBtn.setColor(labelColor);
 		LabelColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
 		LabelColorBtn.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -108,8 +109,9 @@ public class EditEdgePanel extends JPanel {
 		EdgeColorLabel.setText("Edge Color");
 
 		// Edge Color Button
-		EdgeColorBtn = new JButton();
-		EdgeColorBtn.setText("Select Color");
+		EdgeColorBtn = new ColorPickerButton();
+		EdgeColorBtn.setText("   ");
+		EdgeColorBtn.setColor(edgeColor);
 		EdgeColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
 		EdgeColorBtn.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -347,6 +349,7 @@ public class EditEdgePanel extends JPanel {
 
 		if (newColor != null) {
 			edgeColor = newColor;
+			EdgeColorBtn.setColor(edgeColor);
 		}
 	}
 
@@ -356,6 +359,7 @@ public class EditEdgePanel extends JPanel {
 
 		if (newColor != null) {
 			labelColor = newColor;
+			LabelColorBtn.setColor(labelColor);
 		}
 	}
 
@@ -408,14 +412,14 @@ public class EditEdgePanel extends JPanel {
 	// Variables declaration
 	private JPanel EditEdgePanel;
 	private JLabel EditEdgeTitleLabel;
-	private JButton EdgeColorBtn;
+	private ColorPickerButton EdgeColorBtn;
 	private JLabel EdgeColorLabel;
 	private JComboBox EdgeDesignComboBox;
 	private JLabel EdgeDesignLabel;
 	private JLabel EdgeSubtitleLabel;
 	private JComboBox DirectionComboBox;
 	private JLabel DirectionLabel;
-	private JButton LabelColorBtn;
+	private ColorPickerButton LabelColorBtn;
 	private JLabel LabelColorLabel;
 	private JComboBox LabelFontComboBox;
 	private JLabel LabelFontLabel;

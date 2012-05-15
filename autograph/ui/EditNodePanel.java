@@ -81,8 +81,9 @@ public class EditNodePanel extends JPanel {
 		LabelColorLabel.setText("Label Color");
 
 		// Label Color Button
-		LabelColorBtn = new JButton();
-		LabelColorBtn.setText("Select Color");
+		LabelColorBtn = new ColorPickerButton();
+		LabelColorBtn.setText("   ");
+		LabelColorBtn.setColor(labelColor);
 		LabelColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
 		LabelColorBtn.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -108,8 +109,9 @@ public class EditNodePanel extends JPanel {
 		FillColorLabel.setText("Fill Color");
 
 		// Fill Color Button
-		FillColorBtn = new JButton();
-		FillColorBtn.setText("Select Color");
+		FillColorBtn = new ColorPickerButton();
+		FillColorBtn.setText("   ");
+		FillColorBtn.setColor(fillColor);
 		FillColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
 		FillColorBtn.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -122,8 +124,9 @@ public class EditNodePanel extends JPanel {
 		NodeShapeComboBox.setModel(new DefaultComboBoxModel(new String[] { "Circle", "Square", "Triangle" }));
 
 		// Border Color Button
-		BorderColorBtn = new JButton();
-		BorderColorBtn.setText("Select Color");
+		BorderColorBtn = new ColorPickerButton();
+		BorderColorBtn.setText("   ");
+		BorderColorBtn.setColor(borderColor);
 		BorderColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
 		BorderColorBtn.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -366,6 +369,7 @@ public class EditNodePanel extends JPanel {
 
 		if (newColor != null) {
 			labelColor = newColor;
+			LabelColorBtn.setColor(labelColor);
 		}
 	}
 
@@ -377,6 +381,7 @@ public class EditNodePanel extends JPanel {
 
 		if (newColor != null) {
 			fillColor = newColor;
+			FillColorBtn.setColor(fillColor);
 		}
 	}
 
@@ -388,6 +393,7 @@ public class EditNodePanel extends JPanel {
 
 		if (newColor != null) {
 			borderColor = newColor;
+			BorderColorBtn.setColor(borderColor);
 		}
 	}
 
@@ -433,11 +439,11 @@ public class EditNodePanel extends JPanel {
 	// Variables declarations
 	private JPanel EditNodePanel;
 	private JLabel EditNodeTitleLabel;
-	private JButton BorderColorBtn;
+	private ColorPickerButton BorderColorBtn;
 	private JLabel BorderColorLabel;
-	private JButton FillColorBtn;
+	private ColorPickerButton FillColorBtn;
 	private JLabel FillColorLabel;
-	private JButton LabelColorBtn;
+	private ColorPickerButton LabelColorBtn;
 	private JLabel LabelColorLabel;
 	private JComboBox LabelFontComboBox;
 	private JLabel LabelFontLabel;

@@ -84,8 +84,9 @@ public class EditNodeEdgePanel extends JPanel {
 		LabelColorLabel.setText("Label Color");
 
 		// Label Color Button
-		LabelColorBtn = new JButton();
-		LabelColorBtn.setText("Select Color");
+		LabelColorBtn = new ColorPickerButton();
+		LabelColorBtn.setText("   ");
+		LabelColorBtn.setColor(labelColor);
 		LabelColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
 		LabelColorBtn.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -106,8 +107,9 @@ public class EditNodeEdgePanel extends JPanel {
 		BorderColorLabel.setText("Border Color");
 
 		// Border Color Button
-		BorderColorBtn = new JButton();
-		BorderColorBtn.setText("Select Color");
+		BorderColorBtn = new ColorPickerButton();
+		BorderColorBtn.setText("   ");
+		BorderColorBtn.setColor(borderColor);
 		BorderColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
 		BorderColorBtn.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -120,8 +122,9 @@ public class EditNodeEdgePanel extends JPanel {
 		FillColorLabel.setText("Fill Color");
 
 		// Fill Color Button
-		FillColorBtn = new JButton();
-		FillColorBtn.setText("Select Color");
+		FillColorBtn = new ColorPickerButton();
+		FillColorBtn.setText("   ");
+		FillColorBtn.setColor(fillColor);
 		FillColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
 		FillColorBtn.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -142,8 +145,9 @@ public class EditNodeEdgePanel extends JPanel {
 		EdgeColorLabel.setText("Edge Color");
 
 		// Edge Color Button
-		EdgeColorBtn = new JButton();
-		EdgeColorBtn.setText("Select Color");
+		EdgeColorBtn = new ColorPickerButton();
+		EdgeColorBtn.setText("   ");
+		EdgeColorBtn.setColor(edgeColor);
 		EdgeColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
 		EdgeColorBtn.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -380,6 +384,7 @@ public class EditNodeEdgePanel extends JPanel {
 
 		if (newColor != null) {
 			edgeColor = newColor;
+			EdgeColorBtn.setColor(edgeColor);
 		}
 	}
 
@@ -388,6 +393,7 @@ public class EditNodeEdgePanel extends JPanel {
 
 		if (newColor != null) {
 			fillColor = newColor;
+			FillColorBtn.setColor(fillColor);
 		}
 	}
 
@@ -396,6 +402,7 @@ public class EditNodeEdgePanel extends JPanel {
 
 		if (newColor != null) {
 			borderColor = newColor;
+			BorderColorBtn.setColor(borderColor);
 		}
 	}
 
@@ -404,6 +411,7 @@ public class EditNodeEdgePanel extends JPanel {
 
 		if (newColor != null) {
 			labelColor = newColor;
+			LabelColorBtn.setColor(labelColor);
 		}
 	}
 
@@ -418,15 +426,15 @@ public class EditNodeEdgePanel extends JPanel {
 	}
 
 	// Variables declaration
-	private JButton BorderColorBtn;
+	private ColorPickerButton BorderColorBtn;
 	private JLabel BorderColorLabel;
-	private JButton EdgeColorBtn;
+	private ColorPickerButton EdgeColorBtn;
 	private JLabel EdgeColorLabel;
 	private JLabel EdgeSubtitleLabel;
 	private JLabel EditTitleLabel;
-	private JButton FillColorBtn;
+	private ColorPickerButton FillColorBtn;
 	private JLabel FillColorLabel;
-	private JButton LabelColorBtn;
+	private ColorPickerButton LabelColorBtn;
 	private JLabel LabelColorLabel;
 	private JComboBox LabelFontComboBox;
 	private JLabel LabelFontLabel;
