@@ -18,6 +18,8 @@ import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 import java.awt.BorderLayout;
 
+import javax.swing.Icon;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
 import javax.swing.JScrollPane;
@@ -258,11 +260,13 @@ public class mainWindow extends JFrame {
 		CloseAllOtherTabsMenuItem = new JMenuItem("Close All Other Tabs");
 		ViewDropdownMenu.add(CloseAllOtherTabsMenuItem);
 
+		/*
 		OpenAdvancedCodeViewMenuItem = new JMenuItem("Open Advanced Code View");
-		ViewDropdownMenu.add(OpenAdvancedCodeViewMenuItem);
+		ViewDropdownMenu.add(OpenAdvancedCodeViewMenuItem);*/
 
+		/*
 		ChangeBGColorMenuItem = new JMenuItem("Change Background Color");
-		ViewDropdownMenu.add(ChangeBGColorMenuItem);
+		ViewDropdownMenu.add(ChangeBGColorMenuItem);*/
 
 		ToolsDropdownMenu = new JMenu("Tools");
 		MainWindowMenuBar.add(ToolsDropdownMenu);
@@ -282,11 +286,13 @@ public class mainWindow extends JFrame {
 		HelpDropdownMenu = new JMenu("Help");
 		MainWindowMenuBar.add(HelpDropdownMenu);
 
+		/*
 		UserGuideMenuItem = new JMenuItem("User Guide");
-		HelpDropdownMenu.add(UserGuideMenuItem);
+		HelpDropdownMenu.add(UserGuideMenuItem);*/
 
+		/*
 		LaunchWebsiteMenuItem = new JMenuItem("Launch Website");
-		HelpDropdownMenu.add(LaunchWebsiteMenuItem);
+		HelpDropdownMenu.add(LaunchWebsiteMenuItem);*/
 
 		AboutAutographMenuItem = new JMenuItem("About Autograph");
 		HelpDropdownMenu.add(AboutAutographMenuItem);
@@ -450,6 +456,11 @@ public class mainWindow extends JFrame {
 		AutoConnectNodesMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				AutoConnectNodesMenuItemActionPerformed(evt);
+			}
+		});
+		AboutAutographMenuItem.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				AboutAutoGraphMenuItemActionPerformed(evt);
 			}
 		});
 	} // End Initialization
@@ -732,6 +743,10 @@ public class mainWindow extends JFrame {
 		AutoConnectNodesTog.setSelected(!AutoConnectNodesTog.isSelected());
 	}
 
+	private void AboutAutoGraphMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		AboutDialog dlg = new AboutDialog(mainWindow.this, "About Autograph", "Autograph is awesome!");
+	}
+	
 	private void AddNodeBtnActionPerformed(java.awt.event.MouseEvent evt) {
 		// Bring up the Add Node panel
 		SidePanelScrollPane.setViewportView(addNodePanel);
