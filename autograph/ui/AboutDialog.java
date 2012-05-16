@@ -9,6 +9,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 public class AboutDialog extends JDialog {
 	
@@ -21,7 +22,7 @@ public class AboutDialog extends JDialog {
 		}
 		
 		JPanel messagePane = new JPanel();
-		messagePane.add(new JLabel(message));
+		messagePane.add(new JTextArea(message));
 		String path = "resources/Autograph.jpg";
 		JPanel picturePane = new JPanel(new BorderLayout());
 		JLabel label = new JLabel(new ImageIcon(path));
@@ -33,5 +34,4 @@ public class AboutDialog extends JDialog {
 		pack(); 
 		setVisible(true);
 	}
-
 }

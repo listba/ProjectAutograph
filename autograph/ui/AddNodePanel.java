@@ -91,7 +91,7 @@ public class AddNodePanel extends JPanel {
 		LabelColorBtn = new ColorPickerButton();
 		LabelColorBtn.setText("   ");
 		LabelColorBtn.setColor(labelColor);
-		
+
 		LabelColorBtn.setMargin(new java.awt.Insets(2, 5, 2, 5));
 		LabelColorBtn.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -313,7 +313,19 @@ public class AddNodePanel extends JPanel {
 		if(mainWindow.isAutoLabelNodes()) {
 			// Make a Node Label
 			if(LabelTextField.getText().isEmpty()) {
-				nodeLabel = "Node" + Integer.toString(numNodes + 1);
+				switch(mainWindow.autoLabelNodeIntStatus) {
+				case 1:
+					nodeLabel = Integer.toString(mainWindow.autoLabelNodeInt) + mainWindow.autoNodeLabel;
+					mainWindow.incrementAutoNodeCounter();
+					break;
+				case 2:
+					nodeLabel = mainWindow.autoNodeLabel + Integer.toString(mainWindow.autoLabelNodeInt);
+					mainWindow.incrementAutoNodeCounter();
+					break;
+				case 3:
+					nodeLabel = mainWindow.autoNodeLabel;
+					break;
+				}
 			}
 			// Retrieve the node label
 			else {
@@ -357,7 +369,19 @@ public class AddNodePanel extends JPanel {
 				// If auto Label Edges is on
 				if(mainWindow.isAutoLabelEdges()) {
 					// Make a Edge Label
-					edgeLabel = "Edge" + Integer.toString(numEdges + 1);
+					switch(mainWindow.autoLabelEdgeIntStatus) {
+					case 1:
+						edgeLabel = Integer.toString(mainWindow.autoLabelEdgeInt) + mainWindow.autoEdgeLabel;
+						mainWindow.incrementAutoEdgeCounter();
+						break;
+					case 2:
+						edgeLabel = mainWindow.autoEdgeLabel + Integer.toString(mainWindow.autoLabelEdgeInt);
+						mainWindow.incrementAutoEdgeCounter();
+						break;
+					case 3:
+						edgeLabel = mainWindow.autoNodeLabel;
+						break;
+					}
 				}
 				// Otherwise...
 				else {
@@ -373,7 +397,7 @@ public class AddNodePanel extends JPanel {
 					// Create the new edge
 					Edge newEdge = new Edge(Integer.toString(numEdges), edgeLabel, currentGraph.mGetNodeList().get(numNodes - 1), newNode, "NODIRECTION", "SOLID");
 					newEdge.mSetPairPosition(currentGraph.mCheckForEdgeTwin(newEdge));
-					
+
 					if(newEdge != null) {
 						currentGraph.mAddEdge(newEdge);
 					}

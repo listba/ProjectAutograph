@@ -282,7 +282,19 @@ public class EditNodePanel extends JPanel {
 				if(mainWindow.isAutoLabelNodes()) {
 					// Make a Node Label
 					if(LabelTextField.getText().isEmpty()) {
-						nodeLabel = "Node" + currentNode.mGetId();
+						switch(mainWindow.autoLabelNodeIntStatus) {
+						case 1:
+							nodeLabel = Integer.toString(mainWindow.autoLabelNodeInt) + mainWindow.autoNodeLabel;
+							mainWindow.incrementAutoNodeCounter();
+							break;
+						case 2:
+							nodeLabel = mainWindow.autoNodeLabel + Integer.toString(mainWindow.autoLabelNodeInt);
+							mainWindow.incrementAutoNodeCounter();
+							break;
+						case 3:
+							nodeLabel = mainWindow.autoNodeLabel;
+							break;
+						}
 					}
 					// Retrieve the node label
 					else {
@@ -322,7 +334,19 @@ public class EditNodePanel extends JPanel {
 			if(mainWindow.isAutoLabelNodes()) {
 				// Make a Node Label
 				if(LabelTextField.getText().isEmpty()) {
-					nodeLabel = "Node" + currentNode.mGetId();
+					switch(mainWindow.autoLabelNodeIntStatus) {
+					case 1:
+						nodeLabel = Integer.toString(mainWindow.autoLabelNodeInt) + mainWindow.autoNodeLabel;
+						mainWindow.incrementAutoNodeCounter();
+						break;
+					case 2:
+						nodeLabel = mainWindow.autoNodeLabel + Integer.toString(mainWindow.autoLabelNodeInt);
+						mainWindow.incrementAutoNodeCounter();
+						break;
+					case 3:
+						nodeLabel = mainWindow.autoNodeLabel;
+						break;
+					}
 				}
 				// Retrieve the node label
 				else {

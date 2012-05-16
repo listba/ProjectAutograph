@@ -472,10 +472,16 @@ public class mainWindow extends JFrame {
 
 	private void AutoLabelNodesTogActionPerformed(java.awt.event.ActionEvent evt) {
 		AutoLabelNodesMenuItem.setState(!AutoLabelNodesMenuItem.getState());
+		if (AutoLabelNodesMenuItem.isSelected()) {
+			AutoLabelDialog dlg = new AutoLabelDialog(mainWindow.this, true, true);
+		}
 	}
 
 	private void AutoLabelEdgesTogActionPerformed(java.awt.event.ActionEvent evt) {
 		AutoLabelEdgesMenuItem.setState(!AutoLabelEdgesMenuItem.getState());
+		if (AutoLabelEdgesMenuItem.isSelected()) {
+			AutoLabelDialog dlg = new AutoLabelDialog(mainWindow.this, true, false);
+		}
 	}
 
 	/**
@@ -732,11 +738,17 @@ public class mainWindow extends JFrame {
 	}
 
 	protected void AutoLabelEdgesMenuItemActionPerformed(ActionEvent evt) {
-		AutoLabelEdgesTog.setSelected(!AutoLabelEdgesTog.isSelected());		
+		AutoLabelEdgesTog.setSelected(!AutoLabelEdgesTog.isSelected());	
+		if (AutoLabelEdgesTog.isSelected()) {
+			AutoLabelDialog dlg = new AutoLabelDialog(mainWindow.this, true, false);
+		}
 	}
 
 	private void AutoLabelNodesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		AutoLabelNodesTog.setSelected(!AutoLabelNodesTog.isSelected());
+		if (AutoLabelNodesTog.isSelected()) {
+			AutoLabelDialog dlg = new AutoLabelDialog(mainWindow.this, true, true);
+		}
 	}
 
 	private void AutoConnectNodesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
@@ -744,7 +756,7 @@ public class mainWindow extends JFrame {
 	}
 
 	private void AboutAutoGraphMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-		AboutDialog dlg = new AboutDialog(mainWindow.this, "About Autograph", "Autograph is awesome!");
+		AboutDialog dlg = new AboutDialog(mainWindow.this, "About Autograph", "   Autograph is an easy to use and fast graphing program.\n\t           Version 1.0.0\nDesigners: Chelsea Chase, Jeff Farris, Ben List, Keith Wentzel");
 	}
 	
 	private void AddNodeBtnActionPerformed(java.awt.event.MouseEvent evt) {
@@ -782,6 +794,16 @@ public class mainWindow extends JFrame {
 		}
 	}
 
+	public static void setAutoLabelNodes(boolean state) {
+		AutoLabelNodesMenuItem.setSelected(state);
+		AutoLabelNodesTog.setSelected(state);
+	}
+	
+	public static void setAutoLabelEdges(boolean state) {
+		AutoLabelEdgesMenuItem.setSelected(state);
+		AutoLabelEdgesTog.setSelected(state);
+	}
+	
 	public static void resetSidePane() {
 		SidePanelScrollPane.setViewportView(addNodePanel);
 	}
@@ -796,6 +818,26 @@ public class mainWindow extends JFrame {
 
 	public static boolean isAutoConnectNodes() {
 		return AutoConnectNodesTog.isSelected();
+	}
+	
+	public static void setAutoNode(String label, int num, int numtype) {
+		autoNodeLabel = label;
+		autoLabelNodeInt = num;
+		autoLabelNodeIntStatus = numtype;
+	}
+	
+	public static void setAutoEdge(String label, int num, int numtype) {
+		autoEdgeLabel = label;
+		autoLabelEdgeInt = num;
+		autoLabelEdgeIntStatus = numtype;
+	}
+	
+	public static void incrementAutoNodeCounter() {
+		autoLabelNodeInt++;
+	}
+	
+	public static void incrementAutoEdgeCounter() {
+		autoLabelEdgeInt++;
 	}
 	
 	public static void printWindow() {
@@ -871,8 +913,8 @@ public class mainWindow extends JFrame {
 	protected JMenuItem ChangeBGColorMenuItem;
 	//Tools Menu
 	protected JMenu ToolsDropdownMenu;
-	protected JCheckBoxMenuItem AutoLabelNodesMenuItem;
-	protected JCheckBoxMenuItem AutoLabelEdgesMenuItem;
+	protected static JCheckBoxMenuItem AutoLabelNodesMenuItem;
+	protected static JCheckBoxMenuItem AutoLabelEdgesMenuItem;
 	protected JCheckBoxMenuItem AutoConnectNodesMenuItem;
 	//Help Menu
 	protected JMenu HelpDropdownMenu;
@@ -890,6 +932,13 @@ public class mainWindow extends JFrame {
 	// The Print Stuff
 	protected static PrinterJob printJob;
 	protected PageFormat printFormat;
+	// The auto-label-stuff
+	protected static String autoNodeLabel;
+	protected static String autoEdgeLabel;
+	protected static int autoLabelNodeInt;
+	protected static int autoLabelNodeIntStatus;
+	protected static int autoLabelEdgeInt;
+	protected static int autoLabelEdgeIntStatus;
 }
 
 

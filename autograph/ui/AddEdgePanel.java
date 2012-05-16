@@ -387,7 +387,19 @@ public class AddEdgePanel extends JPanel {
 		if(mainWindow.isAutoLabelEdges()) {
 			// Make a edge Label
 			if(LabelTextField.getText().isEmpty()) {
-				edgeLabel = "Edge" + Integer.toString(numEdges + 1);
+				switch(mainWindow.autoLabelEdgeIntStatus) {
+				case 1:
+					edgeLabel = Integer.toString(mainWindow.autoLabelEdgeInt) + mainWindow.autoEdgeLabel;
+					mainWindow.incrementAutoEdgeCounter();
+					break;
+				case 2:
+					edgeLabel = mainWindow.autoEdgeLabel + Integer.toString(mainWindow.autoLabelEdgeInt);
+					mainWindow.incrementAutoEdgeCounter();
+					break;
+				case 3:
+					edgeLabel = mainWindow.autoNodeLabel;
+					break;
+				}
 			}
 			// Retrieve the edge label
 			else {
