@@ -324,7 +324,7 @@ public class AddNodePanel extends JPanel {
 		else {
 			// They need to enter a Node Label
 			if(LabelTextField.getText().isEmpty()) {
-				nodeLabel = null;
+				nodeLabel = "";
 				//JOptionPane.showMessageDialog(AddNodePanel.this, "Please specify a Node Label!", "Attention!", JOptionPane.WARNING_MESSAGE);
 				//return;
 			}
