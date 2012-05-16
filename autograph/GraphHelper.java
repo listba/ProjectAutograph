@@ -53,7 +53,9 @@ public class GraphHelper {
 		LABELCOLOR,
 		FONT,
 		WIDTH,
-		HEIGHT
+		HEIGHT,
+		CENTERX,
+		CENTERY
 	}
 	private static enum edgeAttributes{
 		ID,
@@ -392,6 +394,7 @@ public class GraphHelper {
 						}
 						break;
 					default: // Add attribute to current edge
+						System.out.println(na.name().toLowerCase() + " - " + value);
 						nodeElement.setAttribute(na.name().toLowerCase(), value);
 						break;
 					}
@@ -663,6 +666,12 @@ public class GraphHelper {
 			case HEIGHT:
 				value = String.valueOf(node.mGetHeight());
 				break;
+			case CENTERX:
+				value = String.valueOf(node.mGetCenterX());
+				break;
+			case CENTERY:
+				value = String.valueOf(node.mGetCenterY());
+				break;
 			default: break;
 			}
 		} catch (IllegalArgumentException e) {
@@ -738,6 +747,8 @@ public class GraphHelper {
 
 		// Create Node Object
 		Node node = null;
+		int centerx = 0;
+		int centery = 0;
 		String id = el.getAttribute("id");
 		if (!id.isEmpty()) {
 			node = new Node(id, el.getAttribute("label"), 
@@ -771,6 +782,12 @@ public class GraphHelper {
 					case HEIGHT:
 						// TODO: Handle Width Attribute;
 						break;
+					case CENTERX:
+						centerx = Integer.parseInt(a.getValue());
+						break;
+					case CENTERY:
+						centery = Integer.parseInt(a.getValue());
+						break;
 					default: break;
 					}
 				} catch (NumberFormatException e) {
@@ -795,6 +812,10 @@ public class GraphHelper {
 			}
 		} else { // Invalid XML for a node
 			throw new InvalidXMLException("Node Element is missing the required ID attribute");
+		}
+		if (centerx >0 && centery > 0)
+		{
+			node.mSetCenterLocation(centerx, centery);
 		}
 		return node;
 	}
